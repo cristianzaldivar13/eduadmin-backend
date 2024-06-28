@@ -1,0 +1,12 @@
+{
+    "configurations": [
+      {
+        "type": "node-terminal",
+        "request": "launch",
+        "name": "NestJS with nodemon",
+        "command": "npm run start:dev",
+        "skipFiles": ["<node_internals>/**"]
+      }
+    ]
+  }
+  
