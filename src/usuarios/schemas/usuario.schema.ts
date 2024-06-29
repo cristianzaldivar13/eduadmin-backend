@@ -5,5 +5,6 @@ export const UsuarioSchema = new Schema({
   correo: String,
   contrasena: String,
   roles: [String],
+  qrCode: String,
   activo: { type: Boolean, default: true },
 });

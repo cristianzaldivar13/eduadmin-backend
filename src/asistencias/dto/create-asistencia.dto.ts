@@ -1,10 +1,13 @@
-import { IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
-import { ObjectId } from 'mongoose';
+import { IsDate, IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
 export class CrearAsistenciaDto {
-  @IsMongoId()
   @IsNotEmpty()
-  readonly alumnoId: ObjectId;
+  @IsMongoId()
+  alumnoId: string;
+
+  @IsNotEmpty()
+  @IsDate()
+  fecha: Date;
 
   @IsEnum(['ingreso', 'egreso'])
   @IsNotEmpty()

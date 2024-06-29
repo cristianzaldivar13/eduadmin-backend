@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CrearUsuarioDto } from './dto/create-usuario.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
+import * as QRCode from 'qrcode';
+import { TiposUsuario } from '../enums/tiposUsuario.enum';
 
 @Injectable()
 export class UsuariosService {
@@ -11,13 +13,33 @@ export class UsuariosService {
     @InjectModel('Usuario') private readonly usuarioModel: Model<Usuario>,
   ) {}
 
-  async crearUsuario(usuario: CrearUsuarioDto): Promise<Usuario> {
-    const { contrasena, ...rest } = usuario;
-    const hashedPassword = await bcrypt.hash(contrasena, 10); // Encriptar la contraseña
+  async crearUsuario(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
+    // Verificar si el correo ya existe
+    const existeUsuario = await this.usuarioModel.findOne({ correo: crearUsuarioDto.correo });
+    if (existeUsuario) {
+      throw new BadRequestException('El correo ya está registrado.');
+    }
+
+    // Encriptar contraseña
+    const hashedPassword = await bcrypt.hash(crearUsuarioDto.contrasena, 10);
+
+    // Generar ID numérico
+    const ultimoUsuario = await this.usuarioModel.findOne().sort({ _id: -1 });
+    const nuevoIdNumerico = ultimoUsuario ? ultimoUsuario.idNumerico + 1 : 1;
+
+    // Crear nuevo usuario
     const nuevoUsuario = new this.usuarioModel({
-      ...rest,
+      ...crearUsuarioDto,
       contrasena: hashedPassword,
+      idNumerico: nuevoIdNumerico,
     });
+
+    // Generar QR
+    if (crearUsuarioDto.roles.includes(TiposUsuario.ALUMNO)) {
+      const qrCode = await QRCode.toDataURL(`${nuevoUsuario._id}`);
+      nuevoUsuario.qrCode = qrCode;
+    }
+
     return await nuevoUsuario.save();
   }
 
