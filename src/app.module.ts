@@ -36,6 +36,7 @@ import { RolesModule } from './roles/roles.module';
     BibliotecasModule,
     UsuariosModule,
     RolesModule,
+    AsistenciasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

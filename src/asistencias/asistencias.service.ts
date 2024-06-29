@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAsistenciaDto } from './dto/create-asistencia.dto';
-import { UpdateAsistenciaDto } from './dto/update-asistencia.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Asistencia } from './models/asistencia.model';
+import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
 
 @Injectable()
 export class AsistenciasService {
-  create(createAsistenciaDto: CreateAsistenciaDto) {
-    return 'This action adds a new asistencia';
+  constructor(
+    @InjectModel(Asistencia.name) private readonly asistenciaModel: Model<Asistencia>,
+  ) {}
+
+  async crearAsistencia(
+    crearAsistenciaDto: CrearAsistenciaDto,
+  ): Promise<Asistencia> {
+    const nuevaAsistencia = new this.asistenciaModel(crearAsistenciaDto);
+    return await nuevaAsistencia.save();
   }
 
-  findAll() {
-    return `This action returns all asistencias`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} asistencia`;
-  }
-
-  update(id: number, updateAsistenciaDto: UpdateAsistenciaDto) {
-    return `This action updates a #${id} asistencia`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} asistencia`;
+  async obtenerAsistencias(): Promise<Asistencia[]> {
+    return await this.asistenciaModel.find().exec();
   }
 }
