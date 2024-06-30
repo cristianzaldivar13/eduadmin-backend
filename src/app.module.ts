@@ -17,6 +17,7 @@ import { BibliotecasModule } from './bibliotecas/bibliotecas.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { MongoModule } from './database/mongo.module';
 import { RolesModule } from './roles/roles.module';
+import { FaceRecognitionModule } from './face-recognition/face-recognition.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { RolesModule } from './roles/roles.module';
     UsuariosModule,
     RolesModule,
     AsistenciasModule,
+    FaceRecognitionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
