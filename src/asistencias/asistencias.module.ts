@@ -4,13 +4,19 @@ import { AsistenciasController } from './asistencias.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AsistenciaSchema } from './schemas/asistencia.schema';
 import { Asistencia } from './models/asistencia.model';
+import { UsuarioExisteGuard } from '../utils/usuario-existe.guard.ts';
+import { UsuariosModule } from '../usuarios/usuarios.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Asistencia.name, schema: AsistenciaSchema }]),
+    UsuariosModule,
   ],
   controllers: [AsistenciasController],
-  providers: [AsistenciasService],
+  providers: [
+    AsistenciasService
+    , UsuarioExisteGuard
+  ],
   exports: [AsistenciasService],
 })
 export class AsistenciasModule {}

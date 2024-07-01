@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Asistencia } from './models/asistencia.model';
@@ -13,8 +13,13 @@ export class AsistenciasService {
   async crearAsistencia(
     crearAsistenciaDto: CrearAsistenciaDto,
   ): Promise<Asistencia> {
-    const nuevaAsistencia = new this.asistenciaModel(crearAsistenciaDto);
-    return await nuevaAsistencia.save();
+    try {
+      const nuevaAsistencia = new this.asistenciaModel(crearAsistenciaDto);
+      return await nuevaAsistencia.save();
+    } catch (error) {
+      console.error(error.message);
+      throw new BadRequestException(error.message);
+    }
   }
 
   async obtenerAsistencias(): Promise<Asistencia[]> {

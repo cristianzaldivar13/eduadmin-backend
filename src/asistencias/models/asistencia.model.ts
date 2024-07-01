@@ -1,18 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { TipoAsistencia } from '../../enums/tipos';
+import { IsEnum } from 'class-validator';
 
 export type AsistenciaDocument = Asistencia & Document;
 
 @Schema()
 export class Asistencia {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  alumnoId: mongoose.Schema.Types.ObjectId;
+  usuarioId: string;
 
-  @Prop({ required: true })
-  tipo: string;
+  @Prop({ type: String, enum: TipoAsistencia, required: true })
+  @IsEnum(TipoAsistencia)
+  tipo: string; 
 
-  @Prop({ required: true })
+  @Prop({ default: Date.now })
   fecha: Date;
 }
 

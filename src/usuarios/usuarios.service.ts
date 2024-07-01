@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CrearUsuarioDto } from './dto/create-usuario.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -50,4 +50,8 @@ export class UsuariosService {
   async buscarTodo(): Promise<Usuario | null> {
     return await this.usuarioModel.findOne().exec();
   }
+
+  async buscarPorId(id: string): Promise<Usuario | null> {
+    return await this.usuarioModel.findOne({ _id: new mongoose.Types.ObjectId(id) }).exec();
+  }   
 }

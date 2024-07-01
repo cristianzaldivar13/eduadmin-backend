@@ -1,16 +1,16 @@
-import { IsDate, IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
+import { TipoAsistencia } from '../../enums/tipos';
 
 export class CrearAsistenciaDto {
   @IsNotEmpty()
   @IsMongoId()
-  alumnoId: string;
+  usuarioId: any;
 
-  @IsNotEmpty()
   @IsDate()
-  fecha: Date;
+  fecha: Date = new Date();
 
-  @IsEnum(['ingreso', 'egreso'])
+  @IsEnum(TipoAsistencia)
   @IsNotEmpty()
-  readonly tipo: 'ingreso' | 'egreso';
+  readonly tipo: TipoAsistencia;
   }
   
