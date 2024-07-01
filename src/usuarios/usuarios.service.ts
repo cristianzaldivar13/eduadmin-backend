@@ -52,6 +52,10 @@ export class UsuariosService {
   }
 
   async buscarPorId(id: string): Promise<Usuario | null> {
-    return await this.usuarioModel.findOne({ _id: new mongoose.Types.ObjectId(id) }).exec();
+    try {
+      return await this.usuarioModel.findOne({ _id: new mongoose.Types.ObjectId(id) }).exec();
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }   
 }

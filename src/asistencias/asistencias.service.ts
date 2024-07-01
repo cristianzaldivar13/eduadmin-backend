@@ -17,12 +17,15 @@ export class AsistenciasService {
       const nuevaAsistencia = new this.asistenciaModel(crearAsistenciaDto);
       return await nuevaAsistencia.save();
     } catch (error) {
-      console.error(error.message);
       throw new BadRequestException(error.message);
     }
   }
 
   async obtenerAsistencias(): Promise<Asistencia[]> {
-    return await this.asistenciaModel.find().exec();
+    try {
+      return await this.asistenciaModel.find().exec();
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }

@@ -1,10 +1,10 @@
 // usuario-existe.guard.ts
 
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, BadRequestException } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 
 @Injectable()
-export class UsuarioExisteGuard implements CanActivate {
+export class ValidacionUsuarioGuard implements CanActivate {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -18,7 +18,7 @@ export class UsuarioExisteGuard implements CanActivate {
     const usuario = await this.usuariosService.buscarPorId(usuarioId);
 
     if (!usuario) {
-      throw new Error('El usuario no existe');
+      throw new BadRequestException('El usuario no existe.');
     }
 
     // Asignamos el usuario al request para que esté disponible en el controlador
