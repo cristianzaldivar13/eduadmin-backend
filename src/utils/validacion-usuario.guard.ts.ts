@@ -1,5 +1,3 @@
-// usuario-existe.guard.ts
-
 import { Injectable, CanActivate, ExecutionContext, BadRequestException, Body } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { AsistenciasService } from '../asistencias/asistencias.service';

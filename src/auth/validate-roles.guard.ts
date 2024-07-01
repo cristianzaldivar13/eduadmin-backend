@@ -9,19 +9,17 @@ export class ValidateRolesGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const { roles } = request.body;
+    const { rol } = request.body;
 
-    if (!roles || !Array.isArray(roles)) {
-      throw new BadRequestException('Roles must be an array');
+    if (!rol) {
+      throw new BadRequestException('Debe enviar el rol.');
     }
 
     const validRoles = await this.rolesService.buscarTodo();
     const validRoleNames = validRoles.map(role => role.nombre);
 
-    for (const role of roles) {
-      if (!validRoleNames.includes(role)) {
-        throw new BadRequestException(`Role ${role} does not exist`);
-      }
+      if (!validRoleNames.includes(rol)) {
+        throw new BadRequestException(`El rol ${rol} no existe`);
     }
 
     return true;

@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
 import * as QRCode from 'qrcode';
-import { TiposUsuario } from '../enums/tiposUsuario.enum';
+import { RolesUsuario } from '../enums/roles-usuario.enum';
 
 @Injectable()
 export class UsuariosService {
@@ -35,7 +35,7 @@ export class UsuariosService {
     });
 
     // Generar QR
-    if (crearUsuarioDto.roles.includes(TiposUsuario.ALUMNO)) {
+    if (crearUsuarioDto.rol.includes(RolesUsuario.ALUMNO)) {
       const qrCode = await QRCode.toDataURL(`${nuevoUsuario._id}`);
       nuevoUsuario.qrCode = qrCode;
     }
@@ -57,5 +57,5 @@ export class UsuariosService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
-  }   
+  }
 }

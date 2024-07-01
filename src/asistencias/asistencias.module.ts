@@ -4,7 +4,7 @@ import { AsistenciasController } from './asistencias.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AsistenciaSchema } from './schemas/asistencia.schema';
 import { Asistencia } from './models/asistencia.model';
-import { ValidacionUsuarioGuard } from '../utils/usuario-existe.guard.ts';
+import { ValidacionUsuarioGuard } from '../utils/validacion-usuario.guard.ts';
 import { UsuariosModule } from '../usuarios/usuarios.module';
 
 @Module({

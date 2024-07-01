@@ -1,6 +1,6 @@
 // src/usuarios/dto/create-usuario.dto.ts
 import { IsEmail, IsNotEmpty, IsString, IsEnum } from 'class-validator';
-import { TiposUsuario } from '../../enums/tiposUsuario.enum';
+import { RolesUsuario } from '../../enums/roles-usuario.enum';
 
 export class CrearUsuarioDto {
   @IsNotEmpty()
@@ -16,6 +16,6 @@ export class CrearUsuarioDto {
   readonly contrasena: string;
 
   @IsNotEmpty()
-  @IsEnum(TiposUsuario, { each: true })
-  readonly roles: TiposUsuario[];
+  @IsEnum(RolesUsuario)
+  readonly rol: RolesUsuario;
 }

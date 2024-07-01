@@ -1,7 +1,7 @@
 // src/usuarios/schemas/usuario.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { TiposUsuario } from '../../enums/tiposUsuario.enum';
+import { RolesUsuario } from '../../enums/roles-usuario.enum';
 
 export type UsuarioDocument = Usuario & Document;
 
@@ -16,8 +16,8 @@ export class Usuario {
   @Prop({ required: true })
   contrasena: string;
 
-  @Prop({ type: [String], enum: TiposUsuario, default: [TiposUsuario.ALUMNO] })
-  roles: TiposUsuario[];
+  @Prop({ type: String, enum: RolesUsuario })
+  rol: RolesUsuario;
 
   @Prop()
   qrCode: string;

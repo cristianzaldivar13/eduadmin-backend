@@ -1,4 +1,4 @@
-export enum TiposUsuario {
+export enum RolesUsuario {
     ROOT = 'root',
     ADMIN = 'admin',
     ALUMNO = 'alumno',
