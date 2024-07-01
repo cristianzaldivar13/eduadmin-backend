@@ -8,7 +8,7 @@ export type AsistenciaDocument = Asistencia & Document;
 @Schema()
 export class Asistencia {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  usuarioId: string;
+  usuarioId: mongoose.Types.ObjectId;
 
   @Prop({ type: String, enum: TipoAsistencia, required: true })
   @IsEnum(TipoAsistencia)
