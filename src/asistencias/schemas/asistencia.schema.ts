@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { TipoAsistencia } from '../../enums/tipos';
+import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 
 export type AsistenciaDocument = Asistencia & Document;
 
@@ -9,7 +9,7 @@ export class Asistencia {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   usuarioId: string;
 
-  @Prop({ type: String, enum: TipoAsistencia, required: true })
+  @Prop({ type: String, enum: EnumTipoAsistencia, required: true })
   tipo: string;
 
   @Prop({ type: Date, default: Date.now })

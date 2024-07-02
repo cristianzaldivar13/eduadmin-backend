@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Asistencia } from './models/asistencia.model';
 import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
-import { TipoAsistencia } from 'src/enums/tipos';
+import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
 
 @Injectable()
 export class AsistenciasService {
@@ -30,7 +30,7 @@ export class AsistenciasService {
     }
   }
 
-  async obtenerAsistenciaDelDia(usuarioId: string, tipo: TipoAsistencia): Promise<Asistencia[]> {
+  async obtenerAsistenciaDelDia(usuarioId: string, tipo: EnumTipoAsistencia): Promise<Asistencia[]> {
     try {
       const startOfDay = new Date();
       startOfDay.setHours(0, 0, 0, 0);

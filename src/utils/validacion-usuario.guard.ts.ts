@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext, BadRequestException, Body } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { AsistenciasService } from '../asistencias/asistencias.service';
-import { TipoAsistencia } from 'src/enums/tipos';
+import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
 
 @Injectable()
 export class ValidacionUsuarioGuard implements CanActivate {
@@ -13,7 +13,7 @@ export class ValidacionUsuarioGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const usuarioId: string = request.body?.usuarioId;
-    const tipo: TipoAsistencia = request.body?.tipo;
+    const tipo: EnumTipoAsistencia = request.body?.tipo;
 
     if (!usuarioId) {
       throw new Error('ID de usuario no proporcionado en la solicitud');

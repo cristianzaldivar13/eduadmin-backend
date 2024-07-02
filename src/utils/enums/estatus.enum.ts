@@ -1,0 +1,17 @@
+export enum EnumEstatus {
+  ACTIVO = 'Activo',
+  INACTIVO = 'Inactivo',
+  ELIMINADO = 'Eliminado',
+  EXPULSADO = 'Expulsado',
+  SUSPENDIDO = 'Suspendido',
+  BAJA = 'Baja',
+  FALLECIDO = 'Fallecido',
+  JUBILADO = 'Jubilado',
+  RENUNCIA = 'Renuncia',
+  DESPEDIDO = 'Despedido',
+  AUSENTE = 'Ausente',
+  METERNIDAD = 'Maternidad',
+  PATERNIDAD = 'Paternidad',
+  LICENCIA = 'Licencia',
+  VACACIONES = 'Vacaciones',
+}

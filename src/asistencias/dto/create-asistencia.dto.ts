@@ -1,16 +1,17 @@
 import { IsDate, IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
-import { TipoAsistencia } from '../../enums/tipos';
+import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
+import mongoose from 'mongoose';
 
 export class CrearAsistenciaDto {
   @IsNotEmpty()
   @IsMongoId()
-  usuarioId: any;
+  usuarioId: mongoose.Types.ObjectId;
 
   @IsDate()
   fecha: Date = new Date();
 
-  @IsEnum(TipoAsistencia)
+  @IsEnum(EnumTipoAsistencia)
   @IsNotEmpty()
-  readonly tipo: TipoAsistencia;
+  readonly tipo: EnumTipoAsistencia;
   }
   

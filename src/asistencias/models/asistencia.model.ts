@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { TipoAsistencia } from '../../enums/tipos';
+import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 import { IsEnum } from 'class-validator';
 
 export type AsistenciaDocument = Asistencia & Document;
@@ -10,9 +10,9 @@ export class Asistencia {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   usuarioId: mongoose.Types.ObjectId;
 
-  @Prop({ type: String, enum: TipoAsistencia, required: true })
-  @IsEnum(TipoAsistencia)
-  tipo: string; 
+  @Prop({ type: String, enum: EnumTipoAsistencia, required: true })
+  @IsEnum(EnumTipoAsistencia)
+  readonly tipo: EnumTipoAsistencia;
 
   @Prop({ default: Date.now })
   fecha: Date;
