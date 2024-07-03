@@ -1,5 +1,4 @@
-export class LoginUsuarioDto {
-    readonly correo: string;
-    readonly contrasena: string;
-  }
-  
+export interface LoginUsuarioDto {
+  correo: string;
+  contrasena: string;
+}
