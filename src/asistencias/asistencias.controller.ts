@@ -4,7 +4,9 @@ import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { AsistenciasService } from './asistencias.service';
 import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
 import { ValidacionUsuarioGuard } from '../utils/validacion-usuario.guard.ts'; // Asegúrate de importar el guardia correcto
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Asistencias')
 @Controller('asistencias')
 export class AsistenciasController {
   constructor(private readonly asistenciasService: AsistenciasService) {}

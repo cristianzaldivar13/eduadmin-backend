@@ -6,7 +6,7 @@ import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { ReportesModule } from './reportes/reportes.module';
 import { FinanzasModule } from './finanzas/finanzas.module';
 import { VisitantesModule } from './visitantes/visitantes.module';
-import { FamiliaresModule } from './familiares/familiares.module';
+import { FamiliaresModule } from './tutores/tutores.module';
 import { ProfesoresModule } from './profesores/profesores.module';
 import { AdministracionesModule } from './administraciones/administraciones.module';
 import { ComunicacionesModule } from './comunicaciones/comunicaciones.module';
@@ -19,6 +19,7 @@ import { RolesModule } from './roles/roles.module';
 import { AsignaturasModule } from './asignaturas/asignaturas.module';
 import { CursosModule } from './cursos/cursos.module';
 import { CalendarioEscolarModule } from './calendario-escolar/calendario-escolar.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { CalendarioEscolarModule } from './calendario-escolar/calendario-escolar
     AsignaturasModule,
     CursosModule,
     CalendarioEscolarModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

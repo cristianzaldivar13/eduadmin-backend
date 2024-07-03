@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCalendarioEscolarDto } from './create-calendario-escolar.dto';
+import { CrearCalendarioEscolarDto } from './create-calendario-escolar.dto';
 
-export class UpdateCalendarioEscolarDto extends PartialType(CreateCalendarioEscolarDto) {
+export class UpdateCalendarioEscolarDto extends PartialType(CrearCalendarioEscolarDto) {
   id: number;
 }

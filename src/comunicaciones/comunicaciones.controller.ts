@@ -1,8 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ComunicacionesService } from './comunicaciones.service';
 import { CreateComunicacioneDto } from './dto/create-comunicacione.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller()
+@ApiTags('Comunicaciones')
+@Controller('comunicaciones')
 export class ComunicacionesController {
   constructor(private readonly comunicacionesService: ComunicacionesService) {}
 

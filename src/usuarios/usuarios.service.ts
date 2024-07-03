@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import mongoose, { Model } from 'mongoose';
 import { CrearUsuarioDto } from './dto/create-usuario.dto';
-import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
 import * as QRCode from 'qrcode';
@@ -22,17 +21,9 @@ export class UsuariosService {
       throw new BadRequestException('El correo ya está registrado.');
     }
 
-    // Encriptar contraseña
-    // const hashedPassword = await bcrypt.hash(crearUsuarioDto.contrasena, 10);
-
-    // Generar ID numérico
-    const ultimoUsuario = await this.usuarioModel.findOne().sort({ _id: -1 });
-    const nuevoIdNumerico = ultimoUsuario ? ultimoUsuario.idNumerico + 1 : 1;
-
     // Crear nuevo usuario
     const nuevoUsuario = new this.usuarioModel({
       ...crearUsuarioDto,
-      idNumerico: nuevoIdNumerico,
     });
 
     // Generar QR

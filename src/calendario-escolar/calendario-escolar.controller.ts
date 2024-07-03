@@ -1,7 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CalendarioEscolarService } from './calendario-escolar.service';
 import { CrearCalendarioEscolarDto } from './dto/create-calendario-escolar.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Calendario Escolar')
 @Controller('calendario-escolar')
 export class CalendarioEscolarController {
   constructor(private readonly calendarioEscolarService: CalendarioEscolarService) {}

@@ -19,10 +19,7 @@ export class Usuario {
   @Prop()
   qrCode: string;
 
-  @Prop({ unique: true })
-  idNumerico: number;
-
-  @Prop({ type: String, enum: EnumEstatus })
+  @Prop({ type: String, enum: EnumEstatus, default: EnumEstatus.ACTIVO })
   estatus: EnumEstatus;
 }
 

@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AsignaturasService } from './asignaturas.service';
 import { CrearAsignaturaDto } from './dto/create-asignatura.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Asignaturas')
 @Controller('asignaturas')
 export class AsignaturasController {
   constructor(private readonly asignaturasService: AsignaturasService) {}
