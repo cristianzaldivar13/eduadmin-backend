@@ -1,17 +1,19 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { EnumEstatus } from "../../utils/enums/estatus.enum";
-import mongoose, { Document } from 'mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+import { EnumEstatus } from '../../utils/enums/estatus.enum';
+
+export type CalendarioEscolarDocument = CalendarioEscolar & Document;
 
 @Schema()
-export class CalendarioEscolar extends Document {
+export class CalendarioEscolar {
   @Prop({ required: true })
   nombre: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  materiaId: mongoose.Types.ObjectId;
+  @Prop({ type: Types.ObjectId, required: true })
+  materiaId: Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  profesorId: mongoose.Types.ObjectId;
+  @Prop({ type: Types.ObjectId, required: true })
+  profesorId: Types.ObjectId;
 
   @Prop({ default: false })
   esSuplente: boolean;
@@ -25,5 +27,3 @@ export class CalendarioEscolar extends Document {
   @Prop({ required: true })
   fechaFin: Date;
 }
-
-export const CalendarioEscolarSchema = SchemaFactory.createForClass(CalendarioEscolar);

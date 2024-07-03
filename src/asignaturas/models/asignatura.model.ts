@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsEnum } from 'class-validator';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
-import { EnumNivel } from "../../utils/enums/niveles.enum";
+import { EnumNivel } from '../../utils/enums/niveles.enum';
 
 export type AsignaturaDocument = Asignatura & Document;
 
@@ -20,5 +19,3 @@ export class Asignatura {
   @Prop({ type: String, enum: EnumNivel, required: true })
   nivel: EnumNivel;
 }
-
-export const AsignaturaSchema = SchemaFactory.createForClass(Asignatura);

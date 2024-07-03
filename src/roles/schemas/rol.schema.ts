@@ -1,9 +1,4 @@
-import { Schema } from 'mongoose';
-import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { SchemaFactory } from '@nestjs/mongoose';
+import { Roles } from '../models/roles.model';
 
-export const RolesSchema = new Schema({
-  nombre: String,
-  descripcion: String,
-  contrasena: String,
-  estatus: { type: String, enum: EnumEstatus },
-});
+export const RolesSchema = SchemaFactory.createForClass(Roles);

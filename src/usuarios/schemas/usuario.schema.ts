@@ -1,28 +1,23 @@
-import { Schema } from 'mongoose';
-import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
-import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { SchemaFactory } from '@nestjs/mongoose';
+import { Usuario } from '../models/usuario.model';
 import * as bcrypt from 'bcrypt';
 
-export const UsuarioSchema = new Schema({
-  nombre: String,
-  correo: {
-    type: String,
-    required: true,
-    unique: true,
-    match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  },
-  contrasena: String,
-  rol: { type: String, enum: EnumRolesUsuario },
-  qrCode: String,
-  estatus: { type: String, enum: EnumEstatus },
-});
+export const UsuarioSchema = SchemaFactory.createForClass(Usuario);
 
 // Middleware para cifrar la contraseña antes de guardarla
-UsuarioSchema.pre('save', async function (next) {
-  const user = this;
-  if (!user.isModified('contrasena')) return next();
+UsuarioSchema.pre<Usuario>('save', async function (next) {
+  const user: any = this;
 
-  const salt = await bcrypt.genSalt(10);
-  user.contrasena = await bcrypt.hash(user.contrasena, salt);
-  next();
+  if (!user.isModified('contrasena')) {
+    return next();
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(user.contrasena, salt);
+    user.contrasena = hashedPassword;
+    next();
+  } catch (error) {
+    return next(error);
+  }
 });

@@ -1,4 +1,5 @@
 // src/roles/roles.model.ts
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
@@ -17,4 +18,4 @@ export class Roles {
   estatus: EnumEstatus;
 }
 
-export const RolSchema = SchemaFactory.createForClass(Roles);
+export const RolesSchema = SchemaFactory.createForClass(Roles);
