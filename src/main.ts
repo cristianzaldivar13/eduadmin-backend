@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as fs from 'fs';
+import * as https from 'https';
+import * as path from 'path'; // Añadir esta línea si no está importada
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -41,5 +44,22 @@ async function bootstrap() {
   SwaggerModule.setup('documentation', app, document);
 
   await app.listen(3001);
+
+  // Obtener la ruta completa a los certificados
+  const certPath = path.resolve(__dirname, './certificados');
+  const privateKeyPath = path.join(certPath, 'private-key.pem');
+  const certificatePath = path.join(certPath, 'certificate.pem');
+
+  // Configurar servidor HTTPS
+  const httpsOptions = {
+    key: fs.readFileSync(privateKeyPath),
+    cert: fs.readFileSync(certificatePath),
+  };
+
+  const httpsServer = await NestFactory.create(AppModule, {
+    httpsOptions,
+  });
+  await httpsServer.listen(3002);
 }
+
 bootstrap();
