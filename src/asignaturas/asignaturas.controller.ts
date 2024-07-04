@@ -2,9 +2,10 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AsignaturasService } from './asignaturas.service';
 import { CrearAsignaturaDto } from './dto/create-asignatura.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Asignaturas')
-@Controller('asignaturas')
+@ApiTags(EnumSecciones.ASIGNATURAS)
+@Controller(EnumSecciones.ASIGNATURAS)
 export class AsignaturasController {
   constructor(private readonly asignaturasService: AsignaturasService) {}
 

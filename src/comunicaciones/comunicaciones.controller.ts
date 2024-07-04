@@ -2,9 +2,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ComunicacionesService } from './comunicaciones.service';
 import { CreateComunicacioneDto } from './dto/create-comunicacione.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Comunicaciones')
-@Controller('comunicaciones')
+@ApiTags(EnumSecciones.COMUNICACIONES)
+@Controller(EnumSecciones.COMUNICACIONES)
 export class ComunicacionesController {
   constructor(private readonly comunicacionesService: ComunicacionesService) {}
 

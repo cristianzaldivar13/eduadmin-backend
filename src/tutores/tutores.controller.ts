@@ -2,9 +2,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { TutoresService } from './tutores.service';
 import { CrearTutoresDto } from './dto/create-tutores.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Tutores')
-@Controller('tutores')
+@ApiTags(EnumSecciones.TUTORES)
+@Controller(EnumSecciones.TUTORES)
 export class TutoresController {
   constructor(private readonly tutoresService: TutoresService) {}
 

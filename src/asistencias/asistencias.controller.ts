@@ -3,11 +3,12 @@
 import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { AsistenciasService } from './asistencias.service';
 import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
-import { ValidacionUsuarioGuard } from '../utils/validacion-usuario.guard.ts'; // Asegúrate de importar el guardia correcto
+import { ValidacionUsuarioGuard } from '../utils/validacion-usuario.guard.ts';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Asistencias')
-@Controller('asistencias')
+@ApiTags(EnumSecciones.ASISTENCIAS)
+@Controller(EnumSecciones.ASISTENCIAS)
 export class AsistenciasController {
   constructor(private readonly asistenciasService: AsistenciasService) {}
 

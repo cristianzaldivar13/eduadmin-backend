@@ -2,9 +2,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { CalendarioEscolarService } from './calendario-escolar.service';
 import { CrearCalendarioEscolarDto } from './dto/create-calendario-escolar.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Calendario Escolar')
-@Controller('calendario-escolar')
+@ApiTags(EnumSecciones.CALENDARIO)
+@Controller(EnumSecciones.CALENDARIO)
 export class CalendarioEscolarController {
   constructor(private readonly calendarioEscolarService: CalendarioEscolarService) {}
 

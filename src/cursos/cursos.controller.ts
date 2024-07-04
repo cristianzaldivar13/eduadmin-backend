@@ -3,9 +3,10 @@ import { CursosService } from './cursos.service';
 import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Cursos')
-@Controller('cursos')
+@ApiTags(EnumSecciones.CURSOS)
+@Controller(EnumSecciones.CURSOS)
 export class CursosController {
   constructor(private readonly cursosService: CursosService) {}
 

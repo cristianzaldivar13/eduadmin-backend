@@ -6,14 +6,16 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Role } from '../auth/decorators/Role.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/jwt.guard';
+import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Usuarios')
-@Controller('usuarios')
+@ApiTags(EnumSecciones.USUARIOS)
+@Controller(EnumSecciones.USUARIOS)
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   @Post('CrearUsuario')
-  @Role('Root')
+  @Role(EnumRolesUsuario.ROOT)
   @UseGuards(ValidateRolesGuard, JwtAuthGuard, JwtGuard)
   async create(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crearUsuario(crearUsuarioDto);

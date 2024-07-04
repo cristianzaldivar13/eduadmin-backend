@@ -2,9 +2,10 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { BibliotecasService } from './bibliotecas.service';
 import { CreateBibliotecaDto } from './dto/create-biblioteca.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Bibliotecas')
-@Controller('bibliotecas')
+@ApiTags(EnumSecciones.BIBLIOTECAS)
+@Controller(EnumSecciones.BIBLIOTECAS)
 export class BibliotecasController {
   constructor(private readonly bibliotecasService: BibliotecasService) {}
 

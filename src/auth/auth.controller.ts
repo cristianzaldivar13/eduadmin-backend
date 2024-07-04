@@ -3,9 +3,10 @@ import { Controller, Post, Body, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUsuarioDto } from './dto/login-usuario.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Auth')
-@Controller('auth')
+@ApiTags(EnumSecciones.AUTH)
+@Controller(EnumSecciones.AUTH)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

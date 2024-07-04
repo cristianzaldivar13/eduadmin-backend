@@ -3,9 +3,10 @@ import { FinanzasService } from './finanzas.service';
 import { CreateFinanzaDto } from './dto/create-finanza.dto';
 import { UpdateFinanzaDto } from './dto/update-finanza.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
-@ApiTags('Finanzas')
-@Controller('finanzas')
+@ApiTags(EnumSecciones.FINANZAS)
+@Controller(EnumSecciones.FINANZAS)
 export class FinanzasController {
   constructor(private readonly finanzasService: FinanzasService) {}
 
