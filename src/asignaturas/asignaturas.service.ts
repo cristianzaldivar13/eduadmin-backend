@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import mongoose, { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CrearAsignaturaDto } from './dto/create-Asignatura.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Asignatura } from './models/asignatura.model';
@@ -25,7 +25,7 @@ export class AsignaturasService {
   async obtenerAsignaturaPorId(id: string) {
     try {
       return await this.asignaturaModel
-        .findOne({ _id: new mongoose.Types.ObjectId(id) })
+        .findOne({ _id: new Types.ObjectId(id) })
         .exec();
     } catch (error) {
       throw new BadRequestException(error.message);

@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Asistencia } from './models/asistencia.model';
 import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
 import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
@@ -43,7 +43,7 @@ export class AsistenciasService {
           $gte: startOfDay,
           $lte: endOfDay,
         },
-        usuarioId: new mongoose.Types.ObjectId(usuarioId),
+        usuarioId: new Types.ObjectId(usuarioId),
         tipo: tipo,
       }).exec();
     } catch (error) {

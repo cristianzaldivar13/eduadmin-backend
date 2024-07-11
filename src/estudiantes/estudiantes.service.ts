@@ -1,26 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEstudianteDto } from './dto/create-estudiante.dto';
-import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
+import { CrearEstudianteDto } from './dto/create-estudiante.dto';
+import { Estudiante } from './models/estudiante.model';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class EstudiantesService {
-  create(createEstudianteDto: CreateEstudianteDto) {
-    return 'This action adds a new estudiante';
-  }
+  constructor(
+    @InjectModel(Estudiante.name)
+    private readonly estudianteModel: Model<Estudiante>,
+  ) {}
 
-  findAll() {
-    return `This action returns all estudiantes`;
-  }
+  async crearEstudiante(crearEstudianteDto: CrearEstudianteDto) {
+   // Convierte usuarioId a ObjectId
+   const usuarioId = new Types.ObjectId(crearEstudianteDto.usuarioId);
 
-  findOne(id: number) {
-    return `This action returns a #${id} estudiante`;
-  }
+   const nuevoEstudiante = new this.estudianteModel({
+     ...crearEstudianteDto,
+     usuarioId, // Asigna el ObjectId convertido
+   });
 
-  update(id: number, updateEstudianteDto: UpdateEstudianteDto) {
-    return `This action updates a #${id} estudiante`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} estudiante`;
+   return await nuevoEstudiante.save();
   }
 }

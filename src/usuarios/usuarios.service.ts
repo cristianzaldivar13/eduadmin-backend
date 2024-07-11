@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import mongoose, { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CrearUsuarioDto } from './dto/create-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
@@ -27,7 +27,7 @@ export class UsuariosService {
     });
 
     // Generar QR
-    if (crearUsuarioDto.rol.includes(EnumRolesUsuario.ALUMNO)) {
+    if (crearUsuarioDto.rol.includes(EnumRolesUsuario.ESTUDIANTE)) {
       const qrCode = await QRCode.toDataURL(`${nuevoUsuario._id}`);
       nuevoUsuario.qrCode = qrCode;
     }
@@ -46,7 +46,7 @@ export class UsuariosService {
   async buscarPorId(id: string): Promise<Usuario | null> {
     try {
       return await this.usuarioModel
-        .findOne({ _id: new mongoose.Types.ObjectId(id) })
+        .findOne({ _id: new Types.ObjectId(id) })
         .exec();
     } catch (error) {
       throw new BadRequestException(error.message);

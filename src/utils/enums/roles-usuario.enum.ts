@@ -1,7 +1,7 @@
 export enum EnumRolesUsuario {
     ROOT = 'Root',
     ADMIN = 'Admin',
-    ALUMNO = 'Alumno',
+    ESTUDIANTE = 'Estudiante',
     PROFESOR = 'Profesor',
     PADRE_FAMILIA = 'PadreFamilia',
 }

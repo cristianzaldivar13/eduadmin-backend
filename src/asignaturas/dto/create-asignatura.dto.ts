@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsString } from "class-validator";
 import { EnumEstatus } from "../../utils/enums/estatus.enum";
 import { EnumNivel } from "../../utils/enums/niveles.enum";
 
@@ -14,6 +14,7 @@ export class CrearAsignaturaDto {
   readonly estatus: EnumEstatus;
 
   @IsNotEmpty()
-  @IsEnum(EnumNivel)
-  readonly nivel: EnumNivel;
+  @IsEnum(EnumNivel, { each: true })
+  @IsArray()
+  readonly niveles: EnumNivel[];
 }

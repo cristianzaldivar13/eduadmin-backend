@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
-import * as https from 'https';
 import * as path from 'path'; // Añadir esta línea si no está importada
 
 async function bootstrap() {

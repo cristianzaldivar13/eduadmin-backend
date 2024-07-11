@@ -17,5 +17,5 @@ export class Asignatura {
   estatus: EnumEstatus;
 
   @Prop({ type: String, enum: EnumNivel, required: true })
-  nivel: EnumNivel;
+  niveles: EnumNivel[];
 }

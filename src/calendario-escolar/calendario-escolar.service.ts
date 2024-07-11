@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CrearCalendarioEscolarDto } from './dto/create-calendario-escolar.dto';
 import { CalendarioEscolar } from './models/calendario-escolar.model';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class CalendarioEscolarService {
@@ -22,7 +22,7 @@ export class CalendarioEscolarService {
   ): Promise<CalendarioEscolar | null> {
     try {
       return await this.calendarioEscolarModel
-        .findOne({ _id: new mongoose.Types.ObjectId(id) })
+        .findOne({ _id: new Types.ObjectId(id) })
         .exec();
     } catch (error) {}
   }
