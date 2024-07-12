@@ -3,8 +3,8 @@ import { RolesService } from './roles.service';
 import { CrearRolDto } from './dto/create-role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Role } from '../auth/decorators/Role.decorator';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'
-import { JwtGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard'
+import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 

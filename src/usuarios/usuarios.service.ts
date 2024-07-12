@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
 import * as QRCode from 'qrcode';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
+import { ActualizarUsuarioDto } from './dto/update-usuario.dto';
 
 @Injectable()
 export class UsuariosService {
@@ -13,7 +14,7 @@ export class UsuariosService {
   ) {}
 
   async crearUsuario(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
-    // Verificar si el correo ya existe
+    // Verifica si el correo ya existe
     const existeUsuario = await this.usuarioModel.findOne({
       correo: crearUsuarioDto.correo,
     });
@@ -35,12 +36,16 @@ export class UsuariosService {
     return await nuevoUsuario.save();
   }
 
+  async actualizarUsuario(id: string, actualizarUsuarioDto: ActualizarUsuarioDto){
+    return await this.usuarioModel.findOneAndUpdate(new Types.ObjectId(id), actualizarUsuarioDto);
+  }
+
   async buscarPorCorreo(correo: string): Promise<Usuario | null> {
     return await this.usuarioModel.findOne({ correo }).exec();
   }
 
-  async buscarTodo(): Promise<Usuario | null> {
-    return await this.usuarioModel.findOne().exec();
+  async buscarTodo(): Promise<Usuario[] | null> {
+    return await this.usuarioModel.find().exec();
   }
 
   async buscarPorId(id: string): Promise<Usuario | null> {

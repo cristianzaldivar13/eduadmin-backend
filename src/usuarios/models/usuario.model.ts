@@ -21,6 +21,12 @@ export class Usuario {
 
   @Prop({ type: String, enum: EnumEstatus, default: EnumEstatus.ACTIVO })
   estatus: EnumEstatus;
+
+  @Prop({ type: Date, default: Date.now })
+  fechaCreacion: Date;
+
+  @Prop({ type: Date })
+  fechaEdicion: Date;
 }
 
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

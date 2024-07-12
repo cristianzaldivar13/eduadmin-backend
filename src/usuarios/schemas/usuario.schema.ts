@@ -21,3 +21,15 @@ UsuarioSchema.pre<Usuario>('save', async function (next) {
     return next(error);
   }
 });
+
+// Middleware para actualizar fechaEdicion al actualizar el documento
+UsuarioSchema.pre<Usuario>('findOneAndUpdate', function (next) {
+  const user: any = this;
+  user.set({ fechaEdicion: new Date() });
+  next();
+});
+
+// Middleware para incrementar el campo __v al actualizar el documento
+UsuarioSchema.pre(['updateOne', 'updateMany', 'findOneAndUpdate'], function() {
+  this.findOneAndUpdate({}, { $inc: { __v: 1 } }, { new: true });
+});

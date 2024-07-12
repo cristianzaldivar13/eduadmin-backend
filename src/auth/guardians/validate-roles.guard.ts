@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, BadRequestException } from '@nestjs/common';
-import { RolesService } from '../roles/roles.service';
+import { RolesService } from '../../roles/roles.service';
 
 @Injectable()
 export class ValidateRolesGuard implements CanActivate {
