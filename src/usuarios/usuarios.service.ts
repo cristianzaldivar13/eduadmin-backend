@@ -22,9 +22,13 @@ export class UsuariosService {
       throw new BadRequestException('El correo ya está registrado.');
     }
 
+    // Convierte escuelaId a ObjectId
+    const escuelaId = new Types.ObjectId(crearUsuarioDto.escuelaId);
+
     // Crear nuevo usuario
     const nuevoUsuario = new this.usuarioModel({
       ...crearUsuarioDto,
+      escuelaId,
     });
 
     // Generar QR
@@ -36,8 +40,14 @@ export class UsuariosService {
     return await nuevoUsuario.save();
   }
 
-  async actualizarUsuario(id: string, actualizarUsuarioDto: ActualizarUsuarioDto){
-    return await this.usuarioModel.findOneAndUpdate(new Types.ObjectId(id), actualizarUsuarioDto);
+  async actualizarUsuario(
+    id: string,
+    actualizarUsuarioDto: ActualizarUsuarioDto,
+  ) {
+    return await this.usuarioModel.findOneAndUpdate(
+      new Types.ObjectId(id),
+      actualizarUsuarioDto,
+    );
   }
 
   async buscarPorCorreo(correo: string): Promise<Usuario | null> {

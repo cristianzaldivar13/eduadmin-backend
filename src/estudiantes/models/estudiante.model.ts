@@ -11,6 +11,9 @@ export class Estudiante {
   @Prop({ type: Types.ObjectId, required: true })
   usuarioId: Types.ObjectId;
 
+  @Prop({ type: Types.ObjectId, required: true })
+  escuelaId: Types.ObjectId;
+
   @Prop({ type: String, required: true })
   nombre: string;
 
@@ -28,9 +31,6 @@ export class Estudiante {
 
   @Prop({ type: String, required: true })
   telefono: string;
-
-  @Prop({ type: Number, required: true })
-  edad: number;
 
   @Prop({ required: true, type: [String], enum: EnumNivel })
   niveles: EnumNivel[];

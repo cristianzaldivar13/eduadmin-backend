@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, BadRequestException } from '
 import { RolesService } from '../../roles/roles.service';
 
 @Injectable()
-export class ValidateRolesGuard implements CanActivate {
+export class ValidaRolGuard implements CanActivate {
   constructor(
     private readonly rolesService: RolesService,
   ) {}

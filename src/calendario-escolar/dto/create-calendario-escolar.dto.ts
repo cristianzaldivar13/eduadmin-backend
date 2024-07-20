@@ -1,7 +1,12 @@
 import { IsBoolean, IsDate, IsEnum, IsMongoId, IsNotEmpty, IsString, isEnum } from "class-validator";
 import { EnumEstatus } from "../../utils/enums/estatus.enum";
+import { Types } from "mongoose";
 
 export class CrearCalendarioEscolarDto {
+    @IsNotEmpty()
+    @IsMongoId()
+    escuelaId: Types.ObjectId;
+    
     @IsString()
     @IsNotEmpty()
     readonly nombre: string;

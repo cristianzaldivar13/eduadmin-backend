@@ -7,6 +7,10 @@ export class CrearAsistenciaDto {
   @IsMongoId()
   usuarioId: Types.ObjectId;
 
+  @IsNotEmpty()
+  @IsMongoId()
+  escuelaId: Types.ObjectId;
+
   @IsDate()
   fecha: Date = new Date();
 

@@ -10,6 +10,10 @@ export class CrearEstudianteDto {
     usuarioId: Types.ObjectId;
 
     @IsNotEmpty()
+    @IsMongoId()
+    escuelaId: Types.ObjectId;
+
+    @IsNotEmpty()
     nombre: string;
 
     @IsNotEmpty()
@@ -26,9 +30,6 @@ export class CrearEstudianteDto {
 
     @IsNotEmpty()
     telefono: string;
-
-    @IsNotEmpty()
-    edad: number = 0;
 
     @IsNotEmpty()
     @IsEnum(EnumNivel, { each: true })

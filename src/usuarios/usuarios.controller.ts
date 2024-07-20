@@ -8,12 +8,12 @@ import {
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CrearUsuarioDto } from './dto/create-usuario.dto';
-import { ValidateRolesGuard } from '../auth/guardians/validate-roles.guard';
+import { ValidaRolGuard } from '../auth/guardians/valida-rol.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { Role } from '../auth/decorators/Role.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
-import { ValidateUsersGuard } from '../auth/guardians/validate-users.guard';
+import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ActualizarUsuarioDto } from './dto/update-usuario.dto';
@@ -25,14 +25,14 @@ export class UsuariosController {
 
   @Post('CrearUsuario')
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidateRolesGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(ValidaRolGuard, JwtAuthGuard, JwtGuard)
   async crearUsuario(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crearUsuario(crearUsuarioDto);
   }
 
   @Patch('ActualizarUsuario/:id')
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidateUsersGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(ValidaIdDocumentoGuard, JwtAuthGuard, JwtGuard)
   async ActualizarUsuario(
     @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
     @Param('id') id: string,

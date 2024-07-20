@@ -9,8 +9,9 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { RolesModule } from '../roles/roles.module';
 import { JwtAuthGuard } from './guardians/jwt-auth.guard';
-import { ValidateRolesGuard } from './guardians/validate-roles.guard';
-import { ValidateUsersGuard } from './guardians/validate-users.guard';
+import { ValidaRolGuard } from './guardians/valida-rol.guard';
+import { ValidaIdDocumentoGuard } from './guardians/valida-Id-documento.guard';
+import { ValidarIdsDocumentosGuard } from './guardians/validar-ids-documentos-guard';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { ValidateUsersGuard } from './guardians/validate-users.guard';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [AuthService, JwtStrategy, ValidateRolesGuard, ValidateUsersGuard, JwtAuthGuard],
+  providers: [AuthService, JwtStrategy, ValidaRolGuard, ValidaIdDocumentoGuard, ValidarIdsDocumentosGuard, JwtAuthGuard],
   controllers: [AuthController],
 })
 export class AuthModule {}

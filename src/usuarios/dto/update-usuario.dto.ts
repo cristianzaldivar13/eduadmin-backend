@@ -1,10 +1,15 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CrearUsuarioDto } from './create-usuario.dto';
-import { IsOptional, IsDate } from 'class-validator';
+import { IsOptional, IsDate, IsMongoId } from 'class-validator';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { Types } from 'mongoose';
 
 export class ActualizarUsuarioDto extends PartialType(CrearUsuarioDto) {
+  @IsOptional()
+  @IsMongoId()
+  escuelaId: Types.ObjectId;
+
   @IsOptional()
   @IsDate()
   readonly fechaEdicion?: Date;

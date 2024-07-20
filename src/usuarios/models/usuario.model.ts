@@ -1,9 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { Types } from 'mongoose';
 
 @Schema()
 export class Usuario {
+  @Prop({ type: Types.ObjectId, required: true })
+  escuelaId: Types.ObjectId;
+
   @Prop({ required: true })
   nombre: string;
 

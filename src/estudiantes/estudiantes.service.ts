@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CrearEstudianteDto } from './dto/create-estudiante.dto';
+import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './models/estudiante.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -12,14 +13,22 @@ export class EstudiantesService {
   ) {}
 
   async crearEstudiante(crearEstudianteDto: CrearEstudianteDto) {
-   // Convierte usuarioId a ObjectId
-   const usuarioId = new Types.ObjectId(crearEstudianteDto.usuarioId);
+    // Convierte usuarioId a ObjectId
+    const usuarioId = new Types.ObjectId(crearEstudianteDto.usuarioId);
 
-   const nuevoEstudiante = new this.estudianteModel({
-     ...crearEstudianteDto,
-     usuarioId, // Asigna el ObjectId convertido
-   });
+    // Convierte escuelaId a ObjectId
+    const escuelaId = new Types.ObjectId(crearEstudianteDto.escuelaId);
 
-   return await nuevoEstudiante.save();
+    const nuevoEstudiante = new this.estudianteModel({
+      ...crearEstudianteDto,
+      usuarioId,
+      escuelaId,
+    });
+
+    return await nuevoEstudiante.save();
+  }
+
+  async actualizarEstudiante(actualizarEstudianteDto: ActualizarEstudianteDto) {
+    
   }
 }

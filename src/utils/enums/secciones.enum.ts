@@ -7,6 +7,7 @@ export enum EnumSecciones {
   COMUNICACIONES = 'Comunicaciones',
   CURSOS = 'Cursos',
   ESTUDIANTES = 'Estudiantes',
+  ESCUELAS = 'Escuelas',
   EVENTOS = 'Eventos',
   FINANZAS = 'Finanzas',
   NOTIFICACIONES = 'Notificaciones',

@@ -6,16 +6,16 @@ export const UsuarioSchema = SchemaFactory.createForClass(Usuario);
 
 // Middleware para cifrar la contraseña antes de guardarla
 UsuarioSchema.pre<Usuario>('save', async function (next) {
-  const user: any = this;
+  const schemaData: any = this;
 
-  if (!user.isModified('contrasena')) {
+  if (!schemaData.isModified('contrasena')) {
     return next();
   }
 
   try {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(user.contrasena, salt);
-    user.contrasena = hashedPassword;
+    const hashedPassword = await bcrypt.hash(schemaData.contrasena, salt);
+    schemaData.contrasena = hashedPassword;
     next();
   } catch (error) {
     return next(error);
@@ -24,8 +24,8 @@ UsuarioSchema.pre<Usuario>('save', async function (next) {
 
 // Middleware para actualizar fechaEdicion al actualizar el documento
 UsuarioSchema.pre<Usuario>('findOneAndUpdate', function (next) {
-  const user: any = this;
-  user.set({ fechaEdicion: new Date() });
+  const schemaData: any = this;
+  schemaData.set({ fechaEdicion: new Date() });
   next();
 });
 

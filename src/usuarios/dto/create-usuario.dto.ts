@@ -1,8 +1,13 @@
-import { IsEmail, IsNotEmpty, IsString, IsEnum } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsEnum, IsMongoId } from 'class-validator';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { Types } from 'mongoose';
 
 export class CrearUsuarioDto {
+  @IsNotEmpty()
+  @IsMongoId()
+  escuelaId: Types.ObjectId;
+  
   @IsNotEmpty()
   @IsString()
   readonly nombre: string;
