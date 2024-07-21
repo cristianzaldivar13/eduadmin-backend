@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as path from 'path'; // Añadir esta línea si no está importada
-import { ConvierteIdEnObjectIdGuard } from './auth/guardians/convierte-id-en-objectid.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,9 +13,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-
-    // Aplicar el guard globalmente
-    app.useGlobalGuards(new ConvierteIdEnObjectIdGuard());
 
   const config = new DocumentBuilder()
     .addBearerAuth()

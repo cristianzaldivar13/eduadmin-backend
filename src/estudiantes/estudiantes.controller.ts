@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { EstudiantesService } from './estudiantes.service';
 import { CrearEstudianteDto } from './dto/create-estudiante.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -15,10 +15,20 @@ import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 export class EstudiantesController {
   constructor(private readonly estudiantesService: EstudiantesService) {}
 
-  @Post('crearEstudiante')
+  @Post('CrearEstudiante')
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(ValidaRegistroGuard, ValidarIdsDocumentosGuard, JwtAuthGuard, JwtGuard)
-  crearEstudiante(@Body() crearEstudianteDto: CrearEstudianteDto) {
-    return this.estudiantesService.crearEstudiante(crearEstudianteDto);
+  async crearEstudiante(@Body() crearEstudianteDto: CrearEstudianteDto) {
+    return await this.estudiantesService.crearEstudiante(crearEstudianteDto);
+  }
+
+  @Patch('ActualizarEstudiante/:id') //TODO: agregar Middleware que reciba el id del PATCH y lo pase a objectId
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(ValidaRegistroGuard, ValidarIdsDocumentosGuard, JwtAuthGuard, JwtGuard)
+  async actualizarEstudiante(
+    @Body() crearEstudianteDto: CrearEstudianteDto,
+    @Param('id') id: string,
+  ) {
+    return await this.estudiantesService.actualizarEstudiante(id, crearEstudianteDto);
   }
 }

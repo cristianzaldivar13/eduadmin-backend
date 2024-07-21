@@ -13,22 +13,30 @@ export class EstudiantesService {
   ) {}
 
   async crearEstudiante(crearEstudianteDto: CrearEstudianteDto) {
-    // Convierte usuarioId a ObjectId
-    const usuarioId = new Types.ObjectId(crearEstudianteDto.usuarioId);
-
-    // Convierte escuelaId a ObjectId
-    const escuelaId = new Types.ObjectId(crearEstudianteDto.escuelaId);
-
     const nuevoEstudiante = new this.estudianteModel({
       ...crearEstudianteDto,
-      usuarioId,
-      escuelaId,
     });
 
     return await nuevoEstudiante.save();
   }
 
-  async actualizarEstudiante(actualizarEstudianteDto: ActualizarEstudianteDto) {
-    
+  async actualizarEstudiante(
+    id: string,
+    dto: ActualizarEstudianteDto,
+  ): Promise<Estudiante> {
+    // Obtiene el estudiante actual para preservar usuarioId y escuelaId
+    const estudiante = await this.estudianteModel.findById(id).exec();
+    if (!estudiante) {
+      throw new Error('Estudiante no encontrado');
+    }
+
+    // Actualiza solo los campos permitidos
+    const camposActualizables = { ...dto };
+    delete camposActualizables.usuarioId;
+    delete camposActualizables.escuelaId;
+
+    return this.estudianteModel
+      .findByIdAndUpdate(id, camposActualizables, { new: true })
+      .exec();
   }
 }
