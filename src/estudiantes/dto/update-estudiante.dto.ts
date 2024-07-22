@@ -11,4 +11,8 @@ export class ActualizarEstudianteDto extends PartialType(CrearEstudianteDto) {
     @IsOptional()
     @IsMongoId()
     escuelaId: Types.ObjectId;
+
+    @IsOptional()
+    @IsMongoId()
+    grupoId: Types.ObjectId;
 }

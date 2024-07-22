@@ -38,6 +38,26 @@ export class ValidaRegistroGuard implements CanActivate {
           case EnumSecciones.ADMINISTRACIONES:
             break;
 
+          case EnumSecciones.GRUPOS:
+            if (!documento) {
+              throw new BadRequestException(
+                `El id ${id} de escuela asignada no existe.`,
+              );
+            }
+            for (const idAsignatura of documento.asignaturas) {
+              if (!Types.ObjectId.isValid(idAsignatura)) {
+                throw new BadRequestException(`El Id ${id} de la asignatura no es válido`);
+              }
+              const asignatura = await this.connection
+                .collection(EnumSecciones.ASIGNATURAS)
+                .findOne({ _id: new Types.ObjectId(idAsignatura) });
+
+              if(!asignatura) {
+                throw new BadRequestException(`El Id ${id} de la asignatura no existe`);
+              }
+            }
+            break;
+
           case EnumSecciones.ASIGNATURAS:
             break;
 
@@ -104,9 +124,7 @@ export class ValidaRegistroGuard implements CanActivate {
             break;
         }
       } catch (error) {
-        throw new BadRequestException(
-          `${nombreColeccion}: ${error.message}`,
-        );
+        throw new BadRequestException(`${nombreColeccion}: ${error.message}`);
       }
     }
 

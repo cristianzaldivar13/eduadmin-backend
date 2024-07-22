@@ -14,6 +14,10 @@ export class CrearEstudianteDto {
     escuelaId: Types.ObjectId;
 
     @IsNotEmpty()
+    @IsMongoId()
+    grupoId: Types.ObjectId;
+
+    @IsNotEmpty()
     nombre: string;
 
     @IsNotEmpty()

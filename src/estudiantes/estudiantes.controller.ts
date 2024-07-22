@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { EstudiantesService } from './estudiantes.service';
 import { CrearEstudianteDto } from './dto/create-estudiante.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -10,6 +20,7 @@ import { Role } from '../auth/decorators/Role.decorator';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { Estudiante } from './models/estudiante.model';
+import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
 
 @ApiTags(EnumSecciones.ESTUDIANTES)
 @Controller(EnumSecciones.ESTUDIANTES)
@@ -18,19 +29,32 @@ export class EstudiantesController {
 
   @Post('Crear')
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidaRegistroGuard, ValidarIdsDocumentosGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(
+    ValidaRegistroGuard,
+    ValidarIdsDocumentosGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
   async crearEstudiante(@Body() crearEstudianteDto: CrearEstudianteDto) {
     return await this.estudiantesService.crearEstudiante(crearEstudianteDto);
   }
 
-  @Patch('Actualizar/:id') //TODO: agregar Middleware que reciba el id del PATCH y lo pase a objectId
+  @Patch('Actualizar/:id')
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidaRegistroGuard, ValidarIdsDocumentosGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(
+    ValidaRegistroGuard,
+    ValidarIdsDocumentosGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
   async actualizarEstudiante(
-    @Body() crearEstudianteDto: CrearEstudianteDto,
+    @Body() actualizarEstudianteDto: ActualizarEstudianteDto,
     @Param('id') id: string,
   ) {
-    return await this.estudiantesService.actualizarEstudiante(id, crearEstudianteDto);
+    return await this.estudiantesService.actualizarEstudiante(
+      id,
+      actualizarEstudianteDto,
+    );
   }
 
   @Get('Paginados')
@@ -38,7 +62,11 @@ export class EstudiantesController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,
     @Query('escuelaId') escuelaId?: string,
-  ): Promise<{ data: Estudiante[], total: number }> {
-    return await this.estudiantesService.obtenerEstudiantesPaginados(escuelaId, limit, skip);
+  ): Promise<{ data: Estudiante[]; total: number }> {
+    return await this.estudiantesService.obtenerEstudiantesPaginados(
+      escuelaId,
+      limit,
+      skip,
+    );
   }
 }

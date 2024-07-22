@@ -14,6 +14,9 @@ export class Estudiante {
   @Prop({ type: Types.ObjectId, required: true })
   escuelaId: Types.ObjectId;
 
+  @Prop({ type: Types.ObjectId, required: true })
+  grupoId: Types.ObjectId;
+
   @Prop({ type: String, required: true })
   nombre: string;
 

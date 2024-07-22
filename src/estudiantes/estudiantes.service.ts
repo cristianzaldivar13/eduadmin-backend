@@ -37,6 +37,7 @@ export class EstudiantesService {
     const estudiante = await this.estudianteModel
       .findById(new Types.ObjectId(id))
       .exec();
+
     if (!estudiante) {
       throw new BadRequestException('Estudiante no encontrado');
     }

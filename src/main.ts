@@ -27,6 +27,7 @@ async function bootstrap() {
     .addTag('Comunicaciones')
     .addTag('Cursos')
     .addTag('Estudiantes')
+    .addTag('Grupos')
     .addTag('Eventos')
     .addTag('Finanzas')
     .addTag('Notificaciones')
