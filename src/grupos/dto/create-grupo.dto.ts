@@ -16,4 +16,5 @@ export class CrearGrupoDto {
   @IsNotEmpty()
   @IsEnum(EnumNivel)
   nivel: EnumNivel
+
 }

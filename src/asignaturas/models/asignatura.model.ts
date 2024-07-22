@@ -18,4 +18,10 @@ export class Asignatura {
 
   @Prop({ type: String, enum: EnumNivel, required: true })
   niveles: EnumNivel[];
+
+  @Prop({ type: Date, default: Date.now })
+  fechaCreacion: Date;
+
+  @Prop({ type: Date })
+  fechaEdicion: Date;
 }

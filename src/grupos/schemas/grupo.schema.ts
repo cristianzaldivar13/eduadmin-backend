@@ -53,6 +53,12 @@ GrupoSchema.pre('findOneAndUpdate', function (next) {
       update.escuelaId = new Types.ObjectId(update.escuelaId);
     }
   }
+  update.fechaEdicion = new Date();
 
   next();
+});
+
+// Middleware para incrementar el campo __v al actualizar el documento
+GrupoSchema.pre(['updateOne', 'updateMany', 'findOneAndUpdate'], function () {
+  this.findOneAndUpdate({}, { $inc: { __v: 1 } }, { new: true });
 });

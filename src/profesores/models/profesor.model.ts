@@ -4,10 +4,10 @@ import { EnumNivel } from '../../utils/enums/niveles.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
 import { Types, Document } from 'mongoose';
 
-export type EstudianteDocument = Estudiante & Document;
+export type ProfesorDocument = Profesor & Document;
 
 @Schema()
-export class Estudiante {
+export class Profesor {
   @Prop({ type: Types.ObjectId, required: true })
   usuarioId: Types.ObjectId;
 
@@ -48,4 +48,4 @@ export class Estudiante {
   fechaEdicion: Date;
 }
 
-export const EstudianteSchema = SchemaFactory.createForClass(Estudiante);
+export const EstudianteSchema = SchemaFactory.createForClass(Profesor);

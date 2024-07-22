@@ -17,6 +17,12 @@ export class Grupo {
 
   @Prop({ required: true, type: String, enum: EnumNivel })
   nivel: EnumNivel;
+
+  @Prop({ type: Date, default: Date.now })
+  fechaCreacion: Date;
+
+  @Prop({ type: Date })
+  fechaEdicion: Date;
 }
 
 export const GrupoSchema = SchemaFactory.createForClass(Grupo);

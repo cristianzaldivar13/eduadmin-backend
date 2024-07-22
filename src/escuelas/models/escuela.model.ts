@@ -45,6 +45,12 @@ export class Escuelas {
 
   @Prop({ type: String, enum: EnumEstatus, required: true })
   estatus: EnumEstatus;
+
+  @Prop({ type: Date, default: Date.now })
+  fechaCreacion: Date;
+
+  @Prop({ type: Date })
+  fechaEdicion: Date;
 }
 
 export const EscuelaSchema = SchemaFactory.createForClass(Escuelas);
