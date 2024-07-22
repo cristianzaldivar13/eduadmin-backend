@@ -30,13 +30,48 @@ export class EstudiantesService {
       throw new Error('Estudiante no encontrado');
     }
 
-    // Actualiza solo los campos permitidos
-    const camposActualizables = { ...dto };
-    delete camposActualizables.usuarioId;
-    delete camposActualizables.escuelaId;
-
     return this.estudianteModel
-      .findByIdAndUpdate(id, camposActualizables, { new: true })
+      .findOneAndUpdate({ _id: id }, dto, { new: true })
       .exec();
+  }
+
+  async obtenerEstudiantesPaginados(
+    _escuelaId: string,
+    limit: number,
+    skip: number,
+  ) {
+    const escuelaId = new Types.ObjectId(_escuelaId);
+
+    const resultados = await this.estudianteModel
+      .aggregate([
+        {
+          $match: {
+            escuelaId,
+          },
+        },
+        {
+          $facet: {
+            resultados: [{ $skip: skip }, { $limit: limit }],
+            total: [{ $count: 'total' }],
+          },
+        },
+        {
+          $addFields: {
+            total: { $arrayElemAt: ['$total.total', 0] },
+            pagina: { $literal: Math.floor(skip / limit) + 1 },
+            tamanoPagina: { $size: '$resultados' },
+          },
+        },
+      ])
+      .exec();
+
+    return (
+      resultados[0] || {
+        total: 0,
+        pagina: 1,
+        tamanoPagina: 0,
+        resultados: [],
+      }
+    );
   }
 }

@@ -27,20 +27,21 @@ EstudianteSchema.pre<Estudiante>('save', function (next) {
 
 // Middleware para cambiar los id en ObjectId antes de actualizar con findOneAndUpdate
 EstudianteSchema.pre('findOneAndUpdate', function (next) {
-  const schemaData: any = this;
-
-  if (
-    schemaData.isModified('usuarioId') &&
-    typeof schemaData.usuarioId === 'string'
-  ) {
-    schemaData.usuarioId = new Types.ObjectId(schemaData.usuarioId);
+  const update: any = this.getUpdate();
+  if (update.usuarioId && typeof update.usuarioId === 'string') {
+    update.usuarioId = new Types.ObjectId(update.usuarioId);
+  }
+  if (update.escuelaId && typeof update.escuelaId === 'string') {
+    update.escuelaId = new Types.ObjectId(update.escuelaId);
   }
 
-  if (
-    schemaData.isModified('escuelaId') &&
-    typeof schemaData.escuelaId === 'string'
-  ) {
-    schemaData.escuelaId = new Types.ObjectId(schemaData.escuelaId);
+  if (update.$set) {
+    if (update.$set.usuarioId && typeof update.$set.usuarioId === 'string') {
+      update.$set.usuarioId = new Types.ObjectId(update.$set.usuarioId);
+    }
+    if (update.$set.escuelaId && typeof update.$set.escuelaId === 'string') {
+      update.$set.escuelaId = new Types.ObjectId(update.$set.escuelaId);
+    }
   }
 
   next();
