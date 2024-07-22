@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CrearEstudianteDto } from './dto/create-estudiante.dto';
 import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './models/estudiante.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { string } from '@tensorflow/tfjs-node';
 
 @Injectable()
 export class EstudiantesService {
@@ -13,6 +18,10 @@ export class EstudiantesService {
   ) {}
 
   async crearEstudiante(crearEstudianteDto: CrearEstudianteDto) {
+    if (await this.validaExistencia(crearEstudianteDto)) {
+      throw new ConflictException('El estudiante ya existe');
+    }
+
     const nuevoEstudiante = new this.estudianteModel({
       ...crearEstudianteDto,
     });
@@ -22,16 +31,18 @@ export class EstudiantesService {
 
   async actualizarEstudiante(
     id: string,
-    dto: ActualizarEstudianteDto,
+    actualizarEstudianteDto: ActualizarEstudianteDto,
   ): Promise<Estudiante> {
     // Obtiene el estudiante actual para preservar usuarioId y escuelaId
-    const estudiante = await this.estudianteModel.findById(id).exec();
+    const estudiante = await this.estudianteModel
+      .findById(new Types.ObjectId(id))
+      .exec();
     if (!estudiante) {
-      throw new Error('Estudiante no encontrado');
+      throw new BadRequestException('Estudiante no encontrado');
     }
 
     return this.estudianteModel
-      .findOneAndUpdate({ _id: id }, dto, { new: true })
+      .findOneAndUpdate({ _id: id }, actualizarEstudianteDto, { new: true })
       .exec();
   }
 
@@ -40,6 +51,11 @@ export class EstudiantesService {
     limit: number,
     skip: number,
   ) {
+    // Valida que escuelaId sea un ObjectId válido
+    if (!Types.ObjectId.isValid(_escuelaId)) {
+      throw new BadRequestException('El ID de la escuela no es válido');
+    }
+
     const escuelaId = new Types.ObjectId(_escuelaId);
 
     const resultados = await this.estudianteModel
@@ -73,5 +89,16 @@ export class EstudiantesService {
         resultados: [],
       }
     );
+  }
+
+  private async validaExistencia(crearEstudianteDto: CrearEstudianteDto) {
+    return await this.estudianteModel
+      .findOne({
+        escuelaId: new Types.ObjectId(crearEstudianteDto.escuelaId),
+        nombre: crearEstudianteDto.nombre,
+        apellidoPaterno: crearEstudianteDto.apellidoPaterno,
+        apellidoMaterno: crearEstudianteDto.apellidoMaterno,
+      })
+      .exec();
   }
 }
