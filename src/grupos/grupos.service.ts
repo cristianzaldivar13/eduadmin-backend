@@ -32,13 +32,6 @@ export class GruposService {
     id: string,
     actualizarGrupoDto: ActualizarGrupoDto,
   ): Promise<Grupo> {
-    // Obtiene el grupo actual para preservar usuarioId y escuelaId
-    const grupo = await this.grupoModel.findById(new Types.ObjectId(id)).exec();
-
-    if (!grupo) {
-      throw new BadRequestException('Grupo no encontrado');
-    }
-
     return this.grupoModel
       .findOneAndUpdate({ _id: id }, actualizarGrupoDto, { new: true })
       .exec();

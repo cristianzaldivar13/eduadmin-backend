@@ -20,6 +20,7 @@ export class ValidaRegistroGuard implements CanActivate {
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idCampos = Object.keys(body).filter((key) => key.endsWith('Id'));
 
+    // Validaciones especiales con los Ids
     for (const campo of idCampos) {
       const id = body[campo];
       if (!id) {
@@ -39,23 +40,6 @@ export class ValidaRegistroGuard implements CanActivate {
             break;
 
           case EnumSecciones.GRUPOS:
-            if (!documento) {
-              throw new BadRequestException(
-                `El id ${id} de escuela asignada no existe.`,
-              );
-            }
-            for (const idAsignatura of documento.asignaturas) {
-              if (!Types.ObjectId.isValid(idAsignatura)) {
-                throw new BadRequestException(`El Id ${id} de la asignatura no es válido`);
-              }
-              const asignatura = await this.connection
-                .collection(EnumSecciones.ASIGNATURAS)
-                .findOne({ _id: new Types.ObjectId(idAsignatura) });
-
-              if(!asignatura) {
-                throw new BadRequestException(`El Id ${id} de la asignatura no existe`);
-              }
-            }
             break;
 
           case EnumSecciones.ASIGNATURAS:
@@ -80,11 +64,6 @@ export class ValidaRegistroGuard implements CanActivate {
             break;
 
           case EnumSecciones.ESCUELAS.toLowerCase():
-            if (!documento) {
-              throw new BadRequestException(
-                `El id ${id} de escuela asignada no existe.`,
-              );
-            }
             break;
 
           case EnumSecciones.EVENTOS:
@@ -126,6 +105,35 @@ export class ValidaRegistroGuard implements CanActivate {
       } catch (error) {
         throw new BadRequestException(`${nombreColeccion}: ${error.message}`);
       }
+    }
+
+    // Validaciones especiales con objetos
+    const url = request.url.split('/')[1];
+    switch (url) {
+      case EnumSecciones.GRUPOS:
+        if (body?.asignaturas) {
+          for (const idAsignatura of body.asignaturas) {
+            if (!Types.ObjectId.isValid(idAsignatura)) {
+              throw new BadRequestException(
+                `El Id ${idAsignatura} de la asignatura no es válido`,
+              );
+            }
+            const asignatura = await this.connection
+              .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
+              .findOne({ _id: new Types.ObjectId(idAsignatura) });
+
+            if (!asignatura) {
+              throw new BadRequestException(
+                `El Id ${idAsignatura} de la asignatura no existe`,
+              );
+            }
+          }
+        }
+
+        break;
+
+      default:
+        break;
     }
 
     return true;

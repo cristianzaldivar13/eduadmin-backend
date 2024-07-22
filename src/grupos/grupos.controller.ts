@@ -41,16 +41,16 @@ export class GruposController {
   @Patch('Actualizar/:id')
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
-    ValidaRegistroGuard,
     ValidarIdsDocumentosGuard,
+    ValidaRegistroGuard,
     JwtAuthGuard,
     JwtGuard,
   )
   actualizarGrupo(
-    @Body() ActualizarGrupoDto: ActualizarGrupoDto,
+    @Body() actualizarGrupoDto: ActualizarGrupoDto,
     @Param('id') id: string,
   ) {
-    return this.gruposService.actualizarGrupo(id, ActualizarGrupoDto);
+    return this.gruposService.actualizarGrupo(id, actualizarGrupoDto);
   }
 
   @Get('Paginados')

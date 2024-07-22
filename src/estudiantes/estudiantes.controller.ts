@@ -30,8 +30,8 @@ export class EstudiantesController {
   @Post('Crear')
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
-    ValidaRegistroGuard,
     ValidarIdsDocumentosGuard,
+    ValidaRegistroGuard,
     JwtAuthGuard,
     JwtGuard,
   )
@@ -42,8 +42,8 @@ export class EstudiantesController {
   @Patch('Actualizar/:id')
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
-    ValidaRegistroGuard,
     ValidarIdsDocumentosGuard,
+    ValidaRegistroGuard,
     JwtAuthGuard,
     JwtGuard,
   )

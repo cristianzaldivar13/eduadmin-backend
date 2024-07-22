@@ -17,6 +17,7 @@ import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.gu
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ActualizarUsuarioDto } from './dto/update-usuario.dto';
+import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 
 @ApiTags(EnumSecciones.USUARIOS)
 @Controller(EnumSecciones.USUARIOS)
@@ -25,14 +26,19 @@ export class UsuariosController {
 
   @Post('CrearUsuario')
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidaRolGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(ValidarIdsDocumentosGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
   async crearUsuario(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crearUsuario(crearUsuarioDto);
   }
 
   @Patch('ActualizarUsuario/:id')
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidaIdDocumentoGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(
+    ValidarIdsDocumentosGuard,
+    ValidaIdDocumentoGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
   async ActualizarUsuario(
     @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
     @Param('id') id: string,

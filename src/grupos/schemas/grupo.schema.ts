@@ -30,17 +30,27 @@ GrupoSchema.pre<Grupo>('save', function (next) {
 GrupoSchema.pre('findOneAndUpdate', function (next) {
   const update: any = this.getUpdate();
 
-  // Convierte escuelaId a ObjectId si es una cadena
+  // Si se está usando la operación $set, actualiza los campos dentro de $set
   if (update.$set) {
-    if (update.$set.escuelaId && typeof update.$set.escuelaId === 'string') {
-      update.$set.escuelaId = new Types.ObjectId(update.$set.escuelaId);
-    }
-
-    // Convierte asignaturas a ObjectId si es un array
-    if (Array.isArray(update.$set.asignaturas)) {
+    if (update.$set.asignaturas && Array.isArray(update.$set.asignaturas)) {
       update.$set.asignaturas = update.$set.asignaturas.map(
         (asignatura: any) => new Types.ObjectId(asignatura),
       );
+    }
+
+    if (update.$set.escuelaId && typeof update.$set.escuelaId === 'string') {
+      update.$set.escuelaId = new Types.ObjectId(update.$set.escuelaId);
+    }
+  } else {
+    // Si no se usa $set, actualiza los campos directamente
+    if (update.asignaturas && Array.isArray(update.asignaturas)) {
+      update.asignaturas = update.asignaturas.map(
+        (asignatura: any) => new Types.ObjectId(asignatura),
+      );
+    }
+
+    if (update.escuelaId && typeof update.escuelaId === 'string') {
+      update.escuelaId = new Types.ObjectId(update.escuelaId);
     }
   }
 
