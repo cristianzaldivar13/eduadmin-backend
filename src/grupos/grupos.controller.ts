@@ -34,8 +34,8 @@ export class GruposController {
     JwtAuthGuard,
     JwtGuard,
   )
-  crearGrupo(@Body() CrearGrupoDto: CrearGrupoDto) {
-    return this.gruposService.crearGrupo(CrearGrupoDto);
+  crearGrupo(@Body() crearGrupoDto: CrearGrupoDto) {
+    return this.gruposService.crearGrupo(crearGrupoDto);
   }
 
   @Patch('Actualizar/:id')

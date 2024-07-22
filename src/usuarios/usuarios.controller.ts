@@ -24,14 +24,14 @@ import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documen
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
-  @Post('CrearUsuario')
+  @Post('Crear')
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(ValidarIdsDocumentosGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
   async crearUsuario(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crearUsuario(crearUsuarioDto);
   }
 
-  @Patch('ActualizarUsuario/:id')
+  @Patch('Actualizar/:id')
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidarIdsDocumentosGuard,

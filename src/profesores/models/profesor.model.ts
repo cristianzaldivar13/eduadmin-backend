@@ -14,8 +14,8 @@ export class Profesor {
   @Prop({ type: Types.ObjectId, required: true })
   escuelaId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, required: true })
-  grupoId: Types.ObjectId;
+  @Prop({ type: Array, required: true })
+  grupos: Array<Types.ObjectId>;
 
   @Prop({ type: String, required: true })
   nombre: string;
@@ -48,4 +48,4 @@ export class Profesor {
   fechaEdicion: Date;
 }
 
-export const EstudianteSchema = SchemaFactory.createForClass(Profesor);
+export const ProfesorSchema = SchemaFactory.createForClass(Profesor);

@@ -1,6 +1,23 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateProfesoreDto } from './create-profesore.dto';
+import { CrearProfesoreDto } from './create-profesore.dto';
+import { EnumNivel } from '../../utils/enums/niveles.enum';
+import { IsOptional, IsMongoId, IsArray, IsEnum } from 'class-validator';
+import { Types } from 'mongoose';
 
-export class UpdateProfesoreDto extends PartialType(CreateProfesoreDto) {
-  id: number;
+export class ActualizarProfesoreDto extends PartialType(CrearProfesoreDto) {
+  @IsOptional()
+  @IsMongoId()
+  escuelaId: Types.ObjectId;
+
+  @IsOptional()
+  nombre: string;
+
+  @IsOptional()
+  @IsArray()
+  grupos: Array<Types.ObjectId>;
+
+  @IsOptional()
+  @IsEnum(EnumNivel, { each: true })
+  @IsArray()
+  niveles: EnumNivel[];
 }

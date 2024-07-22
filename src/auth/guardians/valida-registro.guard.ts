@@ -16,6 +16,7 @@ export class ValidaRegistroGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const body = request.body;
+    const url = request.url.split('/')[1];
 
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idCampos = Object.keys(body).filter((key) => key.endsWith('Id'));
@@ -88,7 +89,10 @@ export class ValidaRegistroGuard implements CanActivate {
             break;
 
           case EnumSecciones.USUARIOS.toLowerCase():
-            if (documento.rol != EnumRolesUsuario.ESTUDIANTE) {
+            if (
+              documento.rol != EnumRolesUsuario.ESTUDIANTE &&
+              url === EnumSecciones.ESTUDIANTES
+            ) {
               throw new BadRequestException(
                 `El id ${id} de usuario asignado debe pertenecer a un tipo Estudiante.`,
               );
@@ -108,7 +112,6 @@ export class ValidaRegistroGuard implements CanActivate {
     }
 
     // Validaciones especiales con objetos
-    const url = request.url.split('/')[1];
     switch (url) {
       case EnumSecciones.GRUPOS:
         if (body?.asignaturas) {
@@ -132,7 +135,26 @@ export class ValidaRegistroGuard implements CanActivate {
 
         break;
 
-      default:
+      case EnumSecciones.PROFESORES:
+        if (body?.grupos) {
+          for (const idGrupo of body.grupos) {
+            if (!Types.ObjectId.isValid(idGrupo)) {
+              throw new BadRequestException(
+                `El Id ${idGrupo} de la grupo no es válido`,
+              );
+            }
+            const grupo = await this.connection
+              .collection(EnumSecciones.GRUPOS.toLowerCase())
+              .findOne({ _id: new Types.ObjectId(idGrupo) });
+
+            if (!grupo) {
+              throw new BadRequestException(
+                `El Id ${idGrupo} de la grupo no existe`,
+              );
+            }
+          }
+        }
+
         break;
     }
 
