@@ -1,22 +1,27 @@
-import { IsBoolean, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsBoolean, IsEnum, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
+import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 
 export class CrearAsistenciaDto {
   @IsNotEmpty()
   @IsMongoId()
   escuelaId: Types.ObjectId;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
   grupoId: Types.ObjectId;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
   asignaturaId: Types.ObjectId;
 
   @IsOptional()
   @IsMongoId()
   usuarioId: Types.ObjectId;
+
+  @IsNotEmpty()
+  @IsEnum(EnumTipoAsistencia)
+  tipoAsistencia: EnumTipoAsistencia;
 
   @IsBoolean()
   @IsOptional()

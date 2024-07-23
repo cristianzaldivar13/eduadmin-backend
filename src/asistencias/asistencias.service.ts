@@ -8,6 +8,7 @@ import { Model, Types } from 'mongoose';
 import { Asistencia } from './models/asistencia.model';
 import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
 import { ActualizarAsistenciaDto } from './dto/update-asistencia.dto';
+import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
 import { Buffer } from 'buffer';
 import jsQR from 'jsqr';
 import { PNG } from 'pngjs';
@@ -41,6 +42,7 @@ export class AsistenciasService {
       let crearAsistenciaDto: CrearAsistenciaDto = qrData;
       crearAsistenciaDto.ingreso = true;
       crearAsistenciaDto.egreso = false;
+      crearAsistenciaDto.tipoAsistencia = EnumTipoAsistencia.ESCUELA;
 
       const asistencia = await this.asistenciaModel.find({
         usuarioId: new Types.ObjectId(crearAsistenciaDto.usuarioId),
@@ -94,6 +96,7 @@ export class AsistenciasService {
       }
 
       actualizarAsistenciaDto.egreso = true;
+      actualizarAsistenciaDto.tipoAsistencia = EnumTipoAsistencia.ESCUELA;
 
       // Actualiza la asistencia
       const fechaActual = new Date();
