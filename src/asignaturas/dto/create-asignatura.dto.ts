@@ -19,7 +19,6 @@ export class CrearAsignaturaDto {
   readonly estatus: EnumEstatus;
 
   @IsNotEmpty()
-  @IsEnum(EnumNivel, { each: true })
-  @IsArray()
-  readonly niveles: EnumNivel[];
+  @IsEnum(EnumNivel)
+  readonly nivel: EnumNivel;
 }

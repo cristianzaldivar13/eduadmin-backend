@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EstudiantesModule } from './estudiantes/estudiantes.module';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { ReportesModule } from './reportes/reportes.module';
 import { FinanzasModule } from './finanzas/finanzas.module';
 import { VisitantesModule } from './visitantes/visitantes.module';
 import { FamiliaresModule } from './tutores/tutores.module';
-import { ProfesoresModule } from './profesores/profesores.module';
 import { AdministracionesModule } from './administraciones/administraciones.module';
 import { ComunicacionesModule } from './comunicaciones/comunicaciones.module';
 import { AsistenciasModule } from './asistencias/asistencias.module';
@@ -25,13 +23,11 @@ import { CalificacionesModule } from './calificaciones/calificaciones.module';
 @Module({
   imports: [
     MongoModule,
-    EstudiantesModule,
     NotificacionesModule,
     ReportesModule,
     FinanzasModule,
     VisitantesModule,
     FamiliaresModule,
-    ProfesoresModule,
     AdministracionesModule,
     ComunicacionesModule,
     AsistenciasModule,

@@ -15,7 +15,7 @@ export class CrearCalificacionDto {
 
   @IsNotEmpty()
   @IsMongoId()
-  usuarioId: Types.ObjectId;
+  profesorId: Types.ObjectId;
 
   @IsNotEmpty()
   @IsMongoId()
@@ -30,20 +30,12 @@ export class CrearCalificacionDto {
   grupoId: Types.ObjectId;
 
   @IsNotEmpty()
-  @IsMongoId()
-  profesorId: Types.ObjectId;
-
-  @IsNotEmpty()
   @IsString()
   periodo: string;
 
   @IsNotEmpty()
   @IsString()
   tipoEvaluacion: string;
-
-  @IsNotEmpty()
-  @IsDate()
-  fechaEvaluacion: Date;
 
   @IsNotEmpty()
   @IsNumber()

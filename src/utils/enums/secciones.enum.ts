@@ -5,7 +5,7 @@ export enum EnumSecciones {
   GRUPOS = 'Grupos',
   ASISTENCIAS = 'Asistencias',
   BIBLIOTECAS = 'Bibliotecas',
-  CALENDARIO = 'Calendario',
+  CALENDARIO = 'Calendarios',
   COMUNICACIONES = 'Comunicaciones',
   CURSOS = 'Cursos',
   ESTUDIANTES = 'Estudiantes',

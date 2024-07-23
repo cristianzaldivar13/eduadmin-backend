@@ -49,7 +49,6 @@ export class CalificacionesService {
     return await this.calificacionModel
       .findOne({
         escuelaId: new Types.ObjectId(crearCalificacionDto.escuelaId),
-        usuarioId: new Types.ObjectId(crearCalificacionDto.usuarioId),
         profesorId: new Types.ObjectId(crearCalificacionDto.profesorId),
         estudianteId: new Types.ObjectId(crearCalificacionDto.estudianteId),
         asignaturaId: new Types.ObjectId(crearCalificacionDto.asignaturaId),

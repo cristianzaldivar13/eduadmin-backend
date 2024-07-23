@@ -10,7 +10,7 @@ export class Calificacion {
   escuelaId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })
-  usuarioId: Types.ObjectId;
+  profesorId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })
   estudianteId: Types.ObjectId;
@@ -21,17 +21,11 @@ export class Calificacion {
   @Prop({ type: Types.ObjectId, required: true })
   grupoId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, required: true })
-  profesorId: Types.ObjectId;
-
   @Prop({ type: String, required: true })
   periodo: string;
 
   @Prop({ type: String, required: true })
   tipoEvaluacion: string;
-
-  @Prop({ type: Date, required: true })
-  fechaEvaluacion: Date;
 
   @Prop({ type: Number, required: true })
   calificacion: number;
@@ -50,6 +44,6 @@ export const CalificacionSchema = SchemaFactory.createForClass(Calificacion);
 
 // Middleware para agregar la fecha de modificación antes de actualizar
 CalificacionSchema.pre('findOneAndUpdate', function (next) {
-  this.set({ fechaModificacion: new Date() });
+  this.set({ fechaEdicion: new Date() });
   next();
 });

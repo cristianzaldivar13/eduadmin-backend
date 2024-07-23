@@ -61,9 +61,6 @@ export class ValidaRegistroGuard implements CanActivate {
           case EnumSecciones.CURSOS:
             break;
 
-          case EnumSecciones.ESTUDIANTES:
-            break;
-
           case EnumSecciones.ESCUELAS.toLowerCase():
             break;
 
@@ -74,9 +71,6 @@ export class ValidaRegistroGuard implements CanActivate {
             break;
 
           case EnumSecciones.NOTIFICACIONES:
-            break;
-
-          case EnumSecciones.PROFESORES:
             break;
 
           case EnumSecciones.REPORTES:
@@ -96,7 +90,7 @@ export class ValidaRegistroGuard implements CanActivate {
             }
             if (
               documento?.rol != EnumRolesUsuario.ESTUDIANTE &&
-              url === EnumSecciones.ESTUDIANTES
+              url === EnumSecciones.USUARIOS
             ) {
               throw new BadRequestException(
                 `El id ${id} de usuario asignado debe pertenecer a un tipo Estudiante.`,
@@ -105,7 +99,7 @@ export class ValidaRegistroGuard implements CanActivate {
 
             if (
               documento?.rol !== EnumRolesUsuario.PROFESOR &&
-              url === EnumSecciones.PROFESORES
+              url === EnumSecciones.USUARIOS
             ) {
               throw new BadRequestException(
                 `El id ${id} de usuario asignado debe pertenecer a un tipo Profesor.`,
@@ -148,7 +142,7 @@ export class ValidaRegistroGuard implements CanActivate {
 
         break;
 
-      case EnumSecciones.PROFESORES:
+      case EnumSecciones.USUARIOS:
         if (body?.grupos) {
           for (const idGrupo of body.grupos) {
             if (!Types.ObjectId.isValid(idGrupo)) {

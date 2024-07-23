@@ -1,16 +1,29 @@
-import { IsEmail, IsNotEmpty, IsString, IsEnum, IsMongoId } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, IsEnum, IsMongoId, IsArray, IsOptional } from 'class-validator';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { EnumNivel } from '../../utils/enums/niveles.enum';
+import { EnumSexualidad } from '../../utils/enums/sexualidad.enum';
 import { Types } from 'mongoose';
 
 export class CrearUsuarioDto {
   @IsNotEmpty()
   @IsMongoId()
   escuelaId: Types.ObjectId;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  grupoId: Types.ObjectId;
   
   @IsNotEmpty()
-  @IsString()
-  readonly nombre: string;
+  @IsEnum(EnumRolesUsuario)
+  readonly rol: EnumRolesUsuario;
+
+  @IsNotEmpty()
+  matricula: string;
+
+  @IsOptional()
+  @IsArray()
+  grupos: Array<Types.ObjectId>;
 
   @IsNotEmpty()
   @IsEmail()
@@ -21,8 +34,28 @@ export class CrearUsuarioDto {
   readonly contrasena: string;
 
   @IsNotEmpty()
-  @IsEnum(EnumRolesUsuario)
-  readonly rol: EnumRolesUsuario;
+  @IsString()
+  readonly nombre: string;
+
+  @IsNotEmpty()
+  apellidoPaterno: string;
+
+  @IsNotEmpty()
+  apellidoMaterno: string;
+
+  @IsNotEmpty()
+  fechaNacimiento: Date;
+
+  @IsNotEmpty()
+  sexo: EnumSexualidad;
+
+  @IsNotEmpty()
+  telefono: string;
+
+  @IsNotEmpty()
+  @IsEnum(EnumNivel, { each: true })
+  @IsArray()
+  niveles: EnumNivel[];
 
   @IsEnum(EnumEstatus)
   readonly estatus: EnumEstatus;

@@ -7,6 +7,6 @@ export enum EnumVerbos {
     CONSULTAR = 'Consultar',
     PAGINAR = 'Paginar',
     CONSUTLAR = 'Consultar',
-    CONSULTAR_POR_ID = 'ConsultarPorId',
+    CONSULTAR_POR_ID = 'ConsultarPorId/:id',
   }
   

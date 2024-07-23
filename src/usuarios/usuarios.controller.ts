@@ -26,7 +26,11 @@ export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   @Post(EnumVerbos.CREAR)
-  @Role(EnumRolesUsuario.ROOT)
+  @Role(
+    EnumRolesUsuario.ROOT,
+    EnumRolesUsuario.SECRETARIO,
+    EnumRolesUsuario.DIRECTOR,
+  )
   @UseGuards(ValidarIdsDocumentosGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
   async crear(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crear(crearUsuarioDto);
@@ -44,9 +48,6 @@ export class UsuariosController {
     @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
     @Param('id') id: string,
   ) {
-    return await this.usuariosService.actualizar(
-      id,
-      actualizarUsuarioDto,
-    );
+    return await this.usuariosService.actualizar(id, actualizarUsuarioDto);
   }
 }

@@ -11,6 +11,10 @@ export class ActualizarUsuarioDto extends PartialType(CrearUsuarioDto) {
   escuelaId: Types.ObjectId;
 
   @IsOptional()
+  @IsMongoId()
+  grupoId: Types.ObjectId;
+
+  @IsOptional()
   @IsDate()
   readonly fechaEdicion?: Date;
 

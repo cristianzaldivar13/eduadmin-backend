@@ -31,7 +31,7 @@ export class ValidaIdDocumentoGuard implements CanActivate {
 
       return true;
     } catch (error) {
-      throw new BadRequestException(`Error al buscar el registro. ${error.message}`);
+      throw new BadRequestException(`Error al buscar el registro Id. ${error.message}`);
     }
   }
 }

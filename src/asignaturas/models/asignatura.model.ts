@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
 import { EnumNivel } from '../../utils/enums/niveles.enum';
 
@@ -7,6 +7,9 @@ export type AsignaturaDocument = Asignatura & Document;
 
 @Schema()
 export class Asignatura {
+  @Prop({ type: Types.ObjectId, required: true })
+  escuelaId: Types.ObjectId;
+  
   @Prop({ required: true })
   nombre: string;
 
@@ -17,7 +20,7 @@ export class Asignatura {
   estatus: EnumEstatus;
 
   @Prop({ type: String, enum: EnumNivel, required: true })
-  niveles: EnumNivel[];
+  nivel: EnumNivel;
 
   @Prop({ type: Date, default: Date.now })
   fechaCreacion: Date;

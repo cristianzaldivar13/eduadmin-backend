@@ -9,10 +9,10 @@ CalificacionSchema.pre<Calificacion>('save', function (next) {
   const schemaData: any = this;
 
   if (
-    schemaData.isModified('usuarioId') &&
-    typeof schemaData.usuarioId === 'string'
+    schemaData.isModified('estudianteId') &&
+    typeof schemaData.estudianteId === 'string'
   ) {
-    schemaData.usuarioId = new Types.ObjectId(schemaData.usuarioId);
+    schemaData.estudianteId = new Types.ObjectId(schemaData.estudianteId);
   }
 
   if (
@@ -49,8 +49,8 @@ CalificacionSchema.pre<Calificacion>('save', function (next) {
 // Middleware para cambiar los id en ObjectId antes de actualizar con findOneAndUpdate
 CalificacionSchema.pre('findOneAndUpdate', function (next) {
   const update: any = this.getUpdate();
-  if (update.usuarioId && typeof update.usuarioId === 'string') {
-    update.usuarioId = new Types.ObjectId(update.usuarioId);
+  if (update.estudianteId && typeof update.estudianteId === 'string') {
+    update.estudianteId = new Types.ObjectId(update.estudianteId);
   }
   if (update.escuelaId && typeof update.escuelaId === 'string') {
     update.escuelaId = new Types.ObjectId(update.escuelaId);
@@ -66,8 +66,8 @@ CalificacionSchema.pre('findOneAndUpdate', function (next) {
   }
 
   if (update.$set) {
-    if (update.$set.usuarioId && typeof update.$set.usuarioId === 'string') {
-      update.$set.usuarioId = new Types.ObjectId(update.$set.usuarioId);
+    if (update.$set.estudianteId && typeof update.$set.estudianteId === 'string') {
+      update.$set.estudianteId = new Types.ObjectId(update.$set.estudianteId);
     }
     if (update.$set.escuelaId && typeof update.$set.escuelaId === 'string') {
       update.$set.escuelaId = new Types.ObjectId(update.$set.escuelaId);
