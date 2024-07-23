@@ -31,11 +31,25 @@ export class AsistenciasController {
   }
 
   @Post(EnumVerbos.CREAR_QR)
+  @Role(EnumRolesUsuario.ROOT, EnumRolesUsuario.PROFESOR, EnumRolesUsuario.ESTUDIANTE)
+  @UseGuards(
+    ValidaRegistroGuard,
+    ValidarIdsDocumentosGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
   async crearAsistenciaQR(@Body() QR: any) {
     return await this.asistenciasService.crearAsistenciaQr(QR);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR_QR)
+  @Role(EnumRolesUsuario.ROOT, EnumRolesUsuario.PROFESOR, EnumRolesUsuario.ESTUDIANTE)
+  @UseGuards(
+    ValidaRegistroGuard,
+    ValidarIdsDocumentosGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
   async actualizarAsistenciaQr(@Body() QR: any) {
     return await this.asistenciasService.actualizarAsistenciaQr(QR);
   }

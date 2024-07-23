@@ -49,28 +49,47 @@ export class AsistenciasService {
     }
   }
 
-  async actualizarAsistenciaQr(QR: any): Promise<Asistencia> {
+  async actualizarAsistenciaQr(
+    QR: any,
+    actualizarAsistenciaDto?: ActualizarAsistenciaDto,
+  ): Promise<Asistencia> {
     try {
       // Decodifica el QR base64 y extrae los datos JSON
       const qrData = await this.leerQrDesdeBase64(QR.qr);
 
       // Asegúrate de que qrData es un objeto y contiene los datos esperados
-      if (typeof qrData !== 'object' || qrData === null) {
-        throw new Error('El contenido del QR no es un JSON válido');
+      if (typeof qrData !== 'object' || qrData === null || !qrData.usuarioId) {
+        throw new Error(
+          'El contenido del QR no es un JSON válido o falta el usuarioId',
+        );
       }
 
-      let asistenciaData: ActualizarAsistenciaDto = qrData;
-      asistenciaData.egreso = true;
+      // Define los datos de actualización
+      actualizarAsistenciaDto = {
+        ...qrData,
+        egreso: true,
+      };
 
       // Actualiza la asistencia
-      return this.asistenciaModel
-        .findOneAndUpdate({ _id: asistenciaData.usuarioId }, asistenciaData, {
-          new: false,
-        })
+      const updatedAsistencia = await this.asistenciaModel
+        .findOneAndUpdate(
+          {
+            usuarioId: new Types.ObjectId(actualizarAsistenciaDto.usuarioId),
+            escuelaId: new Types.ObjectId(actualizarAsistenciaDto.escuelaId),
+          },
+          actualizarAsistenciaDto,
+        )
         .exec();
+
+      // Verifica si se actualizó el documento
+      if (!updatedAsistencia) {
+        throw new BadRequestException('No se encontró la asistencia para actualizar');
+      }
+
+      return updatedAsistencia;
     } catch (error) {
       throw new BadRequestException(
-        'Error al crear la asistencia: ' + error.message,
+        'Error al actualizar la asistencia: ' + error.message,
       );
     }
   }

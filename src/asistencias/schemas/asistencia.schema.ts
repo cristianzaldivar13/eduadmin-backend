@@ -27,14 +27,11 @@ AsistenciaSchema.pre<Asistencia>('save', function (next) {
 
 // Middleware para cambiar los id en ObjectId antes de actualizar con findOneAndUpdate
 AsistenciaSchema.pre('findOneAndUpdate', function (next) {
-  const update: any = this.getUpdate();
+  let update: any = this.getUpdate();
 
   // Convierte los ids a ObjectId en update y update.$set
   if (update.usuarioId && typeof update.usuarioId === 'string') {
     update.usuarioId = new Types.ObjectId(update.usuarioId);
-  }
-  if (update.profesorId && typeof update.profesorId === 'string') {
-    update.profesorId = new Types.ObjectId(update.profesorId);
   }
   if (update.escuelaId && typeof update.escuelaId === 'string') {
     update.escuelaId = new Types.ObjectId(update.escuelaId);
@@ -43,9 +40,6 @@ AsistenciaSchema.pre('findOneAndUpdate', function (next) {
   if (update.$set) {
     if (update.$set.usuarioId && typeof update.$set.usuarioId === 'string') {
       update.$set.usuarioId = new Types.ObjectId(update.$set.usuarioId);
-    }
-    if (update.$set.profesorId && typeof update.$set.profesorId === 'string') {
-      update.$set.profesorId = new Types.ObjectId(update.$set.profesorId);
     }
     if (update.$set.escuelaId && typeof update.$set.escuelaId === 'string') {
       update.$set.escuelaId = new Types.ObjectId(update.$set.escuelaId);
