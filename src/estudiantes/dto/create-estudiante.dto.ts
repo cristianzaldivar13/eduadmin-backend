@@ -18,6 +18,9 @@ export class CrearEstudianteDto {
     grupoId: Types.ObjectId;
 
     @IsNotEmpty()
+    matricula: string;
+
+    @IsNotEmpty()
     nombre: string;
 
     @IsNotEmpty()

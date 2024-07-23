@@ -1,7 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, BadRequestException, Body } from '@nestjs/common';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { AsistenciasService } from '../asistencias/asistencias.service';
-import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
 
 @Injectable()
 export class ValidacionUsuarioGuard implements CanActivate {
@@ -13,7 +12,8 @@ export class ValidacionUsuarioGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const usuarioId: string = request.body?.usuarioId;
-    const tipo: EnumTipoAsistencia = request.body?.tipo;
+    const ingreso: boolean = request.body?.ingreso;
+    const egreso: boolean = request.body?.egreso;
 
     if (!usuarioId) {
       throw new Error('ID de usuario no proporcionado en la solicitud');
@@ -28,7 +28,7 @@ export class ValidacionUsuarioGuard implements CanActivate {
     // Asignamos el usuario al request para que esté disponible en el controlador
     request.usuario = usuario;
 
-    const asistencia = await this.asistenciasService.obtenerAsistenciaDelDia(usuarioId, tipo);
+    const asistencia = await this.asistenciasService.obtenerAsistenciaDelDia(usuarioId, ingreso, egreso);
 
     if(asistencia.length) {
       throw new BadRequestException('La asistencia ya había sido registrada.');

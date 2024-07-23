@@ -8,7 +8,6 @@ import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
 import { Estudiante } from './models/estudiante.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { string } from '@tensorflow/tfjs-node';
 
 @Injectable()
 export class EstudiantesService {

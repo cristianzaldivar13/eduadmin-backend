@@ -20,13 +20,14 @@ import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @ApiTags(EnumSecciones.PROFESORES)
 @Controller(EnumSecciones.PROFESORES)
 export class ProfesoresController {
   constructor(private readonly profesoresService: ProfesoresService) {}
 
-  @Post('Crear')
+  @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidaRegistroGuard,
@@ -38,7 +39,7 @@ export class ProfesoresController {
     return this.profesoresService.crearProfesor(crearProfesoreDto);
   }
 
-  @Patch('Actualizar/:id')
+  @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidarIdsDocumentosGuard,
@@ -56,7 +57,7 @@ export class ProfesoresController {
     );
   }
 
-  @Get('Paginados')
+  @Get(EnumVerbos.PAGINAR)
   obtenerProfesoresPaginados(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,

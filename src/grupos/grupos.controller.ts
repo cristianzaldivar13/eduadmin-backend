@@ -20,13 +20,14 @@ import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @ApiTags(EnumSecciones.GRUPOS)
 @Controller(EnumSecciones.GRUPOS)
 export class GruposController {
   constructor(private readonly gruposService: GruposService) {}
 
-  @Post('Crear')
+  @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidaRegistroGuard,
@@ -38,7 +39,7 @@ export class GruposController {
     return this.gruposService.crearGrupo(crearGrupoDto);
   }
 
-  @Patch('Actualizar/:id')
+  @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidarIdsDocumentosGuard,
@@ -53,7 +54,7 @@ export class GruposController {
     return this.gruposService.actualizarGrupo(id, actualizarGrupoDto);
   }
 
-  @Get('Paginados')
+  @Get(EnumVerbos.PAGINAR)
   obtenerGruposPaginados(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,

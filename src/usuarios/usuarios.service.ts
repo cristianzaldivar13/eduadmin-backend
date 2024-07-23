@@ -32,8 +32,16 @@ export class UsuariosService {
     });
 
     // Generar QR
-    if (crearUsuarioDto.rol.includes(EnumRolesUsuario.ESTUDIANTE)) {
-      const qrCode = await QRCode.toDataURL(`${nuevoUsuario._id}`);
+    if (
+      crearUsuarioDto.rol.includes(EnumRolesUsuario.ESTUDIANTE) ||
+      crearUsuarioDto.rol.includes(EnumRolesUsuario.PROFESOR)
+    ) {
+      const qrData = JSON.stringify({
+        usuarioId: nuevoUsuario._id.toString(),
+        escuelaId: nuevoUsuario.escuelaId.toString(),
+      });
+
+      const qrCode = await QRCode.toDataURL(qrData);
       nuevoUsuario.qrCode = qrCode;
     }
 

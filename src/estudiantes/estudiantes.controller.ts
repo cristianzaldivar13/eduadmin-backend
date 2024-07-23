@@ -21,13 +21,14 @@ import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documen
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { Estudiante } from './models/estudiante.model';
 import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @ApiTags(EnumSecciones.ESTUDIANTES)
 @Controller(EnumSecciones.ESTUDIANTES)
 export class EstudiantesController {
   constructor(private readonly estudiantesService: EstudiantesService) {}
 
-  @Post('Crear')
+  @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidarIdsDocumentosGuard,
@@ -39,7 +40,7 @@ export class EstudiantesController {
     return await this.estudiantesService.crearEstudiante(crearEstudianteDto);
   }
 
-  @Patch('Actualizar/:id')
+  @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidarIdsDocumentosGuard,
@@ -57,7 +58,7 @@ export class EstudiantesController {
     );
   }
 
-  @Get('Paginados')
+  @Get(EnumVerbos.PAGINAR)
   async obtenerEstudiantesPaginados(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,

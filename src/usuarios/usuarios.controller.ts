@@ -16,6 +16,7 @@ import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { ActualizarUsuarioDto } from './dto/update-usuario.dto';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 
@@ -24,14 +25,14 @@ import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documen
 export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
-  @Post('Crear')
+  @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(ValidarIdsDocumentosGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
   async crearUsuario(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crearUsuario(crearUsuarioDto);
   }
 
-  @Patch('Actualizar/:id')
+  @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
     ValidarIdsDocumentosGuard,

@@ -1,9 +1,8 @@
-import { IsDate, IsEnum, IsMongoId, IsNotEmpty } from 'class-validator';
-import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
+import { IsBoolean, IsEnum, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CrearAsistenciaDto {
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
   usuarioId: Types.ObjectId;
 
@@ -11,11 +10,11 @@ export class CrearAsistenciaDto {
   @IsMongoId()
   escuelaId: Types.ObjectId;
 
-  @IsDate()
-  fecha: Date = new Date();
+  @IsBoolean()
+  @IsOptional()
+  ingreso: boolean;
 
-  @IsEnum(EnumTipoAsistencia)
-  @IsNotEmpty()
-  readonly tipo: EnumTipoAsistencia;
-  }
-  
+  @IsBoolean()
+  @IsOptional()
+  egreso: boolean;
+}

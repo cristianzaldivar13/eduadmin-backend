@@ -18,6 +18,9 @@ export class Estudiante {
   grupoId: Types.ObjectId;
 
   @Prop({ type: String, required: true })
+  matricula: string;
+
+  @Prop({ type: String, required: true })
   nombre: string;
 
   @Prop({ type: String, required: true })
