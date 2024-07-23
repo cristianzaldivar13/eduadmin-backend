@@ -10,17 +10,17 @@ export class AsignaturasController {
   constructor(private readonly asignaturasService: AsignaturasService) {}
 
   @Post('CrearAsignatura')
-  crearAsignatura(@Body() crearAsignaturaDto: CrearAsignaturaDto) {
-    return this.asignaturasService.crearAsignatura(crearAsignaturaDto);
+  crear(@Body() crearAsignaturaDto: CrearAsignaturaDto) {
+    return this.asignaturasService.crear(crearAsignaturaDto);
   }
 
-  @Get('obtenerAsignaturaPorId/:id')
-  obtenerAsignaturaPorId(@Param('id') id: string) {
-    return this.asignaturasService.obtenerAsignaturaPorId(id);
+  @Get('obtenerPorId/:id')
+  obtenerPorId(@Param('id') id: string) {
+    return this.asignaturasService.obtenerPorId(id);
   }
 
-  @Get('obtenerAsignaturas')
-  obtenerAsignaturas() {
-    return this.asignaturasService.obtenerAsignaturas();
+  @Get('obtener')
+  obtener() {
+    return this.asignaturasService.obtener();
   }
 }

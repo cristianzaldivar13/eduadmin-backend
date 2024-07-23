@@ -1,11 +1,11 @@
 import { SchemaFactory } from '@nestjs/mongoose';
-import { Asistencia } from '../models/asistencia.model';
-import { model, Types } from 'mongoose';
+import { Types } from 'mongoose';
+import { Calificacion } from '../models/calificacion.model';
 
-export const AsistenciaSchema = SchemaFactory.createForClass(Asistencia);
+export const CalificacionSchema = SchemaFactory.createForClass(Calificacion);
 
-// Middleware para cambiar los id en ObjectId al guardar
-AsistenciaSchema.pre<Asistencia>('save', function (next) {
+// Middleware para cambiar los id en ObjectId
+CalificacionSchema.pre<Calificacion>('save', function (next) {
   const schemaData: any = this;
 
   if (
@@ -30,6 +30,13 @@ AsistenciaSchema.pre<Asistencia>('save', function (next) {
   }
 
   if (
+    schemaData.isModified('profesorId') &&
+    typeof schemaData.profesorId === 'string'
+  ) {
+    schemaData.profesorId = new Types.ObjectId(schemaData.profesorId);
+  }
+
+  if (
     schemaData.isModified('asignaturaId') &&
     typeof schemaData.asignaturaId === 'string'
   ) {
@@ -40,10 +47,8 @@ AsistenciaSchema.pre<Asistencia>('save', function (next) {
 });
 
 // Middleware para cambiar los id en ObjectId antes de actualizar con findOneAndUpdate
-AsistenciaSchema.pre('findOneAndUpdate', function (next) {
-  let update: any = this.getUpdate();
-
-  // Convierte los ids a ObjectId en update y update.$set
+CalificacionSchema.pre('findOneAndUpdate', function (next) {
+  const update: any = this.getUpdate();
   if (update.usuarioId && typeof update.usuarioId === 'string') {
     update.usuarioId = new Types.ObjectId(update.usuarioId);
   }
@@ -52,6 +57,9 @@ AsistenciaSchema.pre('findOneAndUpdate', function (next) {
   }
   if (update.grupoId && typeof update.grupoId === 'string') {
     update.grupoId = new Types.ObjectId(update.grupoId);
+  }
+  if (update.profesorId && typeof update.profesorId === 'string') {
+    update.profesorId = new Types.ObjectId(update.profesorId);
   }
   if (update.asignaturaId && typeof update.asignaturaId === 'string') {
     update.asignaturaId = new Types.ObjectId(update.asignaturaId);
@@ -67,23 +75,23 @@ AsistenciaSchema.pre('findOneAndUpdate', function (next) {
     if (update.$set.grupoId && typeof update.$set.grupoId === 'string') {
       update.$set.grupoId = new Types.ObjectId(update.$set.grupoId);
     }
-    if (update.$set.asignaturaId && typeof update.$set.asignaturaId === 'string') {
-      update.$set.asignaturaId = new Types.ObjectId(update.$set.asignaturaId);
-    }
+    if (update.$set.profesorId && typeof update.$set.profesorId === 'string') {
+        update.$set.profesorId = new Types.ObjectId(update.$set.profesorId);
+      }
+      if (update.$set.asignaturaId && typeof update.$set.asignaturaId === 'string') {
+        update.$set.asignaturaId = new Types.ObjectId(update.$set.asignaturaId);
+      }
   }
 
-  // Agrega la fecha de edición
   update.fechaEdicion = new Date();
 
   next();
 });
 
 // Middleware para incrementar el campo __v al actualizar el documento
-AsistenciaSchema.pre(
+CalificacionSchema.pre(
   ['updateOne', 'updateMany', 'findOneAndUpdate'],
   function () {
     this.findOneAndUpdate({}, { $inc: { __v: 1 } }, { new: true });
   },
 );
-
-export const AsistenciaModel = model(Asistencia.name, AsistenciaSchema);

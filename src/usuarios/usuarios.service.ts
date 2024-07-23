@@ -13,7 +13,7 @@ export class UsuariosService {
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
   ) {}
 
-  async crearUsuario(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
+  async crear(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
     // Verifica si el correo ya existe
     const existeUsuario = await this.usuarioModel.findOne({
       correo: crearUsuarioDto.correo,
@@ -48,7 +48,7 @@ export class UsuariosService {
     return await nuevoUsuario.save();
   }
 
-  async actualizarUsuario(
+  async actualizar(
     id: string,
     actualizarUsuarioDto: ActualizarUsuarioDto,
   ) {

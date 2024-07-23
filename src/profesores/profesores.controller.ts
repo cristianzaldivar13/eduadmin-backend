@@ -36,8 +36,8 @@ export class ProfesoresController {
     JwtAuthGuard,
     JwtGuard,
   )
-  crearProfesor(@Body() crearProfesoreDto: CrearProfesoreDto) {
-    return this.profesoresService.crearProfesor(crearProfesoreDto);
+  crear(@Body() crearProfesoreDto: CrearProfesoreDto) {
+    return this.profesoresService.crear(crearProfesoreDto);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR)
@@ -49,20 +49,20 @@ export class ProfesoresController {
     JwtAuthGuard,
     JwtGuard,
   )
-  actualizarProfesor(
+  actualizar(
     @Body() actualizarProfesoreDto: ActualizarProfesoreDto,
     @Param('id') id: string,
   ) {
-    return this.profesoresService.actualizarProfesor(id, actualizarProfesoreDto);
+    return this.profesoresService.actualizar(id, actualizarProfesoreDto);
   }
 
   @Get(EnumVerbos.PAGINAR)
-  obtenerProfesoresPaginados(
+  obtenerPaginados(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,
     @Query('escuelaId') escuelaId?: string,
   ) {
-    return this.profesoresService.obtenerProfesoresPaginados(
+    return this.profesoresService.obtenerPaginados(
       escuelaId,
       limit,
       skip,

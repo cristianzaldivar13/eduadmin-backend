@@ -16,7 +16,7 @@ export class GruposService {
     private readonly grupoModel: Model<Grupo>,
   ) {}
 
-  async crearGrupo(crearGrupoDto: CrearGrupoDto) {
+  async crear(crearGrupoDto: CrearGrupoDto) {
     if (await this.validaExistencia(crearGrupoDto)) {
       throw new ConflictException('El estudiante ya existe');
     }
@@ -28,7 +28,7 @@ export class GruposService {
     return await nuevoGrupo.save();
   }
 
-  async actualizarGrupo(
+  async actualizar(
     id: string,
     actualizarGrupoDto: ActualizarGrupoDto,
   ): Promise<Grupo> {
@@ -37,7 +37,7 @@ export class GruposService {
       .exec();
   }
 
-  async obtenerGruposPaginados(
+  async obtenerPaginados(
     _escuelaId: string,
     limit: number,
     skip: number,

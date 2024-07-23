@@ -28,8 +28,8 @@ export class UsuariosController {
   @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(ValidarIdsDocumentosGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
-  async crearUsuario(@Body() crearUsuarioDto: CrearUsuarioDto) {
-    return await this.usuariosService.crearUsuario(crearUsuarioDto);
+  async crear(@Body() crearUsuarioDto: CrearUsuarioDto) {
+    return await this.usuariosService.crear(crearUsuarioDto);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR)
@@ -40,11 +40,11 @@ export class UsuariosController {
     JwtAuthGuard,
     JwtGuard,
   )
-  async ActualizarUsuario(
+  async actualizar(
     @Body() actualizarUsuarioDto: ActualizarUsuarioDto,
     @Param('id') id: string,
   ) {
-    return await this.usuariosService.actualizarUsuario(
+    return await this.usuariosService.actualizar(
       id,
       actualizarUsuarioDto,
     );

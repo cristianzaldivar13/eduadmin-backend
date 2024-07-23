@@ -11,13 +11,13 @@ export class CalendarioEscolarService {
     private readonly calendarioEscolarModel: Model<CalendarioEscolar>,
   ) {}
 
-  crearCalendarioEscolar(crearCalendarioEscolarDto: CrearCalendarioEscolarDto) {
+  crear(crearCalendarioEscolarDto: CrearCalendarioEscolarDto) {
     try {
       return 'This action adds a new calendarioEscolar';
     } catch (error) {}
   }
 
-  async obtenerCalendarioEscolar(
+  async obtener(
     id: string,
   ): Promise<CalendarioEscolar | null> {
     try {

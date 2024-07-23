@@ -11,12 +11,12 @@ export class EscuelasService {
     @InjectModel(Escuelas.name) private escuelaModel: Model<Escuelas>
   ) {}
   
-  async crearEscuela(crearEscuelaDto: CrearEscuelaDto) {
+  async crear(crearEscuelaDto: CrearEscuelaDto) {
     const creadoRol = new this.escuelaModel(crearEscuelaDto);
     return creadoRol.save();
   }
 
-  async actualizarEscuela(id: string, actualizarEscuelaDto: ActualizarEscuelaDto) {
+  async actualizar(id: string, actualizarEscuelaDto: ActualizarEscuelaDto) {
     return await this.escuelaModel.findOneAndUpdate(new Types.ObjectId(id), actualizarEscuelaDto);
   }
 }

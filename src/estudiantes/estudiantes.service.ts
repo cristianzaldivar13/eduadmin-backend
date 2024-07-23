@@ -16,7 +16,7 @@ export class EstudiantesService {
     private readonly estudianteModel: Model<Estudiante>,
   ) {}
 
-  async crearEstudiante(crearEstudianteDto: CrearEstudianteDto) {
+  async crear(crearEstudianteDto: CrearEstudianteDto) {
     if (await this.validaExistencia(crearEstudianteDto)) {
       throw new ConflictException('El estudiante ya existe');
     }
@@ -28,7 +28,7 @@ export class EstudiantesService {
     return await nuevoEstudiante.save();
   }
 
-  async actualizarEstudiante(
+  async actualizar(
     id: string,
     actualizarEstudianteDto: ActualizarEstudianteDto,
   ): Promise<Estudiante> {
@@ -46,7 +46,7 @@ export class EstudiantesService {
       .exec();
   }
 
-  async obtenerEstudiantesPaginados(
+  async obtenerPaginados(
     _escuelaId: string,
     limit: number,
     skip: number,

@@ -11,7 +11,7 @@ export class AsignaturasService {
     private readonly asignaturaModel: Model<Asignatura>,
   ) {}
 
-  async crearAsignatura(
+  async crear(
     crearAsignaturaDto: CrearAsignaturaDto,
   ): Promise<Asignatura> {
     try {
@@ -22,7 +22,7 @@ export class AsignaturasService {
     }
   }
 
-  async obtenerAsignaturaPorId(id: string) {
+  async obtenerPorId(id: string) {
     try {
       return await this.asignaturaModel
         .findOne({ _id: new Types.ObjectId(id) })
@@ -32,7 +32,7 @@ export class AsignaturasService {
     }
   }
 
-  async obtenerAsignaturas() {
+  async obtener() {
     try {
       return await this.asignaturaModel.find().exec();
     } catch (error) {

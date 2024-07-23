@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { EstudiantesService } from './estudiantes.service';
 import { CrearEstudianteDto } from './dto/create-estudiante.dto';
+import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
+import { Estudiante } from './models/estudiante.model';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
@@ -19,8 +21,6 @@ import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { Role } from '../auth/decorators/Role.decorator';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
-import { Estudiante } from './models/estudiante.model';
-import { ActualizarEstudianteDto } from './dto/update-estudiante.dto';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @ApiTags(EnumSecciones.ESTUDIANTES)
@@ -36,8 +36,8 @@ export class EstudiantesController {
     JwtAuthGuard,
     JwtGuard,
   )
-  async crearEstudiante(@Body() crearEstudianteDto: CrearEstudianteDto) {
-    return await this.estudiantesService.crearEstudiante(crearEstudianteDto);
+  async crear(@Body() crearEstudianteDto: CrearEstudianteDto) {
+    return await this.estudiantesService.crear(crearEstudianteDto);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR)
@@ -48,23 +48,23 @@ export class EstudiantesController {
     JwtAuthGuard,
     JwtGuard,
   )
-  async actualizarEstudiante(
+  async actualizar(
     @Body() actualizarEstudianteDto: ActualizarEstudianteDto,
     @Param('id') id: string,
   ) {
-    return await this.estudiantesService.actualizarEstudiante(
+    return await this.estudiantesService.actualizar(
       id,
       actualizarEstudianteDto,
     );
   }
 
   @Get(EnumVerbos.PAGINAR)
-  async obtenerEstudiantesPaginados(
+  async obtenerPaginados(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,
     @Query('escuelaId') escuelaId?: string,
   ): Promise<{ data: Estudiante[]; total: number }> {
-    return await this.estudiantesService.obtenerEstudiantesPaginados(
+    return await this.estudiantesService.obtenerPaginados(
       escuelaId,
       limit,
       skip,

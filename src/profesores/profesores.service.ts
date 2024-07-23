@@ -16,7 +16,7 @@ export class ProfesoresService {
     private readonly profesorModel: Model<Profesor>,
   ) {}
 
-  async crearProfesor(crearProfesoreDto: CrearProfesoreDto) {
+  async crear(crearProfesoreDto: CrearProfesoreDto) {
     if (await this.validaExistencia(crearProfesoreDto)) {
       throw new ConflictException('El profesor ya existe');
     }
@@ -28,7 +28,7 @@ export class ProfesoresService {
     return await nuevoGrupo.save();
   }
 
-  async actualizarProfesor(
+  async actualizar(
     id: string,
     actualizarProfesoreDto: ActualizarProfesoreDto,
   ): Promise<Profesor> {
@@ -37,7 +37,7 @@ export class ProfesoresService {
       .exec();
   }
 
-  async obtenerProfesoresPaginados(
+  async obtenerPaginados(
     _escuelaId: string,
     limit: number,
     skip: number,

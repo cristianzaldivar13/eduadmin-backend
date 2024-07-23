@@ -14,6 +14,7 @@ import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { Role } from '../auth/decorators/Role.decorator';
 import { ActualizarEscuelaDto } from './dto/update-escuela.dto';
 
@@ -22,20 +23,20 @@ import { ActualizarEscuelaDto } from './dto/update-escuela.dto';
 export class EscuelasController {
   constructor(private readonly escuelasService: EscuelasService) {}
 
-  @Post('CrearEscuela')
+  @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)
-  crearEscuela(@Body() crearEscuelaDto: CrearEscuelaDto) {
-    return this.escuelasService.crearEscuela(crearEscuelaDto);
+  crear(@Body() crearEscuelaDto: CrearEscuelaDto) {
+    return this.escuelasService.crear(crearEscuelaDto);
   }
 
-  @Patch('ActualizarEscuela/:id')
+  @Post(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(ValidaIdDocumentoGuard, JwtAuthGuard, JwtGuard)
-  actualizarEscuela(
+  actualizar(
     @Body() actualizarEscuelaDto: ActualizarEscuelaDto,
     @Param('id') id: string,
   ) {
-    return this.escuelasService.actualizarEscuela(id, actualizarEscuelaDto);
+    return this.escuelasService.actualizar(id, actualizarEscuelaDto);
   }
 }

@@ -21,6 +21,7 @@ async function bootstrap() {
     .setVersion('1.0.0')
     .addTag('Administraciones')
     .addTag('Asignaturas')
+    .addTag('Calificaciones')
     .addTag('Asistencias')
     .addTag('Bibliotecas')
     .addTag('Calendario Escolar')

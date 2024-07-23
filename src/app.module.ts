@@ -20,6 +20,7 @@ import { CalendarioEscolarModule } from './calendario-escolar/calendario-escolar
 import { AuthModule } from './auth/auth.module';
 import { EscuelasModule } from './escuelas/escuelas.module';
 import { GruposModule } from './grupos/grupos.module';
+import { CalificacionesModule } from './calificaciones/calificaciones.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { GruposModule } from './grupos/grupos.module';
     AuthModule,
     EscuelasModule,
     GruposModule,
+    CalificacionesModule,
   ],
   controllers: [],
   providers: [],

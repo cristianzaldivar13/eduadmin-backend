@@ -10,6 +10,12 @@ export class Asistencia {
   escuelaId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })
+  grupoId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, required: true })
+  asignaturaId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, required: true })
   usuarioId: Types.ObjectId;
 
   @Prop({ type: Boolean, required: false })

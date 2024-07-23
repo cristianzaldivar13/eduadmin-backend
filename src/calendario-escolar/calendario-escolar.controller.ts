@@ -10,7 +10,7 @@ export class CalendarioEscolarController {
   constructor(private readonly calendarioEscolarService: CalendarioEscolarService) {}
 
   @Post('crearCalendarioEscolar')
-  crearCalendarioEscolar(@Body() crearCalendarioEscolarDto: CrearCalendarioEscolarDto) {
-    return this.calendarioEscolarService.crearCalendarioEscolar(crearCalendarioEscolarDto);
+  crear(@Body() crearCalendarioEscolarDto: CrearCalendarioEscolarDto) {
+    return this.calendarioEscolarService.crear(crearCalendarioEscolarDto);
   }
 }

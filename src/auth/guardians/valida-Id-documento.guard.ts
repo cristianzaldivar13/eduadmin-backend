@@ -26,12 +26,12 @@ export class ValidaIdDocumentoGuard implements CanActivate {
       const document = await this.connection.collection(collectionName).findOne({ _id: new Types.ObjectId(id) });
 
       if (!document) {
-        throw new BadRequestException(`El id ${id} no existe en la colección ${collectionName}`);
+        throw new BadRequestException(`El id ${id} no existe.`);
       }
 
       return true;
     } catch (error) {
-      throw new BadRequestException(`Error al buscar el documento: ${error.message}`);
+      throw new BadRequestException(`Error al buscar el registro. ${error.message}`);
     }
   }
 }

@@ -19,9 +19,7 @@ export class AsistenciasService {
     private readonly asistenciaModel: Model<Asistencia>,
   ) {}
 
-  async crearAsistencia(
-    crearAsistenciaDto: CrearAsistenciaDto,
-  ): Promise<Asistencia> {
+  async crear(crearAsistenciaDto: CrearAsistenciaDto): Promise<Asistencia> {
     try {
       const nuevaAsistencia = new this.asistenciaModel(crearAsistenciaDto);
       return await nuevaAsistencia.save();
@@ -30,7 +28,7 @@ export class AsistenciasService {
     }
   }
 
-  async crearAsistenciaQr(QR: any): Promise<Asistencia> {
+  async crearQr(QR: any): Promise<Asistencia> {
     try {
       // Decodifica el QR base64 y extrae los datos JSON
       const qrData = await this.leerQrDesdeBase64(QR.qr);
@@ -40,15 +38,15 @@ export class AsistenciasService {
         throw new Error('El contenido del QR no es un JSON válido');
       }
 
-      let asistenciaData: CrearAsistenciaDto = qrData;
-      asistenciaData.ingreso = true;
-      asistenciaData.egreso = false;
+      let crearAsistenciaDto: CrearAsistenciaDto = qrData;
+      crearAsistenciaDto.ingreso = true;
+      crearAsistenciaDto.egreso = false;
 
       const asistencia = await this.asistenciaModel.find({
-        usuarioId: new Types.ObjectId(asistenciaData.usuarioId),
-        escuelaId: new Types.ObjectId(asistenciaData.escuelaId),
-        ingreso: asistenciaData.ingreso,
-        egreso: asistenciaData.egreso,
+        usuarioId: new Types.ObjectId(crearAsistenciaDto.usuarioId),
+        escuelaId: new Types.ObjectId(crearAsistenciaDto.escuelaId),
+        ingreso: crearAsistenciaDto.ingreso,
+        egreso: crearAsistenciaDto.egreso,
       });
 
       if (asistencia.length) {
@@ -56,7 +54,7 @@ export class AsistenciasService {
       }
 
       // Crea una nueva instancia de asistencia y guárdala
-      const nuevaAsistencia = new this.asistenciaModel(asistenciaData);
+      const nuevaAsistencia = new this.asistenciaModel(crearAsistenciaDto);
       return await nuevaAsistencia.save();
     } catch (error) {
       throw new BadRequestException(
@@ -65,7 +63,7 @@ export class AsistenciasService {
     }
   }
 
-  async actualizarAsistenciaQr(QR: any): Promise<Asistencia> {
+  async actualizarQr(QR: any): Promise<Asistencia> {
     try {
       // Decodifica el QR base64 y extrae los datos JSON
       const qrData = await this.leerQrDesdeBase64(QR.qr);
@@ -138,7 +136,7 @@ export class AsistenciasService {
     }
   }
 
-  async obtenerAsistenciasPaginadas(
+  async obtenerPaginadas(
     _escuelaId: string,
     _grupoId: string,
     limit: number,

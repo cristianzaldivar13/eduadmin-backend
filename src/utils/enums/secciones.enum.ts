@@ -1,6 +1,7 @@
 export enum EnumSecciones {
   ADMINISTRACIONES = 'Administraciones',
   ASIGNATURAS = 'Asignaturas',
+  CALIFICACIONES = 'Calificaciones',
   GRUPOS = 'Grupos',
   ASISTENCIAS = 'Asistencias',
   BIBLIOTECAS = 'Bibliotecas',

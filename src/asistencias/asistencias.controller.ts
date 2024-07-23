@@ -26,8 +26,8 @@ export class AsistenciasController {
     JwtAuthGuard,
     JwtGuard,
   )
-  async crearAsistencia(@Body() crearAsistenciaDto: CrearAsistenciaDto) {
-    return await this.asistenciasService.crearAsistencia(crearAsistenciaDto);
+  async crear(@Body() crearAsistenciaDto: CrearAsistenciaDto) {
+    return await this.asistenciasService.crear(crearAsistenciaDto);
   }
 
   @Post(EnumVerbos.CREAR_QR)
@@ -38,8 +38,8 @@ export class AsistenciasController {
     JwtAuthGuard,
     JwtGuard,
   )
-  async crearAsistenciaQR(@Body() QR: any) {
-    return await this.asistenciasService.crearAsistenciaQr(QR);
+  async crearQr(@Body() QR: any) {
+    return await this.asistenciasService.crearQr(QR);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR_QR)
@@ -50,19 +50,19 @@ export class AsistenciasController {
     JwtAuthGuard,
     JwtGuard,
   )
-  async actualizarAsistenciaQr(@Body() QR: any) {
-    return await this.asistenciasService.actualizarAsistenciaQr(QR);
+  async actualizarQr(@Body() QR: any) {
+    return await this.asistenciasService.actualizarQr(QR);
   }
 
   @Get(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT, EnumRolesUsuario.PROFESOR)
-  async obtenerAsistenciasPaginadas(
+  async obtenerPaginadas(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,
     @Query('escuelaId') escuelaId?: string,
     @Query('escuelaId') grupoId?: string,
   ) {
-    return await this.asistenciasService.obtenerAsistenciasPaginadas(
+    return await this.asistenciasService.obtenerPaginadas(
       escuelaId,
       grupoId,
       limit,

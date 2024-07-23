@@ -10,7 +10,7 @@ export class RolesService {
     @InjectModel(Roles.name) private rolModel: Model<RolesDocument>
   ) {}
 
-  async crearRol(crearRolDto: CrearRolDto): Promise<Roles> {
+  async crear(crearRolDto: CrearRolDto): Promise<Roles> {
     const creadoRol = new this.rolModel(crearRolDto);
     return creadoRol.save();
   }

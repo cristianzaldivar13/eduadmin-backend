@@ -35,8 +35,8 @@ export class GruposController {
     JwtAuthGuard,
     JwtGuard,
   )
-  crearGrupo(@Body() crearGrupoDto: CrearGrupoDto) {
-    return this.gruposService.crearGrupo(crearGrupoDto);
+  crear(@Body() crearGrupoDto: CrearGrupoDto) {
+    return this.gruposService.crear(crearGrupoDto);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR)
@@ -47,19 +47,19 @@ export class GruposController {
     JwtAuthGuard,
     JwtGuard,
   )
-  actualizarGrupo(
+  actualizar(
     @Body() actualizarGrupoDto: ActualizarGrupoDto,
     @Param('id') id: string,
   ) {
-    return this.gruposService.actualizarGrupo(id, actualizarGrupoDto);
+    return this.gruposService.actualizar(id, actualizarGrupoDto);
   }
 
   @Get(EnumVerbos.PAGINAR)
-  obtenerGruposPaginados(
+  obtenerPaginados(
     @Query('limit', ParseIntPipe) limit: number,
     @Query('skip', ParseIntPipe) skip: number,
     @Query('escuelaId') escuelaId?: string,
   ) {
-    return this.gruposService.obtenerGruposPaginados(escuelaId, limit, skip);
+    return this.gruposService.obtenerPaginados(escuelaId, limit, skip);
   }
 }
