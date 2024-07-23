@@ -3,10 +3,11 @@ import { EnumSexualidad } from '../../utils/enums/sexualidad.enum';
 import { EnumNivel } from '../../utils/enums/niveles.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
 import { Types, Document } from 'mongoose';
+import { EnumSecciones } from '../../utils/enums/secciones.enum';
 
 export type ProfesorDocument = Profesor & Document;
 
-@Schema()
+@Schema({ collection: EnumSecciones.PROFESORES.toLocaleLowerCase() }) 
 export class Profesor {
   @Prop({ type: Types.ObjectId, required: true })
   usuarioId: Types.ObjectId;

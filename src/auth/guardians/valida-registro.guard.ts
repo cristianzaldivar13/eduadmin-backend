@@ -89,14 +89,27 @@ export class ValidaRegistroGuard implements CanActivate {
             break;
 
           case EnumSecciones.USUARIOS.toLowerCase():
+            if (!documento?.rol) {
+              throw new BadRequestException(
+                `El id ${id} de usuario asignado no existe.`,
+              );
+            }
             if (
-              documento.rol != EnumRolesUsuario.ESTUDIANTE &&
+              documento?.rol != EnumRolesUsuario.ESTUDIANTE &&
               url === EnumSecciones.ESTUDIANTES
             ) {
               throw new BadRequestException(
                 `El id ${id} de usuario asignado debe pertenecer a un tipo Estudiante.`,
               );
-              break;
+            }
+
+            if (
+              documento?.rol !== EnumRolesUsuario.PROFESOR &&
+              url === EnumSecciones.PROFESORES
+            ) {
+              throw new BadRequestException(
+                `El id ${id} de usuario asignado debe pertenecer a un tipo Profesor.`,
+              );
             }
             break;
 

@@ -1,10 +1,11 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
+import { EnumSecciones } from '../../utils/enums/secciones.enum';
 
 export type CalendarioEscolarDocument = CalendarioEscolar & Document;
 
-@Schema()
+@Schema({ collection: EnumSecciones.CALENDARIO.toLocaleLowerCase() }) 
 export class CalendarioEscolar {
   @Prop({ required: true })
   nombre: string;

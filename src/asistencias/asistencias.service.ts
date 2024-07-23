@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Asistencia } from './models/asistencia.model';
@@ -38,6 +42,18 @@ export class AsistenciasService {
 
       let asistenciaData: CrearAsistenciaDto = qrData;
       asistenciaData.ingreso = true;
+      asistenciaData.egreso = false;
+
+      const asistencia = await this.asistenciaModel.find({
+        usuarioId: new Types.ObjectId(asistenciaData.usuarioId),
+        escuelaId: new Types.ObjectId(asistenciaData.escuelaId),
+        ingreso: asistenciaData.ingreso,
+        egreso: asistenciaData.egreso,
+      });
+
+      if (asistencia.length) {
+        throw new ConflictException('El registro de ingreso ya existe');
+      }
 
       // Crea una nueva instancia de asistencia y guárdala
       const nuevaAsistencia = new this.asistenciaModel(asistenciaData);
@@ -64,15 +80,44 @@ export class AsistenciasService {
       // Define los datos de actualización
       let actualizarAsistenciaDto: ActualizarAsistenciaDto = {
         ...qrData,
-        egreso: true,
+        egreso: false,
+        ingreso: true,
       };
 
+      const asistencia = await this.asistenciaModel.find({
+        usuarioId: new Types.ObjectId(actualizarAsistenciaDto.usuarioId),
+        escuelaId: new Types.ObjectId(actualizarAsistenciaDto.escuelaId),
+        ingreso: actualizarAsistenciaDto.ingreso,
+        egreso: actualizarAsistenciaDto.egreso,
+      });
+
+      if (!asistencia.length) {
+        throw new ConflictException('El registro de ingreso no existe');
+      }
+
+      actualizarAsistenciaDto.egreso = true;
+
       // Actualiza la asistencia
+      const fechaActual = new Date();
+      const añoActual = fechaActual.getFullYear();
+      const mesActual = (fechaActual.getMonth() + 1)
+        .toString()
+        .padStart(2, '0'); // Los meses en JavaScript son 0-indexados
+      const diaActual = fechaActual.getDate().toString().padStart(2, '0');
       const updatedAsistencia = await this.asistenciaModel
         .findOneAndUpdate(
           {
             usuarioId: new Types.ObjectId(actualizarAsistenciaDto.usuarioId),
             escuelaId: new Types.ObjectId(actualizarAsistenciaDto.escuelaId),
+            ingreso: actualizarAsistenciaDto.ingreso,
+            egreso: false,
+            $expr: {
+              $and: [
+                { $eq: [{ $year: '$fechaCreacion' }, añoActual] },
+                { $eq: [{ $month: '$fechaCreacion' }, mesActual] },
+                { $eq: [{ $dayOfMonth: '$fechaCreacion' }, diaActual] },
+              ],
+            },
           },
           actualizarAsistenciaDto,
         )

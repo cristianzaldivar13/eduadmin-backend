@@ -19,6 +19,7 @@ import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
+import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 
@@ -42,6 +43,7 @@ export class ProfesoresController {
   @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(
+    ValidaIdDocumentoGuard,
     ValidarIdsDocumentosGuard,
     ValidaRegistroGuard,
     JwtAuthGuard,
@@ -51,10 +53,7 @@ export class ProfesoresController {
     @Body() actualizarProfesoreDto: ActualizarProfesoreDto,
     @Param('id') id: string,
   ) {
-    return this.profesoresService.actualizarProfesor(
-      id,
-      actualizarProfesoreDto,
-    );
+    return this.profesoresService.actualizarProfesor(id, actualizarProfesoreDto);
   }
 
   @Get(EnumVerbos.PAGINAR)
