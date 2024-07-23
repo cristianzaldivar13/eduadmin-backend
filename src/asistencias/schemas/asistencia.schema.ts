@@ -1,6 +1,6 @@
 import { SchemaFactory } from '@nestjs/mongoose';
 import { Asistencia } from '../models/asistencia.model';
-import { Types } from 'mongoose';
+import { model, Types } from 'mongoose';
 
 export const AsistenciaSchema = SchemaFactory.createForClass(Asistencia);
 
@@ -59,3 +59,5 @@ AsistenciaSchema.pre(
     this.findOneAndUpdate({}, { $inc: { __v: 1 } }, { new: true });
   },
 );
+
+export const AsistenciaModel = model(Asistencia.name, AsistenciaSchema);

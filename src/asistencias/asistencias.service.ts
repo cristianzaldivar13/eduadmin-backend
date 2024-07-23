@@ -49,10 +49,7 @@ export class AsistenciasService {
     }
   }
 
-  async actualizarAsistenciaQr(
-    QR: any,
-    actualizarAsistenciaDto?: ActualizarAsistenciaDto,
-  ): Promise<Asistencia> {
+  async actualizarAsistenciaQr(QR: any): Promise<Asistencia> {
     try {
       // Decodifica el QR base64 y extrae los datos JSON
       const qrData = await this.leerQrDesdeBase64(QR.qr);
@@ -65,7 +62,7 @@ export class AsistenciasService {
       }
 
       // Define los datos de actualización
-      actualizarAsistenciaDto = {
+      let actualizarAsistenciaDto: ActualizarAsistenciaDto = {
         ...qrData,
         egreso: true,
       };
@@ -83,7 +80,9 @@ export class AsistenciasService {
 
       // Verifica si se actualizó el documento
       if (!updatedAsistencia) {
-        throw new BadRequestException('No se encontró la asistencia para actualizar');
+        throw new BadRequestException(
+          'No se encontró la asistencia para actualizar',
+        );
       }
 
       return updatedAsistencia;
