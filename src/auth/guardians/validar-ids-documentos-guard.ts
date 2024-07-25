@@ -18,6 +18,7 @@ const excepciones = {
   asignatura: 'asignaturas',
   calendario: 'calendarios',
   rol: 'roles',
+  menu: 'menus',
 };
 
 @Injectable()

@@ -20,4 +20,5 @@ export enum EnumSecciones {
   USUARIOS = 'Usuarios',
   VISITANTES = 'Visitantes',
   AUTH = 'Auth',
+  MENUS = 'Menus',
 }
