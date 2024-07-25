@@ -17,6 +17,7 @@ const excepciones = {
   asistencia: 'asistencias',
   asignatura: 'asignaturas',
   calendario: 'calendarios',
+  rol: 'roles',
 };
 
 @Injectable()
@@ -64,12 +65,12 @@ export class ValidarIdsDocumentosGuard implements CanActivate {
 
           if (!document) {
             throw new BadRequestException(
-              `El id ${id} no existe en ${collectionName}.`,
+              `El Id ${id} no existe en ${collectionName}.`,
             );
           }
         } catch (error) {
           throw new BadRequestException(
-            `Error al buscar el registro del ID ${id}: ${error.message}`,
+            `Error al buscar el registro del Id ${id}: ${error.message}`,
           );
         }
       }),
