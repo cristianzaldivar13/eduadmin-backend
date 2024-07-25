@@ -30,15 +30,64 @@ export class ValidarIdsDocumentosGuard implements CanActivate {
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idFields = Object.keys(body).filter((key) => key.endsWith('Id'));
 
-    for (const field of idFields) {
-      const id = body[field];
-      if (!id) {
-        throw new BadRequestException(`Debe enviar un valor para ${field}.`);
+    // Filtra los campos de id en los filtros
+    const idFiltersFields = body?.filtros || {};
+
+    // Validar los IDs
+    await Promise.all(
+      idFields.map(async (field) => {
+        const id = body[field];
+        if (!id) {
+          throw new BadRequestException(`Debe enviar un valor para ${field}.`);
+        }
+
+        if (!Types.ObjectId.isValid(id)) {
+          throw new BadRequestException(`El Id ${id} no es válido`);
+        }
+
+        let collectionName = this.getCollectionName(field);
+
+        // Normalizar el nombre de la colección para ciertos casos especiales
+        if (
+          collectionName.toLowerCase() ===
+            EnumSecciones.PROFESORES.toLowerCase() ||
+          collectionName.toLowerCase() ===
+            EnumSecciones.ESTUDIANTES.toLowerCase()
+        ) {
+          collectionName = EnumSecciones.USUARIOS.toLowerCase();
+        }
+
+        try {
+          const document = await this.connection
+            .collection(collectionName)
+            .findOne({ _id: new Types.ObjectId(id) });
+
+          if (!document) {
+            throw new BadRequestException(
+              `El id ${id} no existe en ${collectionName}.`,
+            );
+          }
+        } catch (error) {
+          throw new BadRequestException(
+            `Error al buscar el registro del ID ${id}: ${error.message}`,
+          );
+        }
+      }),
+    );
+
+    // Verificar filtros de IDs si existen
+    for (const [key, value] of Object.entries(idFiltersFields)) {
+      const id: any = value;
+      const idField = key.endsWith('Id');
+
+      if (!Types.ObjectId.isValid(id) && idField) {
+        throw new BadRequestException(`El Id ${id} no es válido`);
       }
 
-      let collectionName = this.getCollectionName(field);
+      if (idField) {
+        let collectionName = this.getCollectionName(key);
 
-      try {
+        // Normalizar el nombre de la colección para ciertos casos especiales
         if (
           collectionName.toLowerCase() ===
             EnumSecciones.PROFESORES.toLowerCase() ||
@@ -53,12 +102,10 @@ export class ValidarIdsDocumentosGuard implements CanActivate {
           .findOne({ _id: new Types.ObjectId(id) });
 
         if (!document) {
-          throw new BadRequestException(`El id ${id} no existe.`);
+          throw new BadRequestException(
+            `El id ${id} no existe en ${collectionName}.`,
+          );
         }
-      } catch (error) {
-        throw new BadRequestException(
-          `Error al buscar el registro Ids. ${error.message}`,
-        );
       }
     }
 
