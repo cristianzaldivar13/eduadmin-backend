@@ -35,6 +35,7 @@ async function bootstrap() {
     .addTag('Roles')
     .addTag('Tutores')
     .addTag('Usuarios')
+    .addTag('Menus')
     .addTag('Visitantes')
     .addTag('Auth')
     .build();

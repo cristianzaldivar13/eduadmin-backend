@@ -9,7 +9,7 @@ export class Menu {
   @Prop({ type: Types.ObjectId, required: true })
   escuelaId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, required: false })
   menuId: Types.ObjectId;
 
   @Prop({ type: String, required: true })

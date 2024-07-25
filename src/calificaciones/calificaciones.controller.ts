@@ -2,11 +2,9 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
   Param,
   Patch,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CalificacionesService } from './calificaciones.service';

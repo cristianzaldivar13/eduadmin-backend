@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsBoolean, IsMongoId, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, IsBoolean, IsMongoId, IsEnum, IsOptional } from 'class-validator';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
 import { Types } from 'mongoose';
 
@@ -7,9 +7,9 @@ export class CrearMenuDto {
   @IsMongoId()
   escuelaId: Types.ObjectId;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
-  menuId: Types.ObjectId;
+  menuId: Types.ObjectId = null;
 
   @IsNotEmpty()
   @IsString()
