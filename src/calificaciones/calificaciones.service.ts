@@ -51,33 +51,26 @@ export class CalificacionesService {
       .exec();
   }
 
-  private convertirIdsAFiltros(filtros: any) {
-    for (const key in filtros) {
-      if (filtros.hasOwnProperty(key)) {
-        // Verifica si la clave termina en 'Id' y si el valor es un ID válido
-        if (key.endsWith('Id') && Types.ObjectId.isValid(filtros[key])) {
-          filtros[key] = new Types.ObjectId(filtros[key]);
-        }
-      }
-    }
-    return filtros;
-  }
-
-  async obtenerPaginados(
+  async paginar(
     filtros: any,
     limit: number,
     skip: number,
     sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
   ) {
-    // Convierte IDs en los filtros
-    filtros = this.convertirIdsAFiltros(filtros);
+    const project = {
+      tipoEvaluacion: 1,
+      calificacion: 1,
+      comentarios: 1,
+      fechaCreacion: 1,
+    }; // Proyecta solo ciertos campos
 
-    return this.paginacionService.paginate(
+    return this.paginacionService.paginar(
       EnumSecciones.CALIFICACIONES.toLowerCase(), // Nombre de la colección
       filtros, // Filtros
       limit, // Límite
       skip, // Salto
       sort, // Ordenación
+      project, // Resultado
     );
   }
 

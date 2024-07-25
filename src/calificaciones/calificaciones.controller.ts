@@ -55,7 +55,7 @@ export class CalificacionesController {
   }
 
   @Post(EnumVerbos.PAGINAR)
-  async obtenerPaginados(@Body() body: PaginacionDto) {
+  async paginar(@Body() body: PaginacionDto) {
     const { limit, skip, filtros } = body;
 
     if (limit && limit <= 0) {
@@ -65,7 +65,7 @@ export class CalificacionesController {
       throw new BadRequestException('El salto debe ser mayor o igual a 0');
     }
 
-    return this.calificacionesService.obtenerPaginados(
+    return this.calificacionesService.paginar(
       filtros || {}, // Pasa los filtros genéricos
       limit,
       skip,
