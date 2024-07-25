@@ -55,6 +55,13 @@ export class CalificacionesController {
   }
 
   @Post(EnumVerbos.PAGINAR)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(
+    ValidarIdsDocumentosGuard,
+    ValidaRegistroGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
   async paginar(@Body() body: PaginacionDto) {
     const { limit, skip, filtros } = body;
 
