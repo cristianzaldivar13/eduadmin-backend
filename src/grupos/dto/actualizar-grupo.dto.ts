@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CrearGrupoDto } from './create-grupo.dto';
+import { CrearGrupoDto } from './crear-grupo.dto';
 import { IsOptional, IsMongoId, IsEnum, IsArray } from 'class-validator';
 import { EnumNivel } from '../../utils/enums/niveles.enum';
 import { Types } from 'mongoose';

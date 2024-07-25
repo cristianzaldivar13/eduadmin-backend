@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CrearEscuelaDto } from './create-escuela.dto';
+import { CrearEscuelaDto } from './crear-escuela.dto';
 import { IsOptional, IsDate, IsEmail, IsEnum, IsNumber, IsString } from 'class-validator';
 import { EnumNivel } from "../../utils/enums/niveles.enum";
 

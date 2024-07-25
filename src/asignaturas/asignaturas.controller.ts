@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AsignaturasService } from './asignaturas.service';
-import { CrearAsignaturaDto } from './dto/create-asignatura.dto';
+import { CrearAsignaturaDto } from './dto/crear-asignatura.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';

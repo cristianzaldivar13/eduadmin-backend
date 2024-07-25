@@ -4,8 +4,6 @@ import { ReportesModule } from './reportes/reportes.module';
 import { FinanzasModule } from './finanzas/finanzas.module';
 import { VisitantesModule } from './visitantes/visitantes.module';
 import { FamiliaresModule } from './tutores/tutores.module';
-import { AdministracionesModule } from './administraciones/administraciones.module';
-import { ComunicacionesModule } from './comunicaciones/comunicaciones.module';
 import { AsistenciasModule } from './asistencias/asistencias.module';
 import { EventosModule } from './eventos/eventos.module';
 import { BibliotecasModule } from './bibliotecas/bibliotecas.module';
@@ -20,6 +18,7 @@ import { EscuelasModule } from './escuelas/escuelas.module';
 import { GruposModule } from './grupos/grupos.module';
 import { CalificacionesModule } from './calificaciones/calificaciones.module';
 import { PaginacionService } from './utils/servicios/paginacion.service';
+import { MenusModule } from './menus/menus.module';
 
 @Module({
   imports: [
@@ -29,8 +28,6 @@ import { PaginacionService } from './utils/servicios/paginacion.service';
     FinanzasModule,
     VisitantesModule,
     FamiliaresModule,
-    AdministracionesModule,
-    ComunicacionesModule,
     AsistenciasModule,
     EventosModule,
     BibliotecasModule,
@@ -44,6 +41,7 @@ import { PaginacionService } from './utils/servicios/paginacion.service';
     EscuelasModule,
     GruposModule,
     CalificacionesModule,
+    MenusModule,
   ],
   controllers: [],
   providers: [PaginacionService,],

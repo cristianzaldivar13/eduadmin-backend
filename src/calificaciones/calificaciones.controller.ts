@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CalificacionesService } from './calificaciones.service';
-import { ActualizarCalificacioneDto } from './dto/update-calificacion.dto';
-import { CrearCalificacionDto } from './dto/create-calificacion.dto';
+import { ActualizarCalificacioneDto } from './dto/actualizar-calificacion.dto';
+import { CrearCalificacionDto } from './dto/crear-calificacion.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';

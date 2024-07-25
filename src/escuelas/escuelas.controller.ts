@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { EscuelasService } from './escuelas.service';
-import { CrearEscuelaDto } from './dto/create-escuela.dto';
+import { CrearEscuelaDto } from './dto/crear-escuela.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
@@ -16,7 +16,7 @@ import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { Role } from '../auth/decorators/Role.decorator';
-import { ActualizarEscuelaDto } from './dto/update-escuela.dto';
+import { ActualizarEscuelaDto } from './dto/actualizar-escuela.dto';
 
 @ApiTags(EnumSecciones.ESCUELAS)
 @Controller(EnumSecciones.ESCUELAS)

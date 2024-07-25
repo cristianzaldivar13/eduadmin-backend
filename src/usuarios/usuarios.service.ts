@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { CrearUsuarioDto } from './dto/create-usuario.dto';
+import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
 import * as QRCode from 'qrcode';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
-import { ActualizarUsuarioDto } from './dto/update-usuario.dto';
+import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 
 @Injectable()
 export class UsuariosService {

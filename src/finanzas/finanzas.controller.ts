@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { FinanzasService } from './finanzas.service';
-import { CreateFinanzaDto } from './dto/create-finanza.dto';
-import { UpdateFinanzaDto } from './dto/update-finanza.dto';
+import { CreateFinanzaDto } from './dto/crear-finanza.dto';
+import { UpdateFinanzaDto } from './dto/actualizar-finanza.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 

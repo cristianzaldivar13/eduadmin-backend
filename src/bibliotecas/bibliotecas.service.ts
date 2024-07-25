@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBibliotecaDto } from './dto/create-biblioteca.dto';
-import { UpdateBibliotecaDto } from './dto/update-biblioteca.dto';
+import { CreateBibliotecaDto } from './dto/crear-biblioteca.dto';
+import { UpdateBibliotecaDto } from './dto/actualizar-biblioteca.dto';
 
 @Injectable()
 export class BibliotecasService {

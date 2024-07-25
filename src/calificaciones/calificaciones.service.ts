@@ -3,8 +3,8 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
-import { CrearCalificacionDto } from './dto/create-calificacion.dto';
-import { ActualizarCalificacioneDto } from './dto/update-calificacion.dto';
+import { CrearCalificacionDto } from './dto/crear-calificacion.dto';
+import { ActualizarCalificacioneDto } from './dto/actualizar-calificacion.dto';
 import { Calificacion } from './models/calificacion.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';

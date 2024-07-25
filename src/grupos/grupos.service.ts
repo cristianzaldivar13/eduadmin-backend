@@ -3,8 +3,8 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
-import { CrearGrupoDto } from './dto/create-grupo.dto';
-import { ActualizarGrupoDto } from './dto/update-grupo.dto';
+import { CrearGrupoDto } from './dto/crear-grupo.dto';
+import { ActualizarGrupoDto } from './dto/actualizar-grupo.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Grupo } from './models/grupo.model';
 import { Model, Types } from 'mongoose';

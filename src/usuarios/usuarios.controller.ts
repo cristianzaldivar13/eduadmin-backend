@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
-import { CrearUsuarioDto } from './dto/create-usuario.dto';
+import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 import { ValidaRolGuard } from '../auth/guardians/valida-rol.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { Role } from '../auth/decorators/Role.decorator';
@@ -17,7 +17,7 @@ import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.gu
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
-import { ActualizarUsuarioDto } from './dto/update-usuario.dto';
+import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 
 @ApiTags(EnumSecciones.USUARIOS)

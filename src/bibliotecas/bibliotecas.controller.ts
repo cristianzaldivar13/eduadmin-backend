@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { BibliotecasService } from './bibliotecas.service';
-import { CreateBibliotecaDto } from './dto/create-biblioteca.dto';
+import { CreateBibliotecaDto } from './dto/crear-biblioteca.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 

@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CrearAsistenciaDto } from './create-asistencia.dto';
+import { CrearAsistenciaDto } from './crear-asistencia.dto';
 import { IsOptional, IsMongoId, IsBoolean } from 'class-validator';
 import { Types } from 'mongoose';
 

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
-import { CrearAsignaturaDto } from './dto/create-Asignatura.dto';
+import { CrearAsignaturaDto } from './dto/crear-Asignatura.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Asignatura } from './models/asignatura.model';
 

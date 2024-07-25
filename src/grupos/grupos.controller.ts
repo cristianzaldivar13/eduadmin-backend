@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GruposService } from './grupos.service';
-import { CrearGrupoDto } from './dto/create-grupo.dto';
-import { ActualizarGrupoDto } from './dto/update-grupo.dto';
+import { CrearGrupoDto } from './dto/crear-grupo.dto';
+import { ActualizarGrupoDto } from './dto/actualizar-grupo.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { Role } from '../auth/decorators/Role.decorator';

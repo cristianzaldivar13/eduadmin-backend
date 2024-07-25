@@ -6,8 +6,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Asistencia } from './models/asistencia.model';
-import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
-import { ActualizarAsistenciaDto } from './dto/update-asistencia.dto';
+import { CrearAsistenciaDto } from './dto/crear-asistencia.dto';
+import { ActualizarAsistenciaDto } from './dto/actualizar-asistencia.dto';
 import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
 import { Buffer } from 'buffer';
 import jsQR from 'jsqr';

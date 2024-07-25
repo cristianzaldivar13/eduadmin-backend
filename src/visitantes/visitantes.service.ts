@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVisitanteDto } from './dto/create-visitante.dto';
-import { UpdateVisitanteDto } from './dto/update-visitante.dto';
+import { CrearVisitanteDto } from './dto/crear-visitante.dto';
+import { UpdateVisitanteDto } from './dto/actualizar-visitante.dto';
 
 @Injectable()
 export class VisitantesService {
-  create(createVisitanteDto: CreateVisitanteDto) {
+  create(createVisitanteDto: CrearVisitanteDto) {
     return 'This action adds a new visitante';
   }
 

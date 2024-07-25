@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateNotificacioneDto } from './create-notificacione.dto';
+import { CreateNotificacioneDto } from './crear-notificacione.dto';
 
 export class UpdateNotificacioneDto extends PartialType(CreateNotificacioneDto) {
   id: number;

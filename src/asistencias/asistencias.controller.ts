@@ -2,7 +2,7 @@
 
 import { Controller, Get, Post, Body, UseGuards, Req, Query, ParseIntPipe, Patch } from '@nestjs/common';
 import { AsistenciasService } from './asistencias.service';
-import { CrearAsistenciaDto } from './dto/create-asistencia.dto';
+import { CrearAsistenciaDto } from './dto/crear-asistencia.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';

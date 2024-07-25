@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CrearEscuelaDto } from './dto/create-escuela.dto';
+import { CrearEscuelaDto } from './dto/crear-escuela.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Escuelas } from './models/escuela.model';
-import { ActualizarEscuelaDto } from './dto/update-escuela.dto';
+import { ActualizarEscuelaDto } from './dto/actualizar-escuela.dto';
 
 @Injectable()
 export class EscuelasService {

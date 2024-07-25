@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CrearCalendarioEscolarDto } from './dto/create-calendario-escolar.dto';
+import { CrearCalendarioEscolarDto } from './dto/crear-calendario-escolar.dto';
 import { CalendarioEscolar } from './models/calendario-escolar.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CrearRolDto } from './dto/create-role.dto';
+import { CrearRolDto } from './dto/crear-role.dto';
 import { Roles, RolesDocument } from './models/roles.model';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CrearTutoresDto } from './dto/create-tutores.dto';
+import { CrearTutoresDto } from './dto/crear-tutores.dto';
 
 @Injectable()
 export class TutoresService {

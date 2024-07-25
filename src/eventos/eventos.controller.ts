@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { EventosService } from './eventos.service';
-import { CreateEventoDto } from './dto/create-evento.dto';
+import { CreateEventoDto } from './dto/crear-evento.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 

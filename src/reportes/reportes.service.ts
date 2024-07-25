@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReporteDto } from './dto/create-reporte.dto';
-import { UpdateReporteDto } from './dto/update-reporte.dto';
+import { CrearReporteDto } from './dto/crear-reporte.dto';
+import { UpdateReporteDto } from './dto/actualizar-reporte.dto';
 
 @Injectable()
 export class ReportesService {
-  create(createReporteDto: CreateReporteDto) {
+  create(createReporteDto: CrearReporteDto) {
     return 'This action adds a new reporte';
   }
 

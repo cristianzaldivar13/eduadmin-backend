@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CrearUsuarioDto } from './create-usuario.dto';
+import { CrearUsuarioDto } from './crear-usuario.dto';
 import { IsOptional, IsDate, IsMongoId } from 'class-validator';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
 import { EnumEstatus } from '../../utils/enums/estatus.enum';
