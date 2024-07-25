@@ -4,6 +4,7 @@ import { CalificacionesController } from './calificaciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Calificacion } from './models/calificacion.model';
 import { CalificacionSchema } from './schemas/calificacion.schema';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { CalificacionSchema } from './schemas/calificacion.schema';
     ]),
   ],
   controllers: [CalificacionesController],
-  providers: [CalificacionesService],
+  providers: [CalificacionesService, PaginacionService],
   exports: [CalificacionesService],
 })
 export class CalificacionesModule {}

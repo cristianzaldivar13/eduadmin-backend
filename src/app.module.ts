@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
 import { EscuelasModule } from './escuelas/escuelas.module';
 import { GruposModule } from './grupos/grupos.module';
 import { CalificacionesModule } from './calificaciones/calificaciones.module';
+import { PaginacionService } from './utils/servicios/paginacion.service';
 
 @Module({
   imports: [
@@ -45,6 +46,6 @@ import { CalificacionesModule } from './calificaciones/calificaciones.module';
     CalificacionesModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [PaginacionService,],
 })
 export class AppModule {}

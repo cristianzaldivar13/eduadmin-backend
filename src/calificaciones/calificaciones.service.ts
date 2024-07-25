@@ -1,15 +1,22 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CrearCalificacionDto } from './dto/create-calificacion.dto';
 import { ActualizarCalificacioneDto } from './dto/update-calificacion.dto';
 import { Calificacion } from './models/calificacion.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
 @Injectable()
 export class CalificacionesService {
   constructor(
     @InjectModel(Calificacion.name)
     private readonly calificacionModel: Model<Calificacion>,
+    private readonly paginacionService: PaginacionService,
   ) {}
 
   async crear(crearCalificacionDto: CrearCalificacionDto) {
@@ -44,6 +51,35 @@ export class CalificacionesService {
       .exec();
   }
 
+  private convertirIdsAFiltros(filtros: any) {
+    for (const key in filtros) {
+      if (filtros.hasOwnProperty(key)) {
+        // Verifica si la clave termina en 'Id' y si el valor es un ID válido
+        if (key.endsWith('Id') && Types.ObjectId.isValid(filtros[key])) {
+          filtros[key] = new Types.ObjectId(filtros[key]);
+        }
+      }
+    }
+    return filtros;
+  }
+
+  async obtenerPaginados(
+    filtros: any,
+    limit: number,
+    skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
+  ) {
+    // Convierte IDs en los filtros
+    filtros = this.convertirIdsAFiltros(filtros);
+
+    return this.paginacionService.paginate(
+      EnumSecciones.CALIFICACIONES.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+    );
+  }
 
   private async validaExistencia(crearCalificacionDto: CrearCalificacionDto) {
     return await this.calificacionModel

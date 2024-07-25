@@ -1,9 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CalificacionesService } from './calificaciones.service';
@@ -19,6 +22,7 @@ import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documen
 import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
+import { PaginacionDto } from '../utils/dtos/paginacion.dto';
 
 @ApiTags(EnumSecciones.CALIFICACIONES)
 @Controller(EnumSecciones.CALIFICACIONES)
@@ -47,6 +51,24 @@ export class CalificacionesController {
     return await this.calificacionesService.actualizar(
       id,
       actualizarCalificacioneDto,
+    );
+  }
+
+  @Post(EnumVerbos.PAGINAR)
+  async obtenerPaginados(@Body() body: PaginacionDto) {
+    const { limit, skip, filtros } = body;
+
+    if (limit && limit <= 0) {
+      throw new BadRequestException('El límite debe ser mayor que 0');
+    }
+    if (skip && skip < 0) {
+      throw new BadRequestException('El salto debe ser mayor o igual a 0');
+    }
+
+    return this.calificacionesService.obtenerPaginados(
+      filtros || {}, // Pasa los filtros genéricos
+      limit,
+      skip,
     );
   }
 }
