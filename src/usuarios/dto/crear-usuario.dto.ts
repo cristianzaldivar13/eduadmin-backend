@@ -10,7 +10,7 @@ export class CrearUsuarioDto {
   @IsMongoId()
   escuelaId: Types.ObjectId;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMongoId()
   grupoId: Types.ObjectId;
   
@@ -24,6 +24,10 @@ export class CrearUsuarioDto {
   @IsOptional()
   @IsArray()
   grupos: Array<Types.ObjectId>;
+
+  @IsOptional()
+  @IsArray()
+  menus: Array<Types.ObjectId>;
 
   @IsNotEmpty()
   @IsEmail()

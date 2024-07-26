@@ -16,6 +16,9 @@ export class Usuario {
   @Prop({ type: Array, required: false })
   grupos: Array<Types.ObjectId>;
 
+  @Prop({ type: Array, required: false })
+  menus: Array<Types.ObjectId>;
+
   @Prop({ type: String, required: true })
   matricula: string;
 

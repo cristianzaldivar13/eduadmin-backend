@@ -29,6 +29,12 @@ UsuarioSchema.pre<Usuario>('save', async function (next) {
     );
   }
 
+  if (schemaData.isModified('menus') && Array.isArray(schemaData.menus)) {
+    schemaData.menus = schemaData.menus.map(
+      (menu: any) => new Types.ObjectId(menu),
+    );
+  }
+
   if (schemaData.isModified('contrasena')) {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -56,6 +62,11 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
       (grupo: any) => new Types.ObjectId(grupo),
     );
   }
+  if (update.menus && Array.isArray(update.menus)) {
+    update.menus = update.menus.map(
+      (menu: any) => new Types.ObjectId(menu),
+    );
+  }
 
   if (update.$set) {
     if (update.$set.escuelaId && typeof update.$set.escuelaId === 'string') {
@@ -67,6 +78,11 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
     if (update.$set.grupos && Array.isArray(update.$set.grupos)) {
       update.$set.grupos = update.$set.grupos.map(
         (grupo: any) => new Types.ObjectId(grupo),
+      );
+    }
+    if (update.$set.menus && Array.isArray(update.$set.menus)) {
+      update.$set.menus = update.$set.menus.map(
+        (menu: any) => new Types.ObjectId(menu),
       );
     }
   }

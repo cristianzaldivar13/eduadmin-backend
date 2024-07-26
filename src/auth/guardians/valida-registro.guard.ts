@@ -160,6 +160,25 @@ export class ValidaRegistroGuard implements CanActivate {
               );
             }
           }
+
+          if (body?.menus) {
+            for (const idMenu of body.menus) {
+              if (!Types.ObjectId.isValid(idMenu)) {
+                throw new BadRequestException(
+                  `El Id ${idMenu} del menú no es válido`,
+                );
+              }
+              const asignatura = await this.connection
+                .collection(EnumSecciones.MENUS.toLowerCase())
+                .findOne({ _id: new Types.ObjectId(idMenu) });
+
+              if (!asignatura) {
+                throw new BadRequestException(
+                  `El Id ${idMenu} del menú no existe`,
+                );
+              }
+            }
+          }
         }
 
         break;

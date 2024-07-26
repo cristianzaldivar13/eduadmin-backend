@@ -19,6 +19,7 @@ import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
+import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 
 @ApiTags(EnumSecciones.USUARIOS)
 @Controller(EnumSecciones.USUARIOS)
@@ -31,7 +32,7 @@ export class UsuariosController {
     EnumRolesUsuario.SECRETARIO,
     EnumRolesUsuario.DIRECTOR,
   )
-  @UseGuards(ValidarIdsDocumentosGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(ValidarIdsDocumentosGuard, ValidaRegistroGuard, ValidaRolGuard, JwtAuthGuard, JwtGuard)
   async crear(@Body() crearUsuarioDto: CrearUsuarioDto) {
     return await this.usuariosService.crear(crearUsuarioDto);
   }

@@ -66,12 +66,12 @@ export class ValidarIdsDocumentosGuard implements CanActivate {
 
           if (!document) {
             throw new BadRequestException(
-              `El Id ${id} no existe en ${collectionName}.`,
+              `El Id ${id} no existe.`,
             );
           }
         } catch (error) {
           throw new BadRequestException(
-            `Error al buscar el registro del Id ${id}: ${error.message}`,
+            `Error al buscar el registro: ${error.message}`,
           );
         }
       }),
@@ -105,7 +105,7 @@ export class ValidarIdsDocumentosGuard implements CanActivate {
 
         if (!document) {
           throw new BadRequestException(
-            `El id ${id} no existe en ${collectionName}.`,
+            `El id ${id} no existe.`,
           );
         }
       }
