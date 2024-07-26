@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AsignaturasService } from './asignaturas.service';
 import { CrearAsignaturaDto } from './dto/crear-asignatura.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,6 +17,8 @@ import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
+import { PaginacionDto } from '../utils/dtos/paginacion.dto';
+import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 
 @ApiTags(EnumSecciones.ASIGNATURAS)
 @Controller(EnumSecciones.ASIGNATURAS)
@@ -16,7 +26,11 @@ export class AsignaturasController {
   constructor(private readonly asignaturasService: AsignaturasService) {}
 
   @Post(EnumVerbos.CREAR)
-  @Role(EnumRolesUsuario.ROOT, EnumRolesUsuario.SECRETARIO, EnumRolesUsuario.DIRECTOR)
+  @Role(
+    EnumRolesUsuario.ROOT,
+    EnumRolesUsuario.SECRETARIO,
+    EnumRolesUsuario.DIRECTOR,
+  )
   @UseGuards(ValidarIdsDocumentosGuard, JwtAuthGuard, JwtGuard)
   crear(@Body() crearAsignaturaDto: CrearAsignaturaDto) {
     return this.asignaturasService.crear(crearAsignaturaDto);
@@ -27,8 +41,28 @@ export class AsignaturasController {
     return this.asignaturasService.obtenerPorId(id);
   }
 
-  @Get(EnumVerbos.CONSULTAR)
-  obtener() {
-    return this.asignaturasService.obtener();
+  @Post(EnumVerbos.PAGINAR)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(
+    ValidarIdsDocumentosGuard,
+    ValidaRegistroGuard,
+    JwtAuthGuard,
+    JwtGuard,
+  )
+  async paginar(@Body() body: PaginacionDto) {
+    const { limit, skip, filtros } = body;
+
+    if (limit && limit <= 0) {
+      throw new BadRequestException('El límite debe ser mayor que 0');
+    }
+    if (skip && skip < 0) {
+      throw new BadRequestException('El salto debe ser mayor o igual a 0');
+    }
+
+    return this.asignaturasService.paginar(
+      filtros || {}, // Pasa los filtros genéricos
+      limit,
+      skip,
+    );
   }
 }

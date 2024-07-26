@@ -4,6 +4,7 @@ import { AsignaturasController } from './asignaturas.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AsignaturaSchema } from './schemas/asignatura.schema';
 import { Asignatura } from './models/asignatura.model';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { Asignatura } from './models/asignatura.model';
     ]),
   ],
   controllers: [AsignaturasController],
-  providers: [AsignaturasService],
+  providers: [AsignaturasService, PaginacionService],
   exports: [AsignaturasService],
 })
 export class AsignaturasModule {}
