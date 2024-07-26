@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { CrearAsignaturaDto } from './dto/crear-Asignatura.dto';
+import { ActualizarAsignaturaDto } from './dto/actualizar-asignatura.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Asignatura } from './models/asignatura.model';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
@@ -21,6 +22,16 @@ export class AsignaturasService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async actualizar(
+    id: string,
+    actualizarAsignaturaDto: ActualizarAsignaturaDto,
+  ) {
+    return await this.asignaturaModel.findOneAndUpdate(
+      new Types.ObjectId(id),
+      actualizarAsignaturaDto,
+    );
   }
 
   async obtenerPorId(id: string) {

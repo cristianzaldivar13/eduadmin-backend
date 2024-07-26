@@ -17,8 +17,6 @@ import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { Role } from '../auth/decorators/Role.decorator';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
-import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
-import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 
@@ -29,24 +27,14 @@ export class GruposController {
 
   @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(
-    ValidaRegistroGuard,
-    ValidarIdsDocumentosGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   crear(@Body() crearGrupoDto: CrearGrupoDto) {
     return this.gruposService.crear(crearGrupoDto);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(
-    ValidarIdsDocumentosGuard,
-    ValidaRegistroGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   actualizar(
     @Body() actualizarGrupoDto: ActualizarGrupoDto,
     @Param('id') id: string,

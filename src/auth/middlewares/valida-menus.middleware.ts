@@ -6,12 +6,11 @@ import {
 import { InjectConnection } from '@nestjs/mongoose';
 import { Request, Response, NextFunction } from 'express';
 import { Connection, Types } from 'mongoose';
-import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 import { EnumVerbos } from '../../utils/enums/verbos.enum';
 import { EnumSecciones } from '../../utils/enums/secciones.enum';
 
 @Injectable()
-export class ValidaAsistenciasMiddleware implements NestMiddleware {
+export class ValidaMenusMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -24,7 +23,7 @@ export class ValidaAsistenciasMiddleware implements NestMiddleware {
         throw new BadRequestException('Debe enviar el id.');
       }
 
-      const collectionName = EnumSecciones.ASISTENCIAS.toLowerCase();
+      const collectionName = EnumSecciones.MENUS.toLowerCase();
 
       try {
         const document = await this.connection
@@ -54,22 +53,37 @@ export class ValidaAsistenciasMiddleware implements NestMiddleware {
       if (!Types.ObjectId.isValid(id) && id) {
         throw new BadRequestException(`El Id ${id} no es válido`);
       }
-      if (
-        req.body?.tipoAsistencia == EnumTipoAsistencia.CLASE &&
-        !req.body?.asignaturaId
-      ) {
-        throw new BadRequestException(
-          `Falta enviar el Id de la asignatura para la asistencia de tipo ${EnumTipoAsistencia.CLASE}.`,
-        );
-      }
 
       const nombreColeccion = campo.replace(/Id$/, 's');
-      const document = await this.connection
+
+      // Obtiene el registro por su id
+      let documento = await this.connection
         .collection(nombreColeccion)
         .findOne({ _id: new Types.ObjectId(id) });
 
-      if (!document) {
+      if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    }
+
+    // Validar que si subMenu es true, se debe proporcionar menuId
+    if (req.body.subMenu) {
+      if (!req.body.menuId) {
+        throw new BadRequestException(
+          'Se requiere menuId cuando subMenu es verdadero',
+        );
+      }
+      // Asegúrate de que menuId sea un ObjectId válido
+      if (!Types.ObjectId.isValid(req.body.menuId)) {
+        throw new BadRequestException('El Id del menú no es válido');
+      }
+      req.body.menuId = new Types.ObjectId(req.body.menuId);
+    } else {
+      // Si subMenu es false y menuId es proporcionado, arroja error
+      if (req.body.menuId) {
+        throw new BadRequestException(
+          'No se debe proporcionar menuId cuando subMenu es falso',
+        );
       }
     }
 

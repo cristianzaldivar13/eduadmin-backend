@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -16,9 +17,8 @@ import { Role } from '../auth/decorators/Role.decorator';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
-import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { PaginacionDto } from '../utils/dtos/paginacion.dto';
-import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
+import { ActualizarAsignaturaDto } from './dto/actualizar-asignatura.dto';
 
 @ApiTags(EnumSecciones.ASIGNATURAS)
 @Controller(EnumSecciones.ASIGNATURAS)
@@ -31,9 +31,22 @@ export class AsignaturasController {
     EnumRolesUsuario.SECRETARIO,
     EnumRolesUsuario.DIRECTOR,
   )
-  @UseGuards(ValidarIdsDocumentosGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(JwtAuthGuard, JwtGuard)
   crear(@Body() crearAsignaturaDto: CrearAsignaturaDto) {
     return this.asignaturasService.crear(crearAsignaturaDto);
+  }
+
+  @Patch(EnumVerbos.ACTUALIZAR)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  async actualizar(
+    @Body() actualizarAsignaturaDto: ActualizarAsignaturaDto,
+    @Param('id') id: string,
+  ) {
+    return await this.asignaturasService.actualizar(
+      id,
+      actualizarAsignaturaDto,
+    );
   }
 
   @Get(EnumVerbos.CONSULTAR_POR_ID)
@@ -43,12 +56,7 @@ export class AsignaturasController {
 
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(
-    ValidarIdsDocumentosGuard,
-    ValidaRegistroGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   async paginar(@Body() body: PaginacionDto) {
     const { limit, skip, filtros } = body;
 

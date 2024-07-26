@@ -20,12 +20,6 @@ export class MenusService {
   ) {}
 
   async crear(crearMenuDto: CrearMenuDto) {
-    if (await this.validaExistencia(crearMenuDto)) {
-      throw new ConflictException(
-        'Ya ha sido registrada anteriormente este menú',
-      );
-    }
-
     const nuevoMenu = new this.menuModel({
       ...crearMenuDto,
     });
@@ -73,45 +67,4 @@ export class MenusService {
     );
   }
 
-  private async validaExistencia(crearMenuDto: CrearMenuDto) {
-    // Validar que el ID de la escuela es válido
-    if (!Types.ObjectId.isValid(crearMenuDto.escuelaId)) {
-      throw new BadRequestException('El Id de la escuela no es válido');
-    }
-
-    // Validar que si subMenu es true, se debe proporcionar menuId
-    if (crearMenuDto.subMenu) {
-      if (!crearMenuDto.menuId) {
-        throw new BadRequestException(
-          'Se requiere menuId cuando subMenu es verdadero',
-        );
-      }
-      // Asegúrate de que menuId sea un ObjectId válido
-      if (!Types.ObjectId.isValid(crearMenuDto.menuId)) {
-        throw new BadRequestException('El Id del menú no es válido');
-      }
-      crearMenuDto.menuId = new Types.ObjectId(crearMenuDto.menuId);
-    } else {
-      // Si subMenu es false y menuId es proporcionado, arroja error
-      if (crearMenuDto.menuId) {
-        throw new BadRequestException(
-          'No se debe proporcionar menuId cuando subMenu es falso',
-        );
-      }
-    }
-
-    // Construir la consulta
-    const query: any = {
-      escuelaId: new Types.ObjectId(crearMenuDto.escuelaId),
-      nombre: crearMenuDto.nombre,
-    };
-
-    // Agregar menuId a la consulta si subMenu es true
-    if (crearMenuDto.subMenu) {
-      query.menuId = crearMenuDto.menuId;
-    }
-
-    // Ejecutar la consulta
-    return await this.menuModel.findOne(query).exec();
-  }
 }

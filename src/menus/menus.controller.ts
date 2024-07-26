@@ -16,10 +16,7 @@ import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { Role } from '../auth/decorators/Role.decorator';
-import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
-import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
-import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
 import { PaginacionDto } from '../utils/dtos/paginacion.dto';
 
 @ApiTags(EnumSecciones.MENUS)
@@ -29,19 +26,14 @@ export class MenusController {
 
   @Post(EnumVerbos.CREAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(
-    ValidarIdsDocumentosGuard,
-    ValidaRegistroGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   crear(@Body() CrearMenuDto: CrearMenuDto) {
     return this.menusService.crear(CrearMenuDto);
   }
 
   @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidaIdDocumentoGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(JwtAuthGuard, JwtGuard)
   async actualizar(
     @Body() actualizarMenuDto: ActualizarMenuDto,
     @Param('id') id: string,
@@ -51,12 +43,7 @@ export class MenusController {
 
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(
-    ValidarIdsDocumentosGuard,
-    ValidaRegistroGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   async paginar(@Body() body: PaginacionDto) {
     const { limit, skip, filtros } = body;
 

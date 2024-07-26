@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsuariosService } from './usuarios.service';
 import { UsuariosController } from './usuarios.controller';
 import { UsuarioSchema } from './schemas/usuario.schema';
 import { Usuario } from './models/usuario.model';
 import { RolesModule } from '../roles/roles.module';
+import { ValidaUsuariosMiddleware } from '../auth/middlewares/valida-usuarios.middleware';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
 @Module({
   imports: [
@@ -15,4 +17,15 @@ import { RolesModule } from '../roles/roles.module';
   providers: [UsuariosService],
   exports: [UsuariosService],
 })
-export class UsuariosModule {}
+export class UsuariosModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(ValidaUsuariosMiddleware)
+      .forRoutes(
+        { path: `${EnumSecciones.USUARIOS}/Crear`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.USUARIOS}/Paginar`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.USUARIOS}/Actualizar`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.USUARIOS}/Obtener`, method: RequestMethod.GET },
+      );
+  }
+}

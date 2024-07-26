@@ -11,7 +11,6 @@ import { CrearEscuelaDto } from './dto/crear-escuela.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
-import { ValidaIdDocumentoGuard } from '../auth/guardians/valida-Id-documento.guard';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
@@ -32,7 +31,7 @@ export class EscuelasController {
 
   @Post(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(ValidaIdDocumentoGuard, JwtAuthGuard, JwtGuard)
+  @UseGuards(JwtAuthGuard, JwtGuard)
   actualizar(
     @Body() actualizarEscuelaDto: ActualizarEscuelaDto,
     @Param('id') id: string,

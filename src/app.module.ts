@@ -19,8 +19,6 @@ import { GruposModule } from './grupos/grupos.module';
 import { CalificacionesModule } from './calificaciones/calificaciones.module';
 import { PaginacionService } from './utils/servicios/paginacion.service';
 import { MenusModule } from './menus/menus.module';
-import { ValidaUsuariosMiddleware } from './auth/middlewares/valida-usuarios.middleware';
-import { EnumRutas } from './utils/enums/rutas.enum';
 
 @Module({
   imports: [
@@ -30,7 +28,6 @@ import { EnumRutas } from './utils/enums/rutas.enum';
     FinanzasModule,
     VisitantesModule,
     FamiliaresModule,
-    AsistenciasModule,
     EventosModule,
     BibliotecasModule,
     UsuariosModule,
@@ -48,13 +45,4 @@ import { EnumRutas } from './utils/enums/rutas.enum';
   controllers: [],
   providers: [PaginacionService],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(ValidaUsuariosMiddleware)
-      .forRoutes({
-        path: EnumRutas.USUARIOS_CREAR,
-        method: RequestMethod.POST,
-      });
-  }
-}
+export class AppModule {}

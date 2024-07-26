@@ -42,7 +42,7 @@ export enum EnumSeccion {
   REPORTE = 'Reporte',
   ROL = 'Rol',
   TUTOR = 'Tutor',
-  USUARI = 'Usuario',
+  USUARIO = 'Usuario',
   VISITANTE = 'Visitante',
   MENU = 'Menu',
 }

@@ -15,10 +15,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
-import { ValidaRegistroGuard } from '../auth/guardians/valida-registro.guard';
 import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
-import { ValidarIdsDocumentosGuard } from '../auth/guardians/validar-ids-documentos-guard';
 import { Role } from '../auth/decorators/Role.decorator';
 
 @ApiTags(EnumSecciones.ASISTENCIAS)
@@ -32,12 +30,7 @@ export class AsistenciasController {
     EnumRolesUsuario.PROFESOR,
     EnumRolesUsuario.ESTUDIANTE,
   )
-  @UseGuards(
-    ValidaRegistroGuard,
-    ValidarIdsDocumentosGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   async crear(@Body() crearAsistenciaDto: CrearAsistenciaDto) {
     return await this.asistenciasService.crear(crearAsistenciaDto);
   }
@@ -48,12 +41,7 @@ export class AsistenciasController {
     EnumRolesUsuario.PROFESOR,
     EnumRolesUsuario.ESTUDIANTE,
   )
-  @UseGuards(
-    ValidaRegistroGuard,
-    ValidarIdsDocumentosGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   async crearQr(@Body() QR: any) {
     return await this.asistenciasService.crearQr(QR);
   }
@@ -65,8 +53,6 @@ export class AsistenciasController {
     EnumRolesUsuario.ESTUDIANTE,
   )
   @UseGuards(
-    ValidaRegistroGuard,
-    ValidarIdsDocumentosGuard,
     JwtAuthGuard,
     JwtGuard,
   )
@@ -76,12 +62,7 @@ export class AsistenciasController {
 
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
-  @UseGuards(
-    ValidarIdsDocumentosGuard,
-    ValidaRegistroGuard,
-    JwtAuthGuard,
-    JwtGuard,
-  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
   async paginar(@Body() body: PaginacionDto) {
     const { limit, skip, filtros } = body;
 
