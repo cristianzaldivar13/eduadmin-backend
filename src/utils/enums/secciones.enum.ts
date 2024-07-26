@@ -22,3 +22,27 @@ export enum EnumSecciones {
   AUTH = 'Auth',
   MENUS = 'Menus',
 }
+
+export enum EnumSeccion {
+  ADMINISTRACION = 'Administracion',
+  ASIGNATURA = 'Asignatura',
+  CALIFICACION = 'Calificacion',
+  GRUPO = 'Grupo',
+  ASISTENCIA = 'Asistencia',
+  BIBLIOTECA = 'Biblioteca',
+  CALENDARIO = 'Calendario',
+  COMUNICACION = 'Comunicacion',
+  CURSO = 'Curso',
+  ESTUDIANTE = 'Estudiante',
+  ESCUELA = 'Escuela',
+  EVENTO = 'Evento',
+  FINANZA = 'Finanza',
+  NOTIFICACION = 'Notificacion',
+  PROFESOR = 'Profesor',
+  REPORTE = 'Reporte',
+  ROL = 'Rol',
+  TUTOR = 'Tutor',
+  USUARI = 'Usuario',
+  VISITANTE = 'Visitante',
+  MENU = 'Menu',
+}

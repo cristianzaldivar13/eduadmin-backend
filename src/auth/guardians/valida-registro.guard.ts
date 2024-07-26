@@ -37,51 +37,6 @@ export class ValidaRegistroGuard implements CanActivate {
 
       try {
         switch (nombreColeccion) {
-          case EnumSecciones.ADMINISTRACIONES:
-            break;
-
-          case EnumSecciones.GRUPOS:
-            break;
-
-          case EnumSecciones.ASIGNATURAS:
-            break;
-
-          case EnumSecciones.ASISTENCIAS:
-            break;
-
-          case EnumSecciones.BIBLIOTECAS:
-            break;
-
-          case EnumSecciones.CALENDARIO:
-            break;
-
-          case EnumSecciones.COMUNICACIONES:
-            break;
-
-          case EnumSecciones.CURSOS:
-            break;
-
-          case EnumSecciones.ESCUELAS.toLowerCase():
-            break;
-
-          case EnumSecciones.EVENTOS:
-            break;
-
-          case EnumSecciones.FINANZAS:
-            break;
-
-          case EnumSecciones.NOTIFICACIONES:
-            break;
-
-          case EnumSecciones.REPORTES:
-            break;
-
-          case EnumSecciones.ROLES:
-            break;
-
-          case EnumSecciones.TUTORES:
-            break;
-
           case EnumSecciones.USUARIOS.toLowerCase():
             if (!documento?.rol) {
               throw new BadRequestException(
@@ -105,12 +60,6 @@ export class ValidaRegistroGuard implements CanActivate {
                 `El id ${id} de usuario asignado debe pertenecer a un tipo Profesor.`,
               );
             }
-            break;
-
-          case EnumSecciones.VISITANTES:
-            break;
-
-          case EnumSecciones.AUTH:
             break;
         }
       } catch (error) {
@@ -147,7 +96,7 @@ export class ValidaRegistroGuard implements CanActivate {
           for (const idGrupo of body.grupos) {
             if (!Types.ObjectId.isValid(idGrupo)) {
               throw new BadRequestException(
-                `El Id ${idGrupo} de la grupo no es válido`,
+                `El Id ${idGrupo} no es válido`,
               );
             }
             const grupo = await this.connection
@@ -156,7 +105,7 @@ export class ValidaRegistroGuard implements CanActivate {
 
             if (!grupo) {
               throw new BadRequestException(
-                `El Id ${idGrupo} de la grupo no existe`,
+                `El Id ${idGrupo} no existe`,
               );
             }
           }
@@ -168,11 +117,11 @@ export class ValidaRegistroGuard implements CanActivate {
                   `El Id ${idMenu} del menú no es válido`,
                 );
               }
-              const asignatura = await this.connection
+              const menu = await this.connection
                 .collection(EnumSecciones.MENUS.toLowerCase())
                 .findOne({ _id: new Types.ObjectId(idMenu) });
 
-              if (!asignatura) {
+              if (!menu) {
                 throw new BadRequestException(
                   `El Id ${idMenu} del menú no existe`,
                 );

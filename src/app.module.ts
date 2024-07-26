@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { ReportesModule } from './reportes/reportes.module';
 import { FinanzasModule } from './finanzas/finanzas.module';
@@ -19,6 +19,8 @@ import { GruposModule } from './grupos/grupos.module';
 import { CalificacionesModule } from './calificaciones/calificaciones.module';
 import { PaginacionService } from './utils/servicios/paginacion.service';
 import { MenusModule } from './menus/menus.module';
+import { ValidaUsuariosMiddleware } from './auth/middlewares/valida-usuarios.middleware';
+import { EnumRutas } from './utils/enums/rutas.enum';
 
 @Module({
   imports: [
@@ -44,6 +46,15 @@ import { MenusModule } from './menus/menus.module';
     MenusModule,
   ],
   controllers: [],
-  providers: [PaginacionService,],
+  providers: [PaginacionService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(ValidaUsuariosMiddleware)
+      .forRoutes({
+        path: EnumRutas.USUARIOS_CREAR,
+        method: RequestMethod.POST,
+      });
+  }
+}
