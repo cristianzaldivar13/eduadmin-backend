@@ -9,6 +9,8 @@ import { Asistencia } from './models/asistencia.model';
 import { CrearAsistenciaDto } from './dto/crear-asistencia.dto';
 import { ActualizarAsistenciaDto } from './dto/actualizar-asistencia.dto';
 import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
 import { Buffer } from 'buffer';
 import jsQR from 'jsqr';
 import { PNG } from 'pngjs';
@@ -18,6 +20,7 @@ export class AsistenciasService {
   constructor(
     @InjectModel(Asistencia.name)
     private readonly asistenciaModel: Model<Asistencia>,
+    private readonly paginacionService: PaginacionService,
   ) {}
 
   async crear(crearAsistenciaDto: CrearAsistenciaDto): Promise<Asistencia> {
@@ -139,56 +142,26 @@ export class AsistenciasService {
     }
   }
 
-  async obtenerPaginadas(
-    _escuelaId: string,
-    _grupoId: string,
+  async paginar(
+    filtros: any,
     limit: number,
     skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
   ) {
-    // Valida que escuelaId sea un ObjectId válido
-    if (!Types.ObjectId.isValid(_escuelaId)) {
-      throw new BadRequestException('El ID de la escuela no es válido');
-    }
+    const project = {
+      tipoAsistencia: 1,
+      ingreso: 1,
+      egreso: 1,
+      fechaCreacion: 1,
+    }; // Proyecta solo ciertos campos
 
-    // Valida que grupoId sea un ObjectId válido
-    if (!Types.ObjectId.isValid(_grupoId)) {
-      throw new BadRequestException('El ID del grupo no es válido');
-    }
-
-    const escuelaId = new Types.ObjectId(_escuelaId);
-    const grupoId = new Types.ObjectId(_grupoId);
-
-    const resultados = await this.asistenciaModel
-      .aggregate([
-        {
-          $match: {
-            escuelaId,
-            grupoId,
-          },
-        },
-        {
-          $facet: {
-            resultados: [{ $skip: skip }, { $limit: limit }],
-            total: [{ $count: 'total' }],
-          },
-        },
-        {
-          $addFields: {
-            total: { $arrayElemAt: ['$total.total', 0] },
-            pagina: { $literal: Math.floor(skip / limit) + 1 },
-            tamanoPagina: { $size: '$resultados' },
-          },
-        },
-      ])
-      .exec();
-
-    return (
-      resultados[0] || {
-        total: 0,
-        pagina: 1,
-        tamanoPagina: 0,
-        resultados: [],
-      }
+    return this.paginacionService.paginar(
+      EnumSecciones.ASISTENCIAS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project, // Resultado
     );
   }
 

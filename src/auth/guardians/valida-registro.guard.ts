@@ -8,6 +8,7 @@ import { Connection, Types } from 'mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
 import { EnumSecciones } from '../../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
+import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 
 @Injectable()
 export class ValidaRegistroGuard implements CanActivate {
@@ -26,6 +27,10 @@ export class ValidaRegistroGuard implements CanActivate {
       const id = body[campo];
       if (!id) {
         throw new BadRequestException(`Debe enviar un valor para ${campo}.`);
+      }
+
+      if (!Types.ObjectId.isValid(id) && id) {
+        throw new BadRequestException(`El Id ${id} no es válido`);
       }
 
       const nombreColeccion = campo.replace(/Id$/, 's');
@@ -60,10 +65,19 @@ export class ValidaRegistroGuard implements CanActivate {
                 `El id ${id} de usuario asignado debe pertenecer a un tipo Profesor.`,
               );
             }
+
+            if (
+              body?.tipoAsistencia == EnumTipoAsistencia.CLASE &&
+              !body?.asignaturaId
+            ) {
+              throw new BadRequestException(
+                `Falta enviar el Id de la asignatura para la asistencia de tipo ${EnumTipoAsistencia.CLASE}.`,
+              );
+            }
             break;
         }
       } catch (error) {
-        throw new BadRequestException(`${nombreColeccion}: ${error.message}`);
+        throw new BadRequestException(`${error.message}`);
       }
     }
 
@@ -95,18 +109,14 @@ export class ValidaRegistroGuard implements CanActivate {
         if (body?.grupos) {
           for (const idGrupo of body.grupos) {
             if (!Types.ObjectId.isValid(idGrupo)) {
-              throw new BadRequestException(
-                `El Id ${idGrupo} no es válido`,
-              );
+              throw new BadRequestException(`El Id ${idGrupo} no es válido`);
             }
             const grupo = await this.connection
               .collection(EnumSecciones.GRUPOS.toLowerCase())
               .findOne({ _id: new Types.ObjectId(idGrupo) });
 
             if (!grupo) {
-              throw new BadRequestException(
-                `El Id ${idGrupo} no existe`,
-              );
+              throw new BadRequestException(`El Id ${idGrupo} no existe`);
             }
           }
 

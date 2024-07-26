@@ -6,6 +6,7 @@ import { AsistenciaSchema } from './schemas/asistencia.schema';
 import { Asistencia } from './models/asistencia.model';
 import { ValidacionUsuarioGuard } from '../utils/validacion-usuario.guard.ts';
 import { UsuariosModule } from '../usuarios/usuarios.module';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsuariosModule } from '../usuarios/usuarios.module';
   providers: [
     AsistenciasService
     , ValidacionUsuarioGuard
+    , PaginacionService
   ],
   exports: [AsistenciasService],
 })

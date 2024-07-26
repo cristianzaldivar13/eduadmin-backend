@@ -1,6 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { IsBoolean, IsEnum } from 'class-validator';
+import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 
 export type AsistenciaDocument = Asistencia & Document;
 
@@ -12,11 +13,14 @@ export class Asistencia {
   @Prop({ type: Types.ObjectId, required: true })
   grupoId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, required: true })
+  @Prop({ type: Types.ObjectId, required: false })
   asignaturaId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, required: true })
   usuarioId: Types.ObjectId;
+
+  @Prop({ type: String, enum: EnumTipoAsistencia })
+  tipoAsistencia: EnumTipoAsistencia;
 
   @Prop({ type: Boolean, required: false })
   @IsBoolean()

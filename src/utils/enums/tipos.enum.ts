@@ -1,7 +1,7 @@
 export enum EnumTipoAsistencia {
-    ESCUELA = 'Escuela',
-    ASIGNATURA = 'Asignatura',
-    JUNTA = 'Junta',
-    EXTRA = 'Extra',
-  }
-  
+  CLASE = 'Clase',
+  ESCUELA = 'Escuela',
+  ASIGNATURA = 'Asignatura',
+  JUNTA = 'Junta',
+  EXTRA = 'Extra',
+}
