@@ -23,7 +23,7 @@ export class GruposModule {
         { path: `${EnumSecciones.GRUPOS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.GRUPOS}/Paginar`, method: RequestMethod.POST },
         { path: `${EnumSecciones.GRUPOS}/Actualizar`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.GRUPOS}/Obtener`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.GRUPOS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }
 }

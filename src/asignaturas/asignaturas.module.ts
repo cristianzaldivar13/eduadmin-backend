@@ -26,7 +26,7 @@ export class AsignaturasModule {
         { path: `${EnumSecciones.ASIGNATURAS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.ASIGNATURAS}/Paginar`, method: RequestMethod.POST },
         { path: `${EnumSecciones.ASIGNATURAS}/Actualizar`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.ASIGNATURAS}/Obtener`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASIGNATURAS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }
 }

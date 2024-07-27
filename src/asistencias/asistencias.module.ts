@@ -29,7 +29,7 @@ export class AsistenciasModule {
         { path: `${EnumSecciones.ASISTENCIAS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.ASISTENCIAS}/Paginar`, method: RequestMethod.POST },
         { path: `${EnumSecciones.ASISTENCIAS}/Actualizar`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.ASISTENCIAS}/Obtener`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASISTENCIAS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }
 }

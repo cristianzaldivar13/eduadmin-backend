@@ -25,7 +25,7 @@ export class UsuariosModule {
         { path: `${EnumSecciones.USUARIOS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.USUARIOS}/Paginar`, method: RequestMethod.POST },
         { path: `${EnumSecciones.USUARIOS}/Actualizar`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.USUARIOS}/Obtener`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.USUARIOS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }
 }
