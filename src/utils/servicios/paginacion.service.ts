@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection, Types } from 'mongoose';
+import { EnumSecciones } from '../enums/secciones.enum';
 
 @Injectable()
 export class PaginacionService {
@@ -45,15 +46,37 @@ export class PaginacionService {
       throw new BadRequestException('El skip debe ser un número positivo.');
     }
 
+    // Convertir el enum a un array de valores
+    const enumSecciones = Object.values(EnumSecciones).map((value) =>
+      value.toLowerCase(),
+    );
+
     // Convierte IDs en los filtros y añade el filtro de fechas si es necesario
-    const { filtrosConvertidos, lookups } = this.convertirIdsAFiltros(filtros);
+    const { filtrosConvertidos, lookups } = this.convertirIdsAFiltros(
+      filtros,
+      enumSecciones,
+    );
+
+    let agrupado = null;
+    for (const key in filtros) {
+      if (enumSecciones.includes(key)) {
+        agrupado = key;
+      }
+    }
 
     // Construir el pipeline de agregación
     const pipeline: any[] = [
       { $match: filtrosConvertidos },
       ...lookups, // Añade las etapas de lookup
       ...(Object.keys(sort).length > 0 ? [{ $sort: sort }] : []),
-      ...(Object.keys(project).length > 0 ? [{ $project: project }] : []), // Agrega el paso $project si se proporciona
+      {
+        $group: {
+          _id: '$_id', // Agrupar por el campo _id
+          nombre: { $first: '$nombre' },
+          fechaCreacion: { $first: '$fechaCreacion' },
+          asignaturas: { $push: '$asignaturasDetalles.nombre' }, // Agrupar nombres de asignaturas
+        },
+      },
       {
         $facet: {
           resultados: [{ $skip: skip }, { $limit: limit }],
@@ -68,6 +91,8 @@ export class PaginacionService {
         },
       },
     ];
+
+    console.log(JSON.stringify(pipeline));
 
     // Obtiene la colección y ejecuta la agregación
     try {
@@ -89,7 +114,7 @@ export class PaginacionService {
     }
   }
 
-  private convertirIdsAFiltros(filtros: any) {
+  private convertirIdsAFiltros(filtros: any, enumSecciones: Array<any>) {
     const filtrosConvertidos: any = {};
     const lookups: any[] = [];
 
@@ -99,23 +124,23 @@ export class PaginacionService {
         if (key.endsWith('Id') && Types.ObjectId.isValid(filtros[key])) {
           const coleccion = this.obtenerNombreColeccion(key);
           filtrosConvertidos[key] = new Types.ObjectId(filtros[key]);
-          
+
           // Añadir etapa de lookup
           lookups.push({
             $lookup: {
               from: coleccion,
               localField: key,
               foreignField: '_id',
-              as: key.replace('Id', '')
-            }
+              as: key.replace('Id', ''),
+            },
           });
 
           // Añadir etapa de unwind
           lookups.push({
             $unwind: {
               path: `$${key.replace('Id', '')}`,
-              preserveNullAndEmptyArrays: true
-            }
+              preserveNullAndEmptyArrays: true,
+            },
           });
         } else if (key === 'entreFechas') {
           const { fechaInicial, fechaFinal, campoFecha } = filtros[key];
@@ -131,6 +156,15 @@ export class PaginacionService {
               $lte: fin,
             };
           }
+        } else if (enumSecciones.includes(key)) {
+          lookups.push({
+            $lookup: {
+              from: key,
+              localField: key,
+              foreignField: '_id',
+              as: `${key}Detalles`,
+            },
+          });
         } else {
           filtrosConvertidos[key] = filtros[key];
         }

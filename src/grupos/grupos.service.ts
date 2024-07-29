@@ -51,6 +51,7 @@ export class GruposService {
     const project = {
       nombre: 1,
       fechaCreacion: 1,
+      nombreAsignatura: '$asignaturasDetalles.nombre'
     }; // Proyecta solo ciertos campos
 
     return this.paginacionService.paginar(
