@@ -25,7 +25,7 @@ export class CalificacionesModule {
       .forRoutes(
         { path: `${EnumSecciones.CALIFICACIONES}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.CALIFICACIONES}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.CALIFICACIONES}/Actualizar`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.CALIFICACIONES}/Actualizar/:id`, method: RequestMethod.PATCH },
         { path: `${EnumSecciones.CALIFICACIONES}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }

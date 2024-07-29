@@ -23,7 +23,7 @@ export class MenusModule {
       .forRoutes(
         { path: `${EnumSecciones.MENUS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.MENUS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.MENUS}/Actualizar`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.MENUS}/Actualizar/:id`, method: RequestMethod.PATCH },
         { path: `${EnumSecciones.MENUS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }

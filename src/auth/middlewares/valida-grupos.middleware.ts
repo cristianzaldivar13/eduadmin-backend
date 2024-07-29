@@ -16,7 +16,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const url = req.url.split('/')[2];
 
-    if (url === EnumVerbos.ACTUALIZAR) {
+    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
       const { id } = req.params;
 
       if (!id) {
@@ -37,6 +37,24 @@ export class ValidaGruposMiddleware implements NestMiddleware {
         throw new BadRequestException(
           `Error al buscar el registro Id. ${error.message}`,
         );
+      }
+    }
+
+    if (url === EnumVerbos.CREAR) {
+      const collectionName = EnumSecciones.GRUPOS.toLowerCase();
+
+      try {
+        const document = await this.connection
+          .collection(collectionName)
+          .findOne({ nombre: req?.body?.nombre });
+
+        if (document) {
+          throw new BadRequestException(
+            `El nombre ${req?.body?.nombre} ya existe.`,
+          );
+        }
+      } catch (error) {
+        throw new BadRequestException(`Error. ${error.message}`);
       }
     }
 
@@ -68,7 +86,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
 
     // Validaciones especiales con objetos
     if (req.body?.asignaturas) {
-      for (const asignaturaId of req.body.grupos) {
+      for (const asignaturaId of req.body.asignaturas) {
         if (!Types.ObjectId.isValid(asignaturaId)) {
           throw new BadRequestException(`El Id ${asignaturaId} no es válido`);
         }

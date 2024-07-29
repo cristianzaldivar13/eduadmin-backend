@@ -29,6 +29,7 @@ GrupoSchema.pre<Grupo>('save', function (next) {
 // Middleware para cambiar los id en ObjectId antes de actualizar con findOneAndUpdate
 GrupoSchema.pre('findOneAndUpdate', function (next) {
   const update: any = this.getUpdate();
+  const schemaData: any = this;
 
   // Si se está usando la operación $set, actualiza los campos dentro de $set
   if (update.$set) {
@@ -42,7 +43,6 @@ GrupoSchema.pre('findOneAndUpdate', function (next) {
       update.$set.escuelaId = new Types.ObjectId(update.$set.escuelaId);
     }
   } else {
-    // Si no se usa $set, actualiza los campos directamente
     if (update.asignaturas && Array.isArray(update.asignaturas)) {
       update.asignaturas = update.asignaturas.map(
         (asignatura: any) => new Types.ObjectId(asignatura),

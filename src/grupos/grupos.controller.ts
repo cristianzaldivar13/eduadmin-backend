@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -19,6 +20,7 @@ import { JwtAuthGuard } from '../auth/guardians/jwt-auth.guard';
 import { JwtGuard } from '../auth/guardians/jwt.guard';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
+import { PaginacionDto } from '../utils/dtos/paginacion.dto';
 
 @ApiTags(EnumSecciones.GRUPOS)
 @Controller(EnumSecciones.GRUPOS)
@@ -42,12 +44,23 @@ export class GruposController {
     return this.gruposService.actualizar(id, actualizarGrupoDto);
   }
 
-  @Get(EnumVerbos.PAGINAR)
-  obtenerPaginados(
-    @Query('limit', ParseIntPipe) limit: number,
-    @Query('skip', ParseIntPipe) skip: number,
-    @Query('escuelaId') escuelaId?: string,
-  ) {
-    return this.gruposService.obtenerPaginados(escuelaId, limit, skip);
+  @Post(EnumVerbos.PAGINAR)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  async paginar(@Body() body: PaginacionDto) {
+    const { limit, skip, filtros } = body;
+
+    if (limit && limit <= 0) {
+      throw new BadRequestException('El límite debe ser mayor que 0');
+    }
+    if (skip && skip < 0) {
+      throw new BadRequestException('El salto debe ser mayor o igual a 0');
+    }
+
+    return this.gruposService.paginar(
+      filtros || {}, // Pasa los filtros genéricos
+      limit,
+      skip,
+    );
   }
 }

@@ -34,7 +34,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
     const menusId: Types.ObjectId[] = [];
 
     // Validación para el verbo ACTUALIZAR
-    if (url === EnumVerbos.ACTUALIZAR) {
+    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
       const { id } = req.params;
 
       if (!id) {

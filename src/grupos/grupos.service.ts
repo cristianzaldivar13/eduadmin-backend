@@ -8,12 +8,15 @@ import { ActualizarGrupoDto } from './dto/actualizar-grupo.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Grupo } from './models/grupo.model';
 import { Model, Types } from 'mongoose';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 
 @Injectable()
 export class GruposService {
   constructor(
     @InjectModel(Grupo.name)
     private readonly grupoModel: Model<Grupo>,
+    private readonly paginacionService: PaginacionService,
   ) {}
 
   async crear(crearGrupoDto: CrearGrupoDto) {
@@ -33,52 +36,30 @@ export class GruposService {
     actualizarGrupoDto: ActualizarGrupoDto,
   ): Promise<Grupo> {
     return this.grupoModel
-      .findOneAndUpdate({ _id: id }, actualizarGrupoDto, { new: true })
+      .findOneAndUpdate({ _id: new Types.ObjectId(id) }, actualizarGrupoDto, {
+        new: true,
+      })
       .exec();
   }
 
-  async obtenerPaginados(
-    _escuelaId: string,
+  async paginar(
+    filtros: any,
     limit: number,
     skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
   ) {
-    // Valida que escuelaId sea un ObjectId válido
-    if (!Types.ObjectId.isValid(_escuelaId)) {
-      throw new BadRequestException('El ID de la escuela no es válido');
-    }
+    const project = {
+      nombre: 1,
+      fechaCreacion: 1,
+    }; // Proyecta solo ciertos campos
 
-    const escuelaId = new Types.ObjectId(_escuelaId);
-
-    const resultados = await this.grupoModel
-      .aggregate([
-        {
-          $match: {
-            escuelaId,
-          },
-        },
-        {
-          $facet: {
-            resultados: [{ $skip: skip }, { $limit: limit }],
-            total: [{ $count: 'total' }],
-          },
-        },
-        {
-          $addFields: {
-            total: { $arrayElemAt: ['$total.total', 0] },
-            pagina: { $literal: Math.floor(skip / limit) + 1 },
-            tamanoPagina: { $size: '$resultados' },
-          },
-        },
-      ])
-      .exec();
-
-    return (
-      resultados[0] || {
-        total: 0,
-        pagina: 1,
-        tamanoPagina: 0,
-        resultados: [],
-      }
+    return this.paginacionService.paginar(
+      EnumSecciones.GRUPOS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project, // Resultado
     );
   }
 

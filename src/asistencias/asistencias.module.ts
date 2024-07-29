@@ -28,7 +28,7 @@ export class AsistenciasModule {
       .forRoutes(
         { path: `${EnumSecciones.ASISTENCIAS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.ASISTENCIAS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.ASISTENCIAS}/Actualizar`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.ASISTENCIAS}/Actualizar/:id`, method: RequestMethod.PATCH },
         { path: `${EnumSecciones.ASISTENCIAS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }

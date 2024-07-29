@@ -6,13 +6,14 @@ import { Grupo } from './models/grupo.model';
 import { GrupoSchema } from './schemas/grupo.schema';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaGruposMiddleware } from '../auth/middlewares/valida-grupos.middleware';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Grupo.name, schema: GrupoSchema }]),
   ],
   controllers: [GruposController],
-  providers: [GruposService],
+  providers: [GruposService, PaginacionService],
   exports: [GruposService],
 })
 export class GruposModule {
@@ -22,7 +23,7 @@ export class GruposModule {
       .forRoutes(
         { path: `${EnumSecciones.GRUPOS}/Crear`, method: RequestMethod.POST },
         { path: `${EnumSecciones.GRUPOS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.GRUPOS}/Actualizar`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.GRUPOS}/Actualizar/:id`, method: RequestMethod.PATCH },
         { path: `${EnumSecciones.GRUPOS}/ConsultarPorId/:id`, method: RequestMethod.GET },
       );
   }

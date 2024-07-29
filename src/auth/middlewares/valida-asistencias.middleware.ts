@@ -17,7 +17,7 @@ export class ValidaAsistenciasMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const url = req.url.split('/')[2];
 
-    if (url === EnumVerbos.ACTUALIZAR) {
+    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
       const { id } = req.params;
 
       if (!id) {
