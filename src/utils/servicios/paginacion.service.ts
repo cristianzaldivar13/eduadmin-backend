@@ -123,8 +123,6 @@ export class PaginacionService {
       },
     ];
 
-    console.log(JSON.stringify(pipeline));
-
     // Obtiene la colección y ejecuta la agregación
     try {
       const collection = this.connection.collection(collectionName);
@@ -172,13 +170,17 @@ export class PaginacionService {
           });
         } else if (key === 'entreFechas') {
           const { fechaInicial, fechaFinal, campoFecha } = filtros[key];
-          if (fechaInicial && fechaFinal && campoFecha) {
-            const inicio = new Date(fechaInicial);
-            inicio.setUTCHours(0, 0, 0, 0);
 
+          if (fechaInicial && fechaFinal && campoFecha) {
+            // Convertir las fechas de string a objeto Date
+            const inicio = new Date(fechaInicial);
             const fin = new Date(fechaFinal);
+
+            // Ajustar las horas para el rango completo del día final
+            inicio.setUTCHours(0, 0, 0, 0);
             fin.setUTCHours(23, 59, 59, 999);
 
+            // Asignar el rango de fechas al filtro
             filtrosConvertidos[campoFecha] = {
               $gte: inicio,
               $lte: fin,

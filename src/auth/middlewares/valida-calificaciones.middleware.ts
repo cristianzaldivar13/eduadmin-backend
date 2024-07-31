@@ -7,7 +7,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Request, Response, NextFunction } from 'express';
 import { Connection, Types } from 'mongoose';
 import { EnumVerbos } from '../../utils/enums/verbos.enum';
-import { EnumSecciones } from '../../utils/enums/secciones.enum';
+import { EnumSeccion, EnumSecciones } from '../../utils/enums/secciones.enum';
 
 @Injectable()
 export class ValidaCalificacionesMiddleware implements NestMiddleware {
@@ -39,7 +39,7 @@ export class ValidaCalificacionesMiddleware implements NestMiddleware {
         );
       }
     }
-    
+
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idCampos = Object.keys(req.body).filter((key) => key.endsWith('Id'));
 
@@ -54,18 +54,71 @@ export class ValidaCalificacionesMiddleware implements NestMiddleware {
         throw new BadRequestException(`El Id ${id} no es válido`);
       }
 
-      const nombreColeccion = campo.replace(/Id$/, 's');
+      let nombreColeccion = this.pluralizar(campo);
+      const tipoUsuario = campo.replace('Id', '').toLowerCase();
+
+      switch (nombreColeccion) {
+        case EnumSecciones.PROFESORES.toLowerCase():
+        case EnumSecciones.ESTUDIANTES.toLowerCase():
+          nombreColeccion = EnumSecciones.USUARIOS.toLowerCase();
+          break;
+      }
 
       // Obtiene el registro por su id
-      let documento = await this.connection
+      let documento: any = await this.connection
         .collection(nombreColeccion)
         .findOne({ _id: new Types.ObjectId(id) });
 
       if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
       }
+
+      if (documento.rol === EnumSeccion.PROFESOR) {
+        if (tipoUsuario === EnumSeccion.ESTUDIANTE.toLowerCase()) {
+          throw new BadRequestException(
+            `El estudiante ${id} no puede ser un profesor.`,
+          );
+        }
+      }
+
+      if (documento.rol === EnumSeccion.ESTUDIANTE) {
+        if (tipoUsuario === EnumSeccion.PROFESOR.toLowerCase()) {
+          throw new BadRequestException(
+            `El profesor ${id} no puede ser un estudiante.`,
+          );
+        }
+      }
     }
 
     next();
+  }
+
+  pluralizar(nombre: string): string {
+    // Reemplaza 'Id' al final del nombre
+    let baseNombre = nombre.replace(/Id$/, '');
+
+    // Casos especiales
+    const casosEspeciales: { [key: string]: string } = {
+      profesor: 'profesores',
+      // Añadir más casos especiales aquí si es necesario
+    };
+
+    // Manejar casos especiales
+    if (casosEspeciales[baseNombre]) {
+      return casosEspeciales[baseNombre];
+    }
+
+    // Reglas básicas de pluralización
+    if (
+      baseNombre.endsWith('s') ||
+      baseNombre.endsWith('x') ||
+      baseNombre.endsWith('z')
+    ) {
+      return baseNombre + 'es';
+    } else if (baseNombre.endsWith('y')) {
+      return baseNombre.slice(0, -1) + 'ies';
+    } else {
+      return baseNombre + 's';
+    }
   }
 }
