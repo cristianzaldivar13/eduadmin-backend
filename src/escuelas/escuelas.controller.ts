@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -37,5 +38,12 @@ export class EscuelasController {
     @Param('id') id: string,
   ) {
     return this.escuelasService.actualizar(id, actualizarEscuelaDto);
+  }
+
+  @Get(EnumVerbos.CONSULTAR_POR_ID)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  ConsultarPorId(@Param('id') id: string) {
+    return this.escuelasService.ConsultarPorId(id);
   }
 }
