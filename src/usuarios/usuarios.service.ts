@@ -89,6 +89,7 @@ export class UsuariosService {
       nombre: 1,
       fechaCreacion: 1,
       grupos: 1,
+      menus: 1,
     }; // Proyecta solo ciertos campos
 
     return this.paginacionService.paginar(

@@ -46,7 +46,7 @@ export class PaginacionService {
       throw new BadRequestException('El skip debe ser un número positivo.');
     }
 
-    // Convertir el enum a un array de valores
+    // Convierte el enum a un array de valores
     const enumSecciones = Object.values(EnumSecciones).map((value) =>
       value.toLowerCase(),
     );
@@ -57,45 +57,56 @@ export class PaginacionService {
       enumSecciones,
     );
 
-    let agrupado = null;
+    const camposBooleanos: any = {};
     for (const key in filtros) {
-      if (enumSecciones.includes(key)) {
-        agrupado = key;
+      if (filtros.hasOwnProperty(key)) {
+        if (typeof filtros[key] === 'boolean') {
+          camposBooleanos[key] = filtros[key];
+        }
       }
     }
 
-    // Construir el pipeline de agregación
+    // Identifica los campos de arreglos en los filtros
+    const arreglos: any = Object.keys(camposBooleanos).map((key) => key);
+
+    // Construye el pipeline de agregación
     const pipeline: any[] = [
       { $match: filtrosConvertidos },
-      ...lookups, // Añade las etapas de lookup
+      ...lookups, // Añade las etapas de lookup para IDs
       ...(Object.keys(sort).length > 0 ? [{ $sort: sort }] : []),
-      {
-        $lookup: {
-          from: `${agrupado}`,
-          localField: `${agrupado}`,
-          foreignField: '_id',
-          as: `${agrupado}Detalles`,
+      // Añade dinámicamente los lookups y addFields para los arreglos
+      ...arreglos.flatMap((arreglo) => [
+        {
+          $lookup: {
+            from: arreglo,
+            localField: arreglo,
+            foreignField: '_id',
+            as: `${arreglo}Detalles`,
+          },
         },
-      },
-      {
-        $addFields: {
-          [agrupado]: {
-            $map: {
-              input: `$${agrupado}Detalles`,
-              as: 'detalle',
-              in: { _id: '$$detalle._id', nombre: '$$detalle.nombre' },
+        {
+          $addFields: {
+            [arreglo]: {
+              $cond: {
+                if: { $isArray: `$${arreglo}Detalles` },
+                then: `$${arreglo}Detalles`,
+                else: [],
+              },
             },
           },
         },
-      },
-      {
-        $group: {
-          _id: '$_id', // Agrupar por el campo _id
-          nombre: { $first: '$nombre' },
-          fechaCreacion: { $first: '$fechaCreacion' },
-          [agrupado]: { $first: `$${agrupado}` },
+        {
+          $addFields: {
+            [arreglo]: {
+              $map: {
+                input: `$${arreglo}`,
+                as: 'detalle',
+                in: { _id: '$$detalle._id', nombre: '$$detalle.nombre' },
+              },
+            },
+          },
         },
-      },
+      ]),
       ...(Object.keys(project).length > 0 ? [{ $project: project }] : []), // Se añade el campo project
       {
         $facet: {
@@ -140,12 +151,10 @@ export class PaginacionService {
 
     for (const key in filtros) {
       if (filtros.hasOwnProperty(key)) {
-        // Verifica si la clave termina en 'Id' y si el valor es un ID válido
         if (key.endsWith('Id') && Types.ObjectId.isValid(filtros[key])) {
           const coleccion = this.obtenerNombreColeccion(key);
           filtrosConvertidos[key] = new Types.ObjectId(filtros[key]);
 
-          // Añadir etapa de lookup
           lookups.push({
             $lookup: {
               from: coleccion,
@@ -155,7 +164,6 @@ export class PaginacionService {
             },
           });
 
-          // Añadir etapa de unwind
           lookups.push({
             $unwind: {
               path: `$${key.replace('Id', '')}`,
@@ -166,10 +174,10 @@ export class PaginacionService {
           const { fechaInicial, fechaFinal, campoFecha } = filtros[key];
           if (fechaInicial && fechaFinal && campoFecha) {
             const inicio = new Date(fechaInicial);
-            inicio.setUTCHours(0, 0, 0, 0); // Ajusta la fecha de inicio a las 00:00:00
+            inicio.setUTCHours(0, 0, 0, 0);
 
             const fin = new Date(fechaFinal);
-            fin.setUTCHours(23, 59, 59, 999); // Ajusta la fecha de fin a las 23:59:59
+            fin.setUTCHours(23, 59, 59, 999);
 
             filtrosConvertidos[campoFecha] = {
               $gte: inicio,
