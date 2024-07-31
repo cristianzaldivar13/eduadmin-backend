@@ -87,6 +87,15 @@ export class UsuariosService {
   ) {
     const project = {
       nombre: 1,
+      apellidoPaterno: 1,
+      apellidoMaterno: 1,
+      fechaNacimiento: 1,
+      sexo: 1,
+      telefono: 1,
+      niveles: 1,
+      correo: 1,
+      rol: 1,
+      estatus: 1,
       fechaCreacion: 1,
       grupos: 1,
       menus: 1,
