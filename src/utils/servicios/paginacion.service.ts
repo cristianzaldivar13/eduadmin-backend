@@ -70,13 +70,33 @@ export class PaginacionService {
       ...lookups, // Añade las etapas de lookup
       ...(Object.keys(sort).length > 0 ? [{ $sort: sort }] : []),
       {
+        $lookup: {
+          from: `${agrupado}`,
+          localField: `${agrupado}`,
+          foreignField: '_id',
+          as: `${agrupado}Detalles`,
+        },
+      },
+      {
+        $addFields: {
+          [agrupado]: {
+            $map: {
+              input: `$${agrupado}Detalles`,
+              as: 'detalle',
+              in: { _id: '$$detalle._id', nombre: '$$detalle.nombre' },
+            },
+          },
+        },
+      },
+      {
         $group: {
           _id: '$_id', // Agrupar por el campo _id
           nombre: { $first: '$nombre' },
           fechaCreacion: { $first: '$fechaCreacion' },
-          asignaturas: { $push: '$asignaturasDetalles.nombre' }, // Agrupar nombres de asignaturas
+          [agrupado]: { $first: `$${agrupado}` },
         },
       },
+      ...(Object.keys(project).length > 0 ? [{ $project: project }] : []), // Se añade el campo project
       {
         $facet: {
           resultados: [{ $skip: skip }, { $limit: limit }],
