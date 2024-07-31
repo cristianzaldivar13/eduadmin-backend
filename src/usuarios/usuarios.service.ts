@@ -5,12 +5,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Usuario } from './models/usuario.model';
 import * as QRCode from 'qrcode';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
+import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
+import { PaginacionService } from '../utils/servicios/paginacion.service';
 
 @Injectable()
 export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
+    private readonly paginacionService: PaginacionService,
   ) {}
 
   async crear(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
@@ -74,5 +77,27 @@ export class UsuariosService {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async paginar(
+    filtros: any,
+    limit: number,
+    skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
+  ) {
+    const project = {
+      nombre: 1,
+      fechaCreacion: 1,
+      grupos: 1,
+    }; // Proyecta solo ciertos campos
+
+    return this.paginacionService.paginar(
+      EnumSecciones.USUARIOS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project, // Resultado
+    );
   }
 }

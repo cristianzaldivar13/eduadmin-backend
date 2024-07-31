@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Param,
@@ -17,6 +18,8 @@ import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
+import { PaginacionDto } from '../utils/dtos/paginacion.dto';
+
 @ApiTags(EnumSecciones.USUARIOS)
 @Controller(EnumSecciones.USUARIOS)
 export class UsuariosController {
@@ -41,5 +44,25 @@ export class UsuariosController {
     @Param('id') id: string,
   ) {
     return await this.usuariosService.actualizar(id, actualizarUsuarioDto);
+  }
+
+  @Post(EnumVerbos.PAGINAR)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  async paginar(@Body() body: PaginacionDto) {
+    const { limit, skip, filtros } = body;
+
+    if (limit && limit <= 0) {
+      throw new BadRequestException('El límite debe ser mayor que 0');
+    }
+    if (skip && skip < 0) {
+      throw new BadRequestException('El salto debe ser mayor o igual a 0');
+    }
+
+    return this.usuariosService.paginar(
+      filtros || {}, // Pasa los filtros genéricos
+      limit,
+      skip,
+    );
   }
 }

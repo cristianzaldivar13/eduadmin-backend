@@ -20,10 +20,6 @@ export class GruposService {
   ) {}
 
   async crear(crearGrupoDto: CrearGrupoDto) {
-    if (await this.validaExistencia(crearGrupoDto)) {
-      throw new ConflictException('El estudiante ya existe');
-    }
-
     const nuevoGrupo = new this.grupoModel({
       ...crearGrupoDto,
     });
@@ -62,15 +58,5 @@ export class GruposService {
       sort, // Ordenación
       project, // Resultado
     );
-  }
-
-  private async validaExistencia(crearGrupoDto: CrearGrupoDto) {
-    return await this.grupoModel
-      .findOne({
-        escuelaId: new Types.ObjectId(crearGrupoDto.escuelaId),
-        nombre: crearGrupoDto.nombre,
-        asignaturas: crearGrupoDto.asignaturas,
-      })
-      .exec();
   }
 }
