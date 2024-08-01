@@ -14,7 +14,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const url = req.url.split('/')[2];
+    const url = req.url.split('/')[2].toLowerCase();
 
     switch (url) {
       case EnumVerbos.CREAR.toLowerCase():
@@ -131,7 +131,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
 
     try {
       const document = await this.connection
-        .collection(EnumSecciones.ESCUELAS.toLowerCase())
+        .collection(EnumSecciones.GRUPOS.toLowerCase())
         .findOne({ _id: new Types.ObjectId(id) });
 
       if (!document) {

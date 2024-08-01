@@ -38,6 +38,16 @@ export class GruposService {
       .exec();
   }
 
+  async consultarPorId(id: string) {
+    try {
+      return await this.grupoModel
+        .findOne({ _id: new Types.ObjectId(id) })
+        .exec();
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
   async paginar(
     filtros: any,
     limit: number,

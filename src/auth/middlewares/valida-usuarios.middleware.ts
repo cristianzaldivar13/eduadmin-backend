@@ -29,7 +29,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const url = req.url.split('/')[2];
+    const url = req.url.split('/')[2].toLowerCase();
 
     switch (url) {
       case EnumVerbos.CREAR.toLowerCase():

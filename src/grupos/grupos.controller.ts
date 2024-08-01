@@ -44,6 +44,11 @@ export class GruposController {
     return this.gruposService.actualizar(id, actualizarGrupoDto);
   }
 
+  @Get(EnumVerbos.CONSULTAR_POR_ID)
+  consultarPorId(@Param('id') id: string) {
+    return this.gruposService.consultarPorId(id);
+  }
+
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)

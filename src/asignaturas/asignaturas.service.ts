@@ -34,11 +34,52 @@ export class AsignaturasService {
     );
   }
 
-  async obtenerPorId(id: string) {
+  async consultarPorId(id: string) {
     try {
-      return await this.asignaturaModel
-        .findOne({ _id: new Types.ObjectId(id) })
-        .exec();
+      const pipeline = [
+        {
+          $match: {
+            _id: new Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'escuelas',
+            localField: 'escuelaId',
+            foreignField: '_id',
+            as: 'escuela',
+          },
+        },
+        {
+          $unwind: '$escuela',
+        },
+        {
+          $project: {
+            _id: 1,
+            nombre: '$nombre',
+            descripcion: '$descripcion',
+            estatus: '$estatus',
+            nivel: '$nivel',
+            escuela: {
+              nombre: '$escuela.nombre',
+              direccion: '$escuela.direccion',
+              telefono: '$escuela.telefono',
+              correoElectronico: '$escuela.correoElectronico',
+              nivelEducativo: '$escuela.nivelEducativo',
+              director: '$escuela.director',
+              logo: '$escuela.logo',
+              website: '$escuela.website',
+              fechaFundacion: '$escuela.fechaFundacion',
+              ciudad: '$escuela.ciudad',
+              codigoPostal: '$escuela.codigoPostal',
+              cupo: '$escuela.cupo',
+              descripcion: '$escuela.descripcion',
+              estatus: '$escuela.estatus',
+            },
+          },
+        },
+      ];
+      return await this.asignaturaModel.aggregate(pipeline).exec();
     } catch (error) {
       throw new BadRequestException(error.message);
     }

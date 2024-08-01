@@ -50,8 +50,8 @@ export class AsignaturasController {
   }
 
   @Get(EnumVerbos.CONSULTAR_POR_ID)
-  obtenerPorId(@Param('id') id: string) {
-    return this.asignaturasService.obtenerPorId(id);
+  consultarPorId(@Param('id') id: string) {
+    return this.asignaturasService.consultarPorId(id);
   }
 
   @Post(EnumVerbos.PAGINAR)
