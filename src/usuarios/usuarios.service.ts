@@ -51,14 +51,130 @@ export class UsuariosService {
     return await nuevoUsuario.save();
   }
 
-  async actualizar(
-    id: string,
-    actualizarUsuarioDto: ActualizarUsuarioDto,
-  ) {
+  async actualizar(id: string, actualizarUsuarioDto: ActualizarUsuarioDto) {
     return await this.usuarioModel.findOneAndUpdate(
       new Types.ObjectId(id),
       actualizarUsuarioDto,
     );
+  }
+
+  async consultarPorId(id: string) {
+    try {
+      const pipeline = [
+        {
+          $match: {
+            _id: new Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'escuelas',
+            localField: 'escuelaId',
+            foreignField: '_id',
+            as: 'escuela',
+          },
+        },
+        {
+          $unwind: '$escuela',
+        },
+        {
+          $lookup: {
+            from: 'grupos',
+            let: {
+              grupoIds: {
+                $cond: {
+                  if: { $isArray: '$grupos' },
+                  then: '$grupos',
+                  else: ['$grupoId'],
+                },
+              },
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $in: ['$_id', '$$grupoIds'],
+                  },
+                },
+              },
+            ],
+            as: 'gruposDetalles',
+          },
+        },
+        {
+          $lookup: {
+            from: 'menus',
+            localField: 'menus',
+            foreignField: '_id',
+            as: 'menusDetalles',
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            nombre: 1,
+            apellidoPaterno: 1,
+            apellidoMaterno: 1,
+            fechaNacimiento: 1,
+            sexo: 1,
+            telefono: 1,
+            niveles: 1,
+            correo: 1,
+            matricula: 1,
+            rol: 1,
+            estatus: 1,
+            fechaCreacion: 1,
+            qrCode: 1,
+            fechaEdicion: 1,
+            escuela: {
+              nombre: '$escuela.nombre',
+              direccion: '$escuela.direccion',
+              telefono: '$escuela.telefono',
+              correoElectronico: '$escuela.correoElectronico',
+              nivelEducativo: '$escuela.nivelEducativo',
+              director: '$escuela.director',
+              logo: '$escuela.logo',
+              website: '$escuela.website',
+              fechaFundacion: '$escuela.fechaFundacion',
+              ciudad: '$escuela.ciudad',
+              codigoPostal: '$escuela.codigoPostal',
+              cupo: '$escuela.cupo',
+              descripcion: '$escuela.descripcion',
+              estatus: '$escuela.estatus',
+            },
+            grupos: {
+              $map: {
+                input: '$gruposDetalles',
+                as: 'grupo',
+                in: {
+                  _id: '$$grupo._id',
+                  nombre: '$$grupo.nombre',
+                  descripcion: '$$grupo.descripcion',
+                  estatus: '$$grupo.estatus',
+                  nivel: '$$grupo.nivel',
+                },
+              },
+            },
+            menus: {
+              $map: {
+                input: '$menusDetalles',
+                as: 'menu',
+                in: {
+                  _id: '$$menu._id',
+                  nombre: '$$menu.nombre',
+                  menuId: '$$menu.menuId',
+                  subMenu: '$$menu.subMenu',
+                },
+              },
+            },
+          },
+        },
+      ];
+
+      return await this.usuarioModel.aggregate(pipeline).exec();
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async buscarPorCorreo(correo: string): Promise<Usuario | null> {

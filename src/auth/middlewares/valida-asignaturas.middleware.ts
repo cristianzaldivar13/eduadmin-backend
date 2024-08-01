@@ -38,7 +38,7 @@ export class ValidaAsignaturasMiddleware implements NestMiddleware {
       // Obtiene el registro por su nombre
       const documento = await this.connection
         .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
-        .findOne({
+        .countDocuments({
           nombre: req.body?.nombre,
           nivel: req.body?.nivel,
         });
@@ -61,7 +61,7 @@ export class ValidaAsignaturasMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -93,7 +93,7 @@ export class ValidaAsignaturasMiddleware implements NestMiddleware {
       // Obtiene el registro por su id
       let documento = await this.connection
         .collection(nombreColeccion)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       try {
         if (!documento) {
@@ -115,7 +115,7 @@ export class ValidaAsignaturasMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);

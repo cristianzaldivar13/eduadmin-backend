@@ -62,7 +62,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
     try {
       const documento = await this.connection
         .collection(nombreColeccion)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -107,7 +107,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
 
         const documento = await this.connection
           .collection(nombreColeccion)
-          .findOne({ _id: new Types.ObjectId(id) });
+          .countDocuments({ _id: new Types.ObjectId(id) });
 
         if (!documento) {
           throw new BadRequestException(`El id ${id} no existe.`);
@@ -133,7 +133,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
         }
         const grupo = await this.connection
           .collection(EnumSecciones.GRUPOS.toLowerCase())
-          .findOne({ _id: new Types.ObjectId(grupoId) });
+          .countDocuments({ _id: new Types.ObjectId(grupoId) });
 
         if (!grupo) {
           throw new BadRequestException(`El Id ${grupoId} no existe`);
@@ -150,7 +150,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
         }
         const menu = await this.connection
           .collection(EnumSecciones.MENUS.toLowerCase())
-          .findOne({ _id: new Types.ObjectId(idMenu) });
+          .countDocuments({ _id: new Types.ObjectId(idMenu) });
 
         if (!menu) {
           throw new BadRequestException(`El Id ${idMenu} del menú no existe`);
@@ -201,7 +201,7 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(EnumSecciones.USUARIOS.toLowerCase())
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);

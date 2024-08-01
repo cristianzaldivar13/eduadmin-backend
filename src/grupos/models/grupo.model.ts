@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types, Document } from 'mongoose';
 import { EnumNivel } from '../../utils/enums/niveles.enum';
+import { EnumEstatus } from '../../utils/enums/estatus.enum';
 
 export type GrupoDocument = Grupo & Document;
 
@@ -12,8 +13,14 @@ export class Grupo {
   @Prop({ type: String, required: true })
   nombre: string;
 
+  @Prop({ type: String, required: true })
+  descripcion: string;
+
   @Prop({ type: Array, required: true })
   asignaturas: Array<Types.ObjectId>;
+
+  @Prop({ type: String, enum: EnumEstatus, required: true })
+  estatus: EnumEstatus;
 
   @Prop({ required: true, type: String, enum: EnumNivel })
   nivel: EnumNivel;

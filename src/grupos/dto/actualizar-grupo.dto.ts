@@ -13,6 +13,9 @@ export class ActualizarGrupoDto extends PartialType(CrearGrupoDto) {
     nombre: string;
 
     @IsOptional()
+    descripcion: string;
+
+    @IsOptional()
     @IsArray()
     asignaturas: Array<Types.ObjectId>;
 

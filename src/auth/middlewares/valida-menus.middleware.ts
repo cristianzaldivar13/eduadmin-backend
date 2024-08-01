@@ -47,7 +47,7 @@ export class ValidaMenusMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(collectionName)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -79,7 +79,7 @@ export class ValidaMenusMiddleware implements NestMiddleware {
       // Obtiene el registro por su id
       let documento = await this.connection
         .collection(nombreColeccion)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -118,7 +118,7 @@ export class ValidaMenusMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(EnumSecciones.MENUS.toLowerCase())
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);

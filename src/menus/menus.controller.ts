@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -39,6 +40,13 @@ export class MenusController {
     @Param('id') id: string,
   ) {
     return await this.menusService.actualizar(id, actualizarMenuDto);
+  }
+
+  @Get(EnumVerbos.CONSULTAR_POR_ID)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  consultarPorId(@Param('id') id: string) {
+    return this.menusService.consultarPorId(id);
   }
 
   @Post(EnumVerbos.PAGINAR)

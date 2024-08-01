@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -44,6 +45,13 @@ export class UsuariosController {
     @Param('id') id: string,
   ) {
     return await this.usuariosService.actualizar(id, actualizarUsuarioDto);
+  }
+
+  @Get(EnumVerbos.CONSULTAR_POR_ID)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  consultarPorId(@Param('id') id: string) {
+    return this.usuariosService.consultarPorId(id);
   }
 
   @Post(EnumVerbos.PAGINAR)

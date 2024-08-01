@@ -45,6 +45,8 @@ export class GruposController {
   }
 
   @Get(EnumVerbos.CONSULTAR_POR_ID)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
   consultarPorId(@Param('id') id: string) {
     return this.gruposService.consultarPorId(id);
   }

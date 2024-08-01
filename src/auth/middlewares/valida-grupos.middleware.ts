@@ -42,7 +42,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(collectionName)
-        .findOne({ nombre: req?.body?.nombre });
+        .countDocuments({ nombre: req?.body?.nombre });
 
       if (document) {
         throw new BadRequestException(
@@ -66,7 +66,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(collectionName)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -98,7 +98,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
       // Obtiene el registro por su id
       let documento = await this.connection
         .collection(nombreColeccion)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -113,7 +113,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
         }
         const asignatura = await this.connection
           .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
-          .findOne({ _id: new Types.ObjectId(asignaturaId) });
+          .countDocuments({ _id: new Types.ObjectId(asignaturaId) });
 
         if (!asignatura) {
           throw new BadRequestException(`El Id ${asignaturaId} no existe`);
@@ -132,7 +132,7 @@ export class ValidaGruposMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(EnumSecciones.GRUPOS.toLowerCase())
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);

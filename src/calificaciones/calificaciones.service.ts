@@ -51,6 +51,142 @@ export class CalificacionesService {
       .exec();
   }
 
+  async consultarPorId(id: string) {
+    try {
+      const pipeline = [
+        {
+          $match: {
+            _id: new Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'escuelas',
+            localField: 'escuelaId',
+            foreignField: '_id',
+            as: 'escuela',
+          },
+        },
+        {
+          $unwind: '$escuela',
+        },
+        {
+          $lookup: {
+            from: 'usuarios',
+            localField: 'profesorId',
+            foreignField: '_id',
+            as: 'profesor',
+          },
+        },
+        {
+          $unwind: '$profesor',
+        },
+        {
+          $lookup: {
+            from: 'usuarios',
+            localField: 'estudianteId',
+            foreignField: '_id',
+            as: 'estudiante',
+          },
+        },
+        {
+          $unwind: '$estudiante',
+        },
+        {
+          $lookup: {
+            from: 'asignaturas',
+            localField: 'asignaturaId',
+            foreignField: '_id',
+            as: 'asignatura',
+          },
+        },
+        {
+          $unwind: '$asignatura',
+        },
+        {
+          $lookup: {
+            from: 'grupos',
+            localField: 'grupoId',
+            foreignField: '_id',
+            as: 'grupo',
+          },
+        },
+        {
+          $unwind: '$grupo',
+        },
+        {
+          $project: {
+            _id: 1,
+            escuela: {
+              _id: '$escuela._id',
+              nombre: '$escuela.nombre',
+              direccion: '$escuela.direccion',
+              telefono: '$escuela.telefono',
+              correoElectronico: '$escuela.correoElectronico',
+              nivelEducativo: '$escuela.nivelEducativo',
+              director: '$escuela.director',
+              logo: '$escuela.logo',
+              website: '$escuela.website',
+              fechaFundacion: '$escuela.fechaFundacion',
+              ciudad: '$escuela.ciudad',
+              codigoPostal: '$escuela.codigoPostal',
+              cupo: '$escuela.cupo',
+              descripcion: '$escuela.descripcion',
+              estatus: '$escuela.estatus',
+            },
+            profesor: {
+              _id: '$profesor._id',
+              nombre: '$profesor.nombre',
+              correo: '$profesor.correo',
+              telefono: '$profesor.telefono',
+              departamento: '$profesor.departamento',
+            },
+            estudiante: {
+              _id: '$estudiante._id',
+              nombre: '$estudiante.nombre',
+              apellidoPaterno: '$estudiante.apellidoPaterno',
+              apellidoMaterno: '$estudiante.apellidoMaterno',
+              fechaNacimiento: '$estudiante.fechaNacimiento',
+              sexo: '$estudiante.sexo',
+              correo: '$estudiante.correo',
+              telefono: '$estudiante.telefono',
+            },
+            asignatura: {
+              _id: '$asignatura._id',
+              nombre: '$asignatura.nombre',
+              descripcion: '$asignatura.descripcion',
+              nivel: '$asignatura.nivel',
+            },
+            grupo: {
+              _id: '$grupo._id',
+              nombre: '$grupo.nombre',
+              descripcion: '$grupo.descripcion',
+              estatus: '$grupo.estatus',
+              nivel: '$grupo.nivel',
+            },
+            periodo: 1,
+            tipoEvaluacion: 1,
+            calificacion: 1,
+            comentarios: 1,
+            fechaCreacion: 1,
+          },
+        },
+      ];
+
+      const result = await this.calificacionModel.aggregate(pipeline).exec();
+
+      if (result.length === 0) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+
+      return result[0];
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
+  }
+
   async paginar(
     filtros: any,
     limit: number,

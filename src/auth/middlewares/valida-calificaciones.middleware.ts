@@ -44,7 +44,7 @@ export class ValidaCalificacionesMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(collectionName)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -84,7 +84,7 @@ export class ValidaCalificacionesMiddleware implements NestMiddleware {
       // Obtiene el registro por su id
       let documento: any = await this.connection
         .collection(nombreColeccion)
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
@@ -118,7 +118,7 @@ export class ValidaCalificacionesMiddleware implements NestMiddleware {
     try {
       const document = await this.connection
         .collection(EnumSecciones.CALIFICACIONES.toLowerCase())
-        .findOne({ _id: new Types.ObjectId(id) });
+        .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {
         throw new BadRequestException(`El id ${id} no existe.`);

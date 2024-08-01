@@ -10,6 +10,9 @@ export class CrearGrupoDto {
   @IsNotEmpty()
   nombre: string;
 
+  @IsNotEmpty()
+  descripcion: string;
+
   @IsArray()
   asignaturas: Array<Types.ObjectId>;
 
