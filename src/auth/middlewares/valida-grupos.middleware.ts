@@ -16,48 +16,69 @@ export class ValidaGruposMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const url = req.url.split('/')[2];
 
-    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
-      const { id } = req.params;
+    switch (url) {
+      case EnumVerbos.CREAR.toLowerCase():
+        await this.crear(req);
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.ACTUALIZAR.split('/')[0].toLowerCase():
+        await this.actualizar(req);
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.CONSULTAR_POR_ID.split('/')[0].toLowerCase():
+        await this.consultarPorId(req);
+        break;
+      default:
+        await this.validaciones(req);
+        break;
+    }
 
-      if (!id) {
-        throw new BadRequestException('Debe enviar el id.');
-      }
+    next();
+  }
 
-      const collectionName = EnumSecciones.GRUPOS.toLowerCase();
+  async crear(req: any) {
+    const collectionName = EnumSecciones.GRUPOS.toLowerCase();
 
-      try {
-        const document = await this.connection
-          .collection(collectionName)
-          .findOne({ _id: new Types.ObjectId(id) });
+    try {
+      const document = await this.connection
+        .collection(collectionName)
+        .findOne({ nombre: req?.body?.nombre });
 
-        if (!document) {
-          throw new BadRequestException(`El id ${id} no existe.`);
-        }
-      } catch (error) {
+      if (document) {
         throw new BadRequestException(
-          `Error al buscar el registro Id. ${error.message}`,
+          `El nombre ${req?.body?.nombre} ya existe.`,
         );
       }
+    } catch (error) {
+      throw new BadRequestException(`Error. ${error.message}`);
+    }
+  }
+
+  async actualizar(req: any) {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
     }
 
-    if (url === EnumVerbos.CREAR) {
-      const collectionName = EnumSecciones.GRUPOS.toLowerCase();
+    const collectionName = EnumSecciones.GRUPOS.toLowerCase();
 
-      try {
-        const document = await this.connection
-          .collection(collectionName)
-          .findOne({ nombre: req?.body?.nombre });
+    try {
+      const document = await this.connection
+        .collection(collectionName)
+        .findOne({ _id: new Types.ObjectId(id) });
 
-        if (document) {
-          throw new BadRequestException(
-            `El nombre ${req?.body?.nombre} ya existe.`,
-          );
-        }
-      } catch (error) {
-        throw new BadRequestException(`Error. ${error.message}`);
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
       }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
     }
+  }
 
+  async validaciones(req: any) {
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idCampos = Object.keys(req.body).filter((key) => key.endsWith('Id'));
 
@@ -99,7 +120,27 @@ export class ValidaGruposMiddleware implements NestMiddleware {
         }
       }
     }
+  }
 
-    next();
+  async consultarPorId(req: any) {
+    const id = req.params.id;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
+    }
+
+    try {
+      const document = await this.connection
+        .collection(EnumSecciones.ESCUELAS.toLowerCase())
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
   }
 }

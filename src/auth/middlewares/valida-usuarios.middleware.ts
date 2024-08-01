@@ -30,36 +30,55 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     const url = req.url.split('/')[2];
-    const { menus, rol } = req.body;
-    const menusId: Types.ObjectId[] = [];
 
-    // Validación para el verbo ACTUALIZAR
-    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
-      const { id } = req.params;
-
-      if (!id) {
-        throw new BadRequestException('Debe enviar el id.');
-      }
-
-      const nombreColeccion = EnumSecciones.USUARIOS.toLowerCase();
-
-      try {
-        const documento = await this.connection
-          .collection(nombreColeccion)
-          .findOne({ _id: new Types.ObjectId(id) });
-
-        if (!documento) {
-          throw new BadRequestException(`El id ${id} no existe.`);
-        }
-      } catch (error) {
-        throw new BadRequestException(
-          `Error al buscar el registro Id. ${error.message}`,
-        );
-      }
+    switch (url) {
+      case EnumVerbos.CREAR.toLowerCase():
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.ACTUALIZAR.split('/')[0].toLowerCase():
+        await this.actualizar(req);
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.CONSULTAR_POR_ID.split('/')[0].toLowerCase():
+        await this.consultarPorId(req);
+        break;
+      default:
+        await this.validaciones(req);
+        break;
     }
 
+    next();
+  }
+
+  async actualizar(req: any) {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
+    }
+
+    const nombreColeccion = EnumSecciones.USUARIOS.toLowerCase();
+
+    try {
+      const documento = await this.connection
+        .collection(nombreColeccion)
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!documento) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
+  }
+
+  async validaciones(req: any) {
     // Obtiene las claves del objeto req.body
     const claves = Object.keys(req.body);
+    const { menus, rol } = req.body;
+    const menusId: Types.ObjectId[] = [];
 
     // Filtra las claves que terminan en "Id"
     const idCampos = claves.filter((clave) => clave.endsWith('Id'));
@@ -170,8 +189,28 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
         }
       }
     }
+  }
 
-    next();
+  async consultarPorId(req: any) {
+    const id = req.params.id;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
+    }
+
+    try {
+      const document = await this.connection
+        .collection(EnumSecciones.USUARIOS.toLowerCase())
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
   }
 
   private getCollectionName(field: string): string {

@@ -17,30 +17,47 @@ export class ValidaAsistenciasMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const url = req.url.split('/')[2];
 
-    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
-      const { id } = req.params;
-
-      if (!id) {
-        throw new BadRequestException('Debe enviar el id.');
-      }
-
-      const collectionName = EnumSecciones.ASISTENCIAS.toLowerCase();
-
-      try {
-        const document = await this.connection
-          .collection(collectionName)
-          .findOne({ _id: new Types.ObjectId(id) });
-
-        if (!document) {
-          throw new BadRequestException(`El id ${id} no existe.`);
-        }
-      } catch (error) {
-        throw new BadRequestException(
-          `Error al buscar el registro Id. ${error.message}`,
-        );
-      }
+    switch (url) {
+      case EnumVerbos.CREAR.toLowerCase():
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.ACTUALIZAR.split('/')[0].toLowerCase():
+        await this.actualizar(req);
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.CONSULTAR_POR_ID.split('/')[0].toLowerCase():
+        await this.consultarPorId(req);
+        break;
     }
 
+    next();
+  }
+
+  async actualizar(req: any) {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
+    }
+
+    const collectionName = EnumSecciones.ASISTENCIAS.toLowerCase();
+
+    try {
+      const document = await this.connection
+        .collection(collectionName)
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
+  }
+
+  async validaciones(req: any) {
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idCampos = Object.keys(req.body).filter((key) => key.endsWith('Id'));
 
@@ -72,7 +89,27 @@ export class ValidaAsistenciasMiddleware implements NestMiddleware {
         throw new BadRequestException(`El id ${id} no existe.`);
       }
     }
+  }
 
-    next();
+  async consultarPorId(req: any) {
+    const id = req.params.id;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
+    }
+
+    try {
+      const document = await this.connection
+        .collection(EnumSecciones.ASISTENCIAS.toLowerCase())
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
   }
 }

@@ -14,32 +14,66 @@ export class ValidaAsignaturasMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const url = req.url.split('/')[2];
+    const url = req.url.split('/')[2].toLowerCase();
 
-    if (EnumVerbos.ACTUALIZAR.toString().includes(url)) {
-      const { id } = req.params;
+    switch (url) {
+      case EnumVerbos.CREAR.toLowerCase():
+        await this.crear(req);
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.ACTUALIZAR.split('/')[0].toLowerCase():
+        await this.actualizar(req);
+        await this.validaciones(req);
+        break;
+      case EnumVerbos.CONSULTAR_POR_ID.split('/')[0].toLowerCase():
+        await this.consultarPorId(req);
+        break;
+    }
 
-      if (!id) {
-        throw new BadRequestException('Debe enviar el id.');
-      }
+    next();
+  }
 
-      const collectionName = EnumSecciones.ASIGNATURAS;
+  async crear(req: any) {
+    if (req.body?.nombre) {
+      // Obtiene el registro por su nombre
+      const documento = await this.connection
+        .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
+        .findOne({
+          nombre: req.body?.nombre,
+          nivel: req.body?.nivel,
+        });
 
-      try {
-        const document = await this.connection
-          .collection(collectionName)
-          .findOne({ _id: new Types.ObjectId(id) });
-
-        if (!document) {
-          throw new BadRequestException(`El id ${id} no existe.`);
-        }
-      } catch (error) {
+      if (documento) {
         throw new BadRequestException(
-          `Error al buscar el registro Id. ${error.message}`,
+          `El nombre ${req.body?.nombre} con el nivel ${req.body?.nivel} ya existe.`,
         );
       }
     }
+  }
 
+  async actualizar(req: any) {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
+    }
+
+    try {
+      const document = await this.connection
+        .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
+  }
+
+  async validaciones(req: any) {
     // Filtra los campos que terminan en "Id" y extrae los valores de los ids
     const idCampos = Object.keys(req.body).filter((key) => key.endsWith('Id'));
 
@@ -69,25 +103,27 @@ export class ValidaAsignaturasMiddleware implements NestMiddleware {
         throw new BadRequestException(`${error.message}`);
       }
     }
+  }
 
-    if (url === EnumVerbos.CREAR) {
-      if (req.body?.nombre) {
-        // Obtiene el registro por su nombre
-        const documento = await this.connection
-          .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
-          .findOne({
-            nombre: req.body?.nombre,
-            nivel: req.body?.nivel,
-          });
+  async consultarPorId(req: any) {
+    const id = req.params.id;
 
-        if (documento) {
-          throw new BadRequestException(
-            `El nombre ${req.body?.nombre} con el nivel ${req.body?.nivel} ya existe.`,
-          );
-        }
-      }
+    if (!id) {
+      throw new BadRequestException('Debe enviar el id.');
     }
 
-    next();
+    try {
+      const document = await this.connection
+        .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
+        .findOne({ _id: new Types.ObjectId(id) });
+
+      if (!document) {
+        throw new BadRequestException(`El id ${id} no existe.`);
+      }
+    } catch (error) {
+      throw new BadRequestException(
+        `Error al buscar el registro Id. ${error.message}`,
+      );
+    }
   }
 }
