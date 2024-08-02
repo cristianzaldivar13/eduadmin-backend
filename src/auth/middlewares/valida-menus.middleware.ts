@@ -97,7 +97,6 @@ export class ValidaMenusMiddleware implements NestMiddleware {
       if (!Types.ObjectId.isValid(req.body.menuId)) {
         throw new BadRequestException('El Id del menú no es válido');
       }
-      req.body.menuId = new Types.ObjectId(req.body.menuId);
     } else {
       // Si subMenu es false y menuId es proporcionado, arroja error
       if (req.body.menuId) {
