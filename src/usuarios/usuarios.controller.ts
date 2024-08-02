@@ -48,7 +48,7 @@ export class UsuariosController {
   }
 
   @Get(EnumVerbos.CONSULTAR_POR_ID)
-  @Role(EnumRolesUsuario.ROOT)
+  @Role(EnumRolesUsuario.ROOT, EnumRolesUsuario.ESTUDIANTE, EnumRolesUsuario.PROFESOR)
   @UseGuards(JwtAuthGuard, JwtGuard)
   consultarPorId(@Param('id') id: string) {
     return this.usuariosService.consultarPorId(id);

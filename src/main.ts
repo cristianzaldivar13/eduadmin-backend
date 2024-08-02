@@ -3,10 +3,18 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as fs from 'fs';
-import * as path from 'path'; // Añadir esta línea si no está importada
+import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Configura CORS
+  app.enableCors({
+    origin: 'http://localhost:3000', // Permite solicitudes solo desde este origen
+    methods: ['GET', 'POST', 'PATCH'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -19,38 +27,20 @@ async function bootstrap() {
     .setTitle('API ZAMSOFT')
     .setDescription('Documentación API')
     .setVersion('1.0.0')
-    .addTag('Administraciones')
-    .addTag('Asignaturas')
-    .addTag('Calificaciones')
-    .addTag('Asistencias')
-    .addTag('Bibliotecas')
-    .addTag('Calendario Escolar')
-    .addTag('Comunicaciones')
-    .addTag('Cursos')
-    .addTag('Grupos')
-    .addTag('Eventos')
-    .addTag('Finanzas')
-    .addTag('Notificaciones')
-    .addTag('Reportes')
-    .addTag('Roles')
-    .addTag('Tutores')
-    .addTag('Usuarios')
-    .addTag('Menus')
-    .addTag('Visitantes')
     .addTag('Auth')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);
 
-  await app.listen(3001);
+  await app.listen(3001); // Solo HTTP para desarrollo
 
-  // Obtener la ruta completa a los certificados
+  // Si deseas utilizar HTTPS en desarrollo, descomenta y configura
+  /*
   const certPath = path.resolve(__dirname, './certificados');
   const privateKeyPath = path.join(certPath, 'private-key.pem');
   const certificatePath = path.join(certPath, 'certificate.pem');
 
-  // Configurar servidor HTTPS
   const httpsOptions = {
     key: fs.readFileSync(privateKeyPath),
     cert: fs.readFileSync(certificatePath),
@@ -60,6 +50,7 @@ async function bootstrap() {
     httpsOptions,
   });
   await httpsServer.listen(3002);
+  */
 }
 
 bootstrap();
