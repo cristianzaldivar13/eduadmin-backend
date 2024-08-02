@@ -10,7 +10,7 @@ import { EnumVerbos } from '../../utils/enums/verbos.enum';
 import { EnumSecciones } from '../../utils/enums/secciones.enum';
 
 @Injectable()
-export class ValidaMenusMiddleware implements NestMiddleware {
+export class ValidaRolesMiddleware implements NestMiddleware {
   constructor(@InjectConnection() private readonly connection: Connection) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -18,6 +18,7 @@ export class ValidaMenusMiddleware implements NestMiddleware {
 
     switch (url) {
       case EnumVerbos.CREAR.toLowerCase():
+        await this.crear(req);
         await this.validaciones(req);
         break;
       case EnumVerbos.ACTUALIZAR.split('/')[0].toLowerCase():
@@ -35,6 +36,16 @@ export class ValidaMenusMiddleware implements NestMiddleware {
     next();
   }
 
+  async crear(req: any) {
+    if (!req.body?.escuelaId) {
+      throw new BadRequestException(`El rol ${req.body?.nombre} debe asignarse a una escuela`);
+    }
+
+    if (!req.body?.nombre) {
+      throw new BadRequestException(`El rol se le debe asignar un nombre`);
+    }
+  }
+
   async actualizar(req: any) {
     const { id } = req.params;
 
@@ -42,7 +53,7 @@ export class ValidaMenusMiddleware implements NestMiddleware {
       throw new BadRequestException('Debe enviar el id.');
     }
 
-    const collectionName = EnumSecciones.MENUS.toLowerCase();
+    const collectionName = EnumSecciones.ROLES.toLowerCase();
 
     try {
       const document = await this.connection
@@ -84,20 +95,6 @@ export class ValidaMenusMiddleware implements NestMiddleware {
       if (!documento) {
         throw new BadRequestException(`El id ${id} no existe.`);
       }
-
-      const nombre = req?.body?.nombre;
-      // Obtiene el registro por su nombre
-      documento = await this.connection
-        .collection(EnumSecciones.MENUS.toLowerCase())
-        .countDocuments({
-          escuelaId: new Types.ObjectId(id),
-          nombre: nombre,
-          subMenu: false,
-        });
-
-      if (documento) {
-        throw new BadRequestException(`El nombre ${nombre} ya existe como menú padre.`);
-      }
     }
 
     // Validar que si subMenu es true, se debe proporcionar menuId
@@ -110,19 +107,6 @@ export class ValidaMenusMiddleware implements NestMiddleware {
       // Asegúrate de que menuId sea un ObjectId válido
       if (!Types.ObjectId.isValid(req.body.menuId)) {
         throw new BadRequestException('El Id del menú no es válido');
-      }
-
-      const nombre = req?.body?.nombre;
-      // Obtiene el registro por su nombre
-      let documento = await this.connection
-        .collection(EnumSecciones.MENUS.toLowerCase())
-        .countDocuments({
-          menuId: new Types.ObjectId(req.body.menuId),
-          nombre: nombre,
-        });
-
-      if (documento) {
-        throw new BadRequestException(`El nombre ${nombre} ya existe en el menú padre.`);
       }
     } else {
       // Si subMenu es false y menuId es proporcionado, arroja error
@@ -143,7 +127,7 @@ export class ValidaMenusMiddleware implements NestMiddleware {
 
     try {
       const document = await this.connection
-        .collection(EnumSecciones.MENUS.toLowerCase())
+        .collection(EnumSecciones.ROLES.toLowerCase())
         .countDocuments({ _id: new Types.ObjectId(id) });
 
       if (!document) {

@@ -104,9 +104,49 @@ export class UsuariosService {
         {
           $lookup: {
             from: 'menus',
-            localField: 'menus',
-            foreignField: '_id',
+            let: {
+              menuIds: '$menus',
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $in: ['$_id', '$$menuIds'],
+                  },
+                },
+              },
+            ],
             as: 'menusDetalles',
+          },
+        },
+        {
+          $lookup: {
+            from: 'menus',
+            let: {
+              parentMenuIds: {
+                $map: {
+                  input: '$menusDetalles',
+                  as: 'menu',
+                  in: {
+                    $cond: {
+                      if: { $eq: ['$$menu.subMenu', false] },
+                      then: '$$menu._id',
+                      else: null,
+                    },
+                  },
+                },
+              },
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $in: ['$menuId', '$$parentMenuIds'],
+                  },
+                },
+              },
+            ],
+            as: 'subMenusDetalles',
           },
         },
         {
@@ -164,6 +204,13 @@ export class UsuariosService {
                   nombre: '$$menu.nombre',
                   menuId: '$$menu.menuId',
                   subMenu: '$$menu.subMenu',
+                  subMenus: {
+                    $filter: {
+                      input: '$subMenusDetalles',
+                      as: 'subMenu',
+                      cond: { $eq: ['$$subMenu.menuId', '$$menu._id'] },
+                    },
+                  },
                 },
               },
             },

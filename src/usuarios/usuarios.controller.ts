@@ -37,6 +37,11 @@ export class UsuariosController {
     return await this.usuariosService.crear(crearUsuarioDto);
   }
 
+  // @Post('CrearRoot')
+  // async crearRoot(@Body() crearUsuarioDto: CrearUsuarioDto) {
+  //   return await this.usuariosService.crear(crearUsuarioDto);
+  // }
+
   @Patch(EnumVerbos.ACTUALIZAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)

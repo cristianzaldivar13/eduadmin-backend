@@ -20,4 +20,10 @@ export class RolesController {
   async crear(@Body() crearRolDto: CrearRolDto) {
     return this.rolesService.crear(crearRolDto);
   }
+
+  // @Post('CrearRolRoot')
+  // @UseGuards(JwtAuthGuard, JwtGuard)
+  // async crearRolRoot(@Body() crearRolDto: CrearRolDto) {
+  //   return this.rolesService.crear(crearRolDto);
+  // }
 }

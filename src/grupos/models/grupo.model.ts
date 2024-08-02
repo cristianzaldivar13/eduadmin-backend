@@ -16,9 +16,6 @@ export class Grupo {
   @Prop({ type: String, required: true })
   descripcion: string;
 
-  @Prop({ type: Array, required: true })
-  asignaturas: Array<Types.ObjectId>;
-
   @Prop({ type: String, enum: EnumEstatus, required: true })
   estatus: EnumEstatus;
 

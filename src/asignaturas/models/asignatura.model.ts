@@ -9,6 +9,9 @@ export type AsignaturaDocument = Asignatura & Document;
 export class Asignatura {
   @Prop({ type: Types.ObjectId, required: true })
   escuelaId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, required: true })
+  grupoId: Types.ObjectId;
   
   @Prop({ required: true })
   nombre: string;

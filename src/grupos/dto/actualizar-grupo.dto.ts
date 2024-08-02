@@ -16,10 +16,6 @@ export class ActualizarGrupoDto extends PartialType(CrearGrupoDto) {
     descripcion: string;
 
     @IsOptional()
-    @IsArray()
-    asignaturas: Array<Types.ObjectId>;
-
-    @IsOptional()
     @IsEnum(EnumNivel)
     nivel: EnumNivel
 }

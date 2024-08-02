@@ -14,6 +14,13 @@ AsignaturaSchema.pre<Asignatura>('save', function (next) {
     schemaData.escuelaId = new Types.ObjectId(schemaData.escuelaId);
   }
 
+  if (
+    schemaData.isModified('grupoId') &&
+    typeof schemaData.grupoId === 'string'
+  ) {
+    schemaData.grupoId = new Types.ObjectId(schemaData.grupoId);
+  }
+
   next();
 });
 
@@ -22,6 +29,10 @@ AsignaturaSchema.pre('findOneAndUpdate', function (next) {
 
   if (update.escuelaId && typeof update.escuelaId === 'string') {
     update.escuelaId = new Types.ObjectId(update.escuelaId);
+  }
+
+  if (update.grupoId && typeof update.grupoId === 'string') {
+    update.grupoId = new Types.ObjectId(update.grupoId);
   }
 
   update.fechaEdicion = new Date();

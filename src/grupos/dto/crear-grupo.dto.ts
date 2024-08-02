@@ -13,9 +13,6 @@ export class CrearGrupoDto {
   @IsNotEmpty()
   descripcion: string;
 
-  @IsArray()
-  asignaturas: Array<Types.ObjectId>;
-
   @IsNotEmpty()
   @IsEnum(EnumNivel)
   nivel: EnumNivel

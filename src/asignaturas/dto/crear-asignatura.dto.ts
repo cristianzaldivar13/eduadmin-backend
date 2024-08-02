@@ -7,6 +7,10 @@ export class CrearAsignaturaDto {
   @IsNotEmpty()
   @IsMongoId()
   escuelaId: Types.ObjectId;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  grupoId: Types.ObjectId;
   
   @IsNotEmpty()
   @IsString()
