@@ -10,6 +10,7 @@ import { EnumSeccion, EnumSecciones } from '../../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../../utils/enums/roles-usuario.enum';
 import { EnumTipoAsistencia } from '../../utils/enums/tipos.enum';
 import { EnumVerbos } from '../../utils/enums/verbos.enum';
+import { Menu } from '../../menus/models/menu.model';
 
 const excepciones = {
   profesor: 'profesores',
@@ -112,31 +113,21 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
         if (!documento) {
           throw new BadRequestException(`El id ${id} no existe.`);
         }
-
-        // Validaciones adicionales basadas en el documento
-        if (
-          req.body?.tipoAsistencia == EnumTipoAsistencia.CLASE &&
-          !req.body?.asignaturaId
-        ) {
-          throw new BadRequestException(
-            `Falta enviar el Id de la asignatura para la asistencia de tipo ${EnumTipoAsistencia.CLASE}.`,
-          );
-        }
       }
     }
 
     // Validaciones especiales con objetos
-    if (req.body?.grupos) {
-      for (const grupoId of req.body.grupos) {
-        if (!Types.ObjectId.isValid(grupoId)) {
-          throw new BadRequestException(`El Id ${grupoId} no es válido`);
+    if (req.body?.asignaturas) {
+      for (const asignaturaId of req.body.asignaturas) {
+        if (!Types.ObjectId.isValid(asignaturaId)) {
+          throw new BadRequestException(`El Id ${asignaturaId} no es válido`);
         }
         const grupo = await this.connection
-          .collection(EnumSecciones.GRUPOS.toLowerCase())
-          .countDocuments({ _id: new Types.ObjectId(grupoId) });
+          .collection(EnumSecciones.ASIGNATURAS.toLowerCase())
+          .countDocuments({ _id: new Types.ObjectId(asignaturaId) });
 
         if (!grupo) {
-          throw new BadRequestException(`El Id ${grupoId} no existe`);
+          throw new BadRequestException(`El Id ${asignaturaId} no existe`);
         }
       }
     }
@@ -172,6 +163,14 @@ export class ValidaUsuariosMiddleware implements NestMiddleware {
         throw new BadRequestException(
           `No se encontró un menú con los Ids proporcionados`,
         );
+      }
+
+      for (const menu of listMenu) {
+        if(menu.menuId) {
+          throw new BadRequestException(
+            `El menú ${menu._id} no debe ser un submenú`,
+          );
+        }
       }
 
       const menuRoles = listMenu.find(

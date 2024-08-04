@@ -14,7 +14,7 @@ export class Usuario {
   grupoId: Types.ObjectId;
 
   @Prop({ type: Array, required: false })
-  grupos: Array<Types.ObjectId>;
+  asignaturas: Array<Types.ObjectId>;
 
   @Prop({ type: Array, required: false })
   menus: Array<Types.ObjectId>;

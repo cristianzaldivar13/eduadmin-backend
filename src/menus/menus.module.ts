@@ -7,6 +7,7 @@ import { MenuSchema } from './schemas/menu.schema';
 import { PaginacionService } from '../utils/servicios/paginacion.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaMenusMiddleware } from '../auth/middlewares/valida-menus.middleware';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
   imports: [
@@ -21,10 +22,11 @@ export class MenusModule {
     consumer
       .apply(ValidaMenusMiddleware)
       .forRoutes(
-        { path: `${EnumSecciones.MENUS}/Crear`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.MENUS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.MENUS}/Actualizar/:id`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.MENUS}/ConsultarPorId/:id`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.MENUS}/${EnumVerbos.CREAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.MENUS}/${EnumVerbos.PAGINAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.MENUS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.MENUS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.MENUS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
       );
   }
 }

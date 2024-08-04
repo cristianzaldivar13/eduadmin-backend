@@ -6,6 +6,7 @@ import { Escuelas } from './models/escuela.model';
 import { EscuelaSchema } from './schemas/escuela.schema';
 import { ValidaEscuelasMiddleware } from '../auth/middlewares/valida-escuelas.middleware';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ export class EscuelasModule {
     consumer
       .apply(ValidaEscuelasMiddleware)
       .forRoutes(
-        { path: `${EnumSecciones.ESCUELAS}/ConsultarPorId/:id`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ESCUELAS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
       );
   }
 }

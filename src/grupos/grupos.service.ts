@@ -138,18 +138,37 @@ export class GruposService {
     sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
   ) {
     const project = {
-      nombre: 1,
+      nombreGrupo: "$nombre", // Renombra el campo nombre del grupo a nombreGrupo
       fechaCreacion: 1,
-      asignaturas: 1,
+      nombreAsignatura: "$asignaturas.nombre", // Renombra el campo nombre de la asignatura a nombreAsignatura
     }; // Proyecta solo ciertos campos
-
+  
+    const additionalLookups = [
+      {
+        $lookup: {
+          from: "asignaturas",
+          localField: "_id",
+          foreignField: "grupoId",
+          as: "asignaturas"
+        }
+      },
+      {
+        $unwind: {
+          path: "$asignaturas",
+          preserveNullAndEmptyArrays: true
+        }
+      }
+    ]; // Añade el lookup adicional
+  
     return this.paginacionService.paginar(
       EnumSecciones.GRUPOS.toLowerCase(), // Nombre de la colección
       filtros, // Filtros
       limit, // Límite
       skip, // Salto
       sort, // Ordenación
-      project, // Resultado
+      project, // Proyección
+      additionalLookups, // Lookups adicionales
     );
   }
+  
 }

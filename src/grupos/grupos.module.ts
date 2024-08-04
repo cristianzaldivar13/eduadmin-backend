@@ -7,6 +7,7 @@ import { GrupoSchema } from './schemas/grupo.schema';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaGruposMiddleware } from '../auth/middlewares/valida-grupos.middleware';
 import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
   imports: [
@@ -21,10 +22,11 @@ export class GruposModule {
     consumer
       .apply(ValidaGruposMiddleware)
       .forRoutes(
-        { path: `${EnumSecciones.GRUPOS}/Crear`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.GRUPOS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.GRUPOS}/Actualizar/:id`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.GRUPOS}/ConsultarPorId/:id`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.CREAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.PAGINAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
       );
   }
 }

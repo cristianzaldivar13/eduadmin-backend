@@ -23,7 +23,7 @@ export class CrearUsuarioDto {
 
   @IsOptional()
   @IsArray()
-  grupos: Array<Types.ObjectId>;
+  asignaturas: Array<Types.ObjectId>;
 
   @IsOptional()
   @IsArray()

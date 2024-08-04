@@ -4,9 +4,8 @@ export enum EnumVerbos {
     ACTUALIZAR = 'Actualizar/:id',
     ACTUALIZAR_QR = 'ActualizarQr',
     ELIMINAR = 'Eliminar',
-    CONSULTAR = 'Consultar',
+    LISTAR = 'Listar/:seccion/:id',
     PAGINAR = 'Paginar',
-    CONSUTLAR = 'Consultar',
     CONSULTAR_POR_ID = 'ConsultarPorId/:id',
   }
   

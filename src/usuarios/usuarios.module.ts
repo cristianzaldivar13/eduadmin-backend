@@ -8,6 +8,7 @@ import { RolesModule } from '../roles/roles.module';
 import { ValidaUsuariosMiddleware } from '../auth/middlewares/valida-usuarios.middleware';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
   imports: [
@@ -23,10 +24,11 @@ export class UsuariosModule {
     consumer
       .apply(ValidaUsuariosMiddleware)
       .forRoutes(
-        { path: `${EnumSecciones.USUARIOS}/Crear`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.USUARIOS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.USUARIOS}/Actualizar/:id`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.USUARIOS}/ConsultarPorId/:id`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.USUARIOS}/${EnumVerbos.CREAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.USUARIOS}/${EnumVerbos.PAGINAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.USUARIOS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.USUARIOS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.USUARIOS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
       );
   }
 }

@@ -7,6 +7,7 @@ import { Asignatura } from './models/asignatura.model';
 import { PaginacionService } from '../utils/servicios/paginacion.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaAsignaturasMiddleware } from '../auth/middlewares/valida-asignaturas.middleware';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
   imports: [
@@ -23,10 +24,11 @@ export class AsignaturasModule {
     consumer
       .apply(ValidaAsignaturasMiddleware)
       .forRoutes(
-        { path: `${EnumSecciones.ASIGNATURAS}/Crear`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.ASIGNATURAS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.ASIGNATURAS}/Actualizar/:id`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.ASIGNATURAS}/ConsultarPorId/:id`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.CREAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.PAGINAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
       );
   }
 }

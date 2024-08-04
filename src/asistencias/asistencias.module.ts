@@ -9,6 +9,7 @@ import { UsuariosModule } from '../usuarios/usuarios.module';
 import { PaginacionService } from '../utils/servicios/paginacion.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaAsistenciasMiddleware } from '../auth/middlewares/valida-asistencias.middleware';
+import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
   imports: [
@@ -26,10 +27,11 @@ export class AsistenciasModule {
     consumer
       .apply(ValidaAsistenciasMiddleware)
       .forRoutes(
-        { path: `${EnumSecciones.ASISTENCIAS}/Crear`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.ASISTENCIAS}/Paginar`, method: RequestMethod.POST },
-        { path: `${EnumSecciones.ASISTENCIAS}/Actualizar/:id`, method: RequestMethod.PATCH },
-        { path: `${EnumSecciones.ASISTENCIAS}/ConsultarPorId/:id`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASISTENCIAS}/${EnumVerbos.CREAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.ASISTENCIAS}/${EnumVerbos.PAGINAR}`, method: RequestMethod.POST },
+        { path: `${EnumSecciones.ASISTENCIAS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
+        { path: `${EnumSecciones.ASISTENCIAS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASISTENCIAS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
       );
   }
 }

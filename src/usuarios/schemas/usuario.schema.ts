@@ -23,9 +23,9 @@ UsuarioSchema.pre<Usuario>('save', async function (next) {
     schemaData.grupoId = new Types.ObjectId(schemaData.grupoId);
   }
 
-  if (schemaData.isModified('grupos') && Array.isArray(schemaData.grupos)) {
-    schemaData.grupos = schemaData.grupos.map(
-      (grupo: any) => new Types.ObjectId(grupo),
+  if (schemaData.isModified('asignaturas') && Array.isArray(schemaData.asignaturas)) {
+    schemaData.asignaturas = schemaData.asignaturas.map(
+      (asignatura: any) => new Types.ObjectId(asignatura),
     );
   }
 
@@ -57,9 +57,9 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
   if (update.grupoId && typeof update.grupoId === 'string') {
     update.grupoId = new Types.ObjectId(update.grupoId);
   }
-  if (update.grupos && Array.isArray(update.grupos)) {
-    update.grupos = update.grupos.map(
-      (grupo: any) => new Types.ObjectId(grupo),
+  if (update.asignaturas && Array.isArray(update.asignaturas)) {
+    update.asignaturas = update.asignaturas.map(
+      (asignatura: any) => new Types.ObjectId(asignatura),
     );
   }
   if (update.menus && Array.isArray(update.menus)) {
@@ -75,9 +75,9 @@ UsuarioSchema.pre('findOneAndUpdate', function (next) {
     if (update.$set.grupoId && typeof update.$set.grupoId === 'string') {
       update.$set.grupoId = new Types.ObjectId(update.$set.grupoId);
     }
-    if (update.$set.grupos && Array.isArray(update.$set.grupos)) {
-      update.$set.grupos = update.$set.grupos.map(
-        (grupo: any) => new Types.ObjectId(grupo),
+    if (update.$set.asignaturas && Array.isArray(update.$set.asignaturas)) {
+      update.$set.asignaturas = update.$set.asignaturas.map(
+        (asignatura: any) => new Types.ObjectId(asignatura),
       );
     }
     if (update.$set.menus && Array.isArray(update.$set.menus)) {

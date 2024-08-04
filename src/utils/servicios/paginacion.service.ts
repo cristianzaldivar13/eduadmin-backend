@@ -36,7 +36,8 @@ export class PaginacionService {
     limit: number = 10,
     skip: number = 0,
     sort: Record<string, 1 | -1> = {},
-    project: any = {}, // Agrega el campo project
+    project: any = {},
+    additionalLookups: any[] = [], // Agrega el parámetro additionalLookups
   ): Promise<any> {
     // Validaciones
     if (limit < 0) {
@@ -73,6 +74,7 @@ export class PaginacionService {
     const pipeline: any[] = [
       { $match: filtrosConvertidos },
       ...lookups, // Añade las etapas de lookup para IDs
+      ...additionalLookups, // Añade los lookups adicionales
       ...(Object.keys(sort).length > 0 ? [{ $sort: sort }] : []),
       // Añade dinámicamente los lookups y addFields para los arreglos
       ...arreglos.flatMap((arreglo) => [
@@ -122,7 +124,7 @@ export class PaginacionService {
         },
       },
     ];
-
+    console.log(JSON.stringify(pipeline));
     // Obtiene la colección y ejecuta la agregación
     try {
       const collection = this.connection.collection(collectionName);
