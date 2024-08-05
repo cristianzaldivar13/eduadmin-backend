@@ -10,7 +10,7 @@ import { CrearAsistenciaDto } from './dto/crear-asistencia.dto';
 import { ActualizarAsistenciaDto } from './dto/actualizar-asistencia.dto';
 import { EnumTipoAsistencia } from '../utils/enums/tipos.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { Buffer } from 'buffer';
 import jsQR from 'jsqr';
 import { PNG } from 'pngjs';
@@ -20,7 +20,7 @@ export class AsistenciasService {
   constructor(
     @InjectModel(Asistencia.name)
     private readonly asistenciaModel: Model<Asistencia>,
-    private readonly paginacionService: PaginacionService,
+    private readonly paginacionService: ConsultasService,
   ) {}
 
   async crear(crearAsistenciaDto: CrearAsistenciaDto): Promise<Asistencia> {

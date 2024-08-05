@@ -4,7 +4,7 @@ import { AsignaturasController } from './asignaturas.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AsignaturaSchema } from './schemas/asignatura.schema';
 import { Asignatura } from './models/asignatura.model';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaAsignaturasMiddleware } from '../auth/middlewares/valida-asignaturas.middleware';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
@@ -16,7 +16,7 @@ import { EnumVerbos } from '../utils/enums/verbos.enum';
     ]),
   ],
   controllers: [AsignaturasController],
-  providers: [AsignaturasService, PaginacionService],
+  providers: [AsignaturasService, ConsultasService],
   exports: [AsignaturasService],
 })
 export class AsignaturasModule {
@@ -29,6 +29,7 @@ export class AsignaturasModule {
         { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
         { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
         { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.ASIGNATURAS}/${EnumVerbos.CONSULTAR}`, method: RequestMethod.POST },
       );
   }
 }

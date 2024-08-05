@@ -4,7 +4,7 @@ import { Connection, Types } from 'mongoose';
 import { EnumSecciones } from '../enums/secciones.enum';
 
 @Injectable()
-export class PaginacionService {
+export class ConsultasService {
   private readonly mapeoColecciones: Record<string, string> = {
     administracion: 'administraciones',
     asignatura: 'asignaturas',
@@ -53,7 +53,7 @@ export class PaginacionService {
     );
 
     // Convierte IDs en los filtros y añade el filtro de fechas si es necesario
-    const { filtrosConvertidos, lookups } = this.convertirIdsAFiltros(
+    const { filtrosConvertidos, lookups } = this.convertirFiltros(
       filtros,
       enumSecciones,
     );
@@ -124,7 +124,7 @@ export class PaginacionService {
         },
       },
     ];
-    console.log(JSON.stringify(pipeline));
+
     // Obtiene la colección y ejecuta la agregación
     try {
       const collection = this.connection.collection(collectionName);
@@ -145,7 +145,67 @@ export class PaginacionService {
     }
   }
 
-  private convertirIdsAFiltros(filtros: any, enumSecciones: Array<any>) {
+  async Consultar(
+    collectionName: string,
+    filtros: any = {},
+    limit: number = 10,
+    skip: number = 0,
+    sort: Record<string, 1 | -1> = {},
+    project: any = {},
+  ): Promise<any> {
+    // Validaciones
+    if (limit < 0) {
+      throw new BadRequestException('El límite debe ser un número positivo.');
+    }
+    if (skip < 0) {
+      throw new BadRequestException('El skip debe ser un número positivo.');
+    }
+
+    // Convierte IDs en los filtros y añade el filtro de fechas si es necesario
+    const { filtrosConvertidos, lookups } = this.convertirIds(filtros);
+
+    // Construye el pipeline de agregación
+    const pipeline: any[] = [
+      { $match: filtrosConvertidos },
+      ...lookups, // Añade las etapas de lookup para IDs
+      ...(Object.keys(sort).length > 0 ? [{ $sort: sort }] : []),
+      ...(Object.keys(project).length > 0 ? [{ $project: project }] : []), // Se añade el campo project
+      {
+        $facet: {
+          resultados: [{ $skip: skip }, { $limit: limit }],
+          total: [{ $count: 'total' }],
+        },
+      },
+      {
+        $addFields: {
+          total: { $arrayElemAt: ['$total.total', 0] },
+          pagina: { $literal: Math.floor(skip / limit) + 1 },
+          tamanoPagina: { $size: '$resultados' },
+        },
+      },
+    ];
+
+    // Obtiene la colección y ejecuta la agregación
+    try {
+      const collection = this.connection.collection(collectionName);
+      const result = await collection.aggregate(pipeline).toArray();
+
+      return (
+        result[0] || {
+          total: 0,
+          pagina: 1,
+          tamanoPagina: 0,
+          resultados: [],
+        }
+      );
+    } catch (error) {
+      throw new BadRequestException(
+        'Error al ejecutar la consulta de paginación.',
+      );
+    }
+  }
+
+  private convertirFiltros(filtros: any, enumSecciones: Array<any>) {
     const filtrosConvertidos: any = {};
     const lookups: any[] = [];
 
@@ -197,6 +257,57 @@ export class PaginacionService {
               as: `${key}Detalles`,
             },
           });
+        } else {
+          filtrosConvertidos[key] = filtros[key];
+        }
+      }
+    }
+    return { filtrosConvertidos, lookups };
+  }
+
+  private convertirIds(filtros: any) {
+    const filtrosConvertidos: any = {};
+    const lookups: any[] = [];
+
+    for (const key in filtros) {
+      if (filtros.hasOwnProperty(key)) {
+        if (key.endsWith('Id') && Types.ObjectId.isValid(filtros[key])) {
+          const coleccion = this.obtenerNombreColeccion(key);
+          filtrosConvertidos[key] = new Types.ObjectId(filtros[key]);
+
+          lookups.push({
+            $lookup: {
+              from: coleccion,
+              localField: key,
+              foreignField: '_id',
+              as: key.replace('Id', ''),
+            },
+          });
+
+          lookups.push({
+            $unwind: {
+              path: `$${key.replace('Id', '')}`,
+              preserveNullAndEmptyArrays: true,
+            },
+          });
+        } else if (key === 'entreFechas') {
+          const { fechaInicial, fechaFinal, campoFecha } = filtros[key];
+
+          if (fechaInicial && fechaFinal && campoFecha) {
+            // Convertir las fechas de string a objeto Date
+            const inicio = new Date(fechaInicial);
+            const fin = new Date(fechaFinal);
+
+            // Ajustar las horas para el rango completo del día final
+            inicio.setUTCHours(0, 0, 0, 0);
+            fin.setUTCHours(23, 59, 59, 999);
+
+            // Asignar el rango de fechas al filtro
+            filtrosConvertidos[campoFecha] = {
+              $gte: inicio,
+              $lte: fin,
+            };
+          }
         } else {
           filtrosConvertidos[key] = filtros[key];
         }

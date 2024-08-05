@@ -5,14 +5,14 @@ import { ActualizarAsignaturaDto } from './dto/actualizar-asignatura.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Asignatura } from './models/asignatura.model';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 
 @Injectable()
 export class AsignaturasService {
   constructor(
     @InjectModel(Asignatura.name)
     private readonly asignaturaModel: Model<Asignatura>,
-    private readonly paginacionService: PaginacionService,
+    private readonly consultasService: ConsultasService,
   ) {}
 
   async crear(crearAsignaturaDto: CrearAsignaturaDto): Promise<Asignatura> {
@@ -100,13 +100,33 @@ export class AsignaturasService {
       fechaCreacion: 1,
     }; // Proyecta solo ciertos campos
 
-    return this.paginacionService.paginar(
+    return this.consultasService.paginar(
       EnumSecciones.ASIGNATURAS.toLowerCase(), // Nombre de la colección
       filtros, // Filtros
       limit, // Límite
       skip, // Salto
       sort, // Ordenación
       project, // Resultado
+    );
+  }
+
+  async consultar(
+    filtros: any,
+    limit: number,
+    skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
+  ) {
+    let project: {
+      _id: 1,
+      nombre: 1,
+    }
+    return this.consultasService.Consultar(
+      EnumSecciones.ASIGNATURAS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project,
     );
   }
 }

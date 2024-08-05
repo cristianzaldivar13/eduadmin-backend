@@ -19,7 +19,7 @@ import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
-import { PaginacionDto } from '../utils/dtos/paginacion.dto';
+import { ConsultaDto } from '../utils/dtos/consulta.dto';
 
 @ApiTags(EnumSecciones.USUARIOS)
 @Controller(EnumSecciones.USUARIOS)
@@ -62,7 +62,7 @@ export class UsuariosController {
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)
-  async paginar(@Body() body: PaginacionDto) {
+  async paginar(@Body() body: ConsultaDto) {
     const { limit, skip, filtros } = body;
 
     if (limit && limit <= 0) {

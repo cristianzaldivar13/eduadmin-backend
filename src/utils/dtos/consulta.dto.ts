@@ -1,6 +1,6 @@
 import { IsNumber, IsObject, IsOptional } from 'class-validator';
 
-export class PaginacionDto {
+export class ConsultaDto {
   @IsOptional()
   @IsNumber()
   limit?: number; // Número máximo de resultados a devolver

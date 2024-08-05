@@ -4,7 +4,7 @@ import { MenusController } from './menus.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Menu } from './models/menu.model';
 import { MenuSchema } from './schemas/menu.schema';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaMenusMiddleware } from '../auth/middlewares/valida-menus.middleware';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
@@ -14,7 +14,7 @@ import { EnumVerbos } from '../utils/enums/verbos.enum';
     MongooseModule.forFeature([{ name: Menu.name, schema: MenuSchema }]),
   ],
   controllers: [MenusController],
-  providers: [MenusService, PaginacionService],
+  providers: [MenusService, ConsultasService],
   exports: [MenusService],
 })
 export class MenusModule {

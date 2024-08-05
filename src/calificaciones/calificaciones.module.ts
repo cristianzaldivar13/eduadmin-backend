@@ -4,7 +4,7 @@ import { CalificacionesController } from './calificaciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Calificacion } from './models/calificacion.model';
 import { CalificacionSchema } from './schemas/calificacion.schema';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaCalificacionesMiddleware } from '../auth/middlewares/valida-calificaciones.middleware';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
@@ -16,7 +16,7 @@ import { EnumVerbos } from '../utils/enums/verbos.enum';
     ]),
   ],
   controllers: [CalificacionesController],
-  providers: [CalificacionesService, PaginacionService],
+  providers: [CalificacionesService, ConsultasService],
   exports: [CalificacionesService],
 })
 export class CalificacionesModule {

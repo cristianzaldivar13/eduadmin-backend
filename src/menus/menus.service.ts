@@ -8,7 +8,7 @@ import { ActualizarMenuDto } from './dto/actualizar-menu.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Menu } from './models/menu.model';
 import { Model, Types } from 'mongoose';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class MenusService {
   constructor(
     @InjectModel(Menu.name)
     private readonly menuModel: Model<Menu>,
-    private readonly paginacionService: PaginacionService,
+    private readonly paginacionService: ConsultasService,
   ) {}
 
   async crear(crearMenuDto: CrearMenuDto) {

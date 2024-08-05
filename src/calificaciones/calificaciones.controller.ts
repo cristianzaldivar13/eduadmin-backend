@@ -18,7 +18,7 @@ import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { Role } from '../auth/decorators/Role.decorator';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
-import { PaginacionDto } from '../utils/dtos/paginacion.dto';
+import { ConsultaDto } from '../utils/dtos/consulta.dto';
 
 @ApiTags(EnumSecciones.CALIFICACIONES)
 @Controller(EnumSecciones.CALIFICACIONES)
@@ -55,7 +55,7 @@ export class CalificacionesController {
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)
-  async paginar(@Body() body: PaginacionDto) {
+  async paginar(@Body() body: ConsultaDto) {
     const { limit, skip, filtros } = body;
 
     if (limit && limit <= 0) {

@@ -7,13 +7,13 @@ import * as QRCode from 'qrcode';
 import { EnumRolesUsuario } from '../utils/enums/roles-usuario.enum';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ActualizarUsuarioDto } from './dto/actualizar-usuario.dto';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 
 @Injectable()
 export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
-    private readonly paginacionService: PaginacionService,
+    private readonly paginacionService: ConsultasService,
   ) {}
 
   async crear(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {

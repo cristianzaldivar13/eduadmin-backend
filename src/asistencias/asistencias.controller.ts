@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AsistenciasService } from './asistencias.service';
 import { CrearAsistenciaDto } from './dto/crear-asistencia.dto';
-import { PaginacionDto } from '../utils/dtos/paginacion.dto';
+import { ConsultaDto } from '../utils/dtos/consulta.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
@@ -63,7 +63,7 @@ export class AsistenciasController {
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)
-  async paginar(@Body() body: PaginacionDto) {
+  async paginar(@Body() body: ConsultaDto) {
     const { limit, skip, filtros } = body;
 
     if (limit && limit <= 0) {

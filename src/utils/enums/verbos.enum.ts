@@ -7,5 +7,6 @@ export enum EnumVerbos {
     LISTAR = 'Listar/:seccion/:id',
     PAGINAR = 'Paginar',
     CONSULTAR_POR_ID = 'ConsultarPorId/:id',
+    CONSULTAR = 'Consultar',
   }
   

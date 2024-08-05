@@ -8,7 +8,7 @@ import { ActualizarGrupoDto } from './dto/actualizar-grupo.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Grupo } from './models/grupo.model';
 import { Model, Types } from 'mongoose';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class GruposService {
   constructor(
     @InjectModel(Grupo.name)
     private readonly grupoModel: Model<Grupo>,
-    private readonly paginacionService: PaginacionService,
+    private readonly consultasService: ConsultasService,
   ) {}
 
   async crear(crearGrupoDto: CrearGrupoDto) {
@@ -160,7 +160,7 @@ export class GruposService {
       }
     ]; // Añade el lookup adicional
   
-    return this.paginacionService.paginar(
+    return this.consultasService.paginar(
       EnumSecciones.GRUPOS.toLowerCase(), // Nombre de la colección
       filtros, // Filtros
       limit, // Límite
@@ -171,4 +171,23 @@ export class GruposService {
     );
   }
   
+  async consultar(
+    filtros: any,
+    limit: number,
+    skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
+  ) {
+    let project: {
+      _id: 1,
+      nombre: 1,
+    }
+    return this.consultasService.Consultar(
+      EnumSecciones.GRUPOS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project,
+    );
+  }
 }

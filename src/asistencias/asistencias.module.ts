@@ -6,7 +6,7 @@ import { AsistenciaSchema } from './schemas/asistencia.schema';
 import { Asistencia } from './models/asistencia.model';
 import { ValidacionUsuarioGuard } from '../utils/validacion-usuario.guard.ts';
 import { UsuariosModule } from '../usuarios/usuarios.module';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaAsistenciasMiddleware } from '../auth/middlewares/valida-asistencias.middleware';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
@@ -19,7 +19,7 @@ import { EnumVerbos } from '../utils/enums/verbos.enum';
     UsuariosModule,
   ],
   controllers: [AsistenciasController],
-  providers: [AsistenciasService, ValidacionUsuarioGuard, PaginacionService],
+  providers: [AsistenciasService, ValidacionUsuarioGuard, ConsultasService],
   exports: [AsistenciasService],
 })
 export class AsistenciasModule {

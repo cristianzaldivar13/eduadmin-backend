@@ -6,7 +6,7 @@ import { Grupo } from './models/grupo.model';
 import { GrupoSchema } from './schemas/grupo.schema';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 import { ValidaGruposMiddleware } from '../auth/middlewares/valida-grupos.middleware';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
@@ -14,7 +14,7 @@ import { EnumVerbos } from '../utils/enums/verbos.enum';
     MongooseModule.forFeature([{ name: Grupo.name, schema: GrupoSchema }]),
   ],
   controllers: [GruposController],
-  providers: [GruposService, PaginacionService],
+  providers: [GruposService, ConsultasService],
   exports: [GruposService],
 })
 export class GruposModule {
@@ -27,6 +27,7 @@ export class GruposModule {
         { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.ACTUALIZAR}`, method: RequestMethod.PATCH },
         { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.CONSULTAR_POR_ID}`, method: RequestMethod.GET },
         { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.LISTAR}`, method: RequestMethod.GET },
+        { path: `${EnumSecciones.GRUPOS}/${EnumVerbos.CONSULTAR}`, method: RequestMethod.POST },
       );
   }
 }

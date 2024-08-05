@@ -7,7 +7,7 @@ import { Usuario } from './models/usuario.model';
 import { RolesModule } from '../roles/roles.module';
 import { ValidaUsuariosMiddleware } from '../auth/middlewares/valida-usuarios.middleware';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumVerbos } from '../utils/enums/verbos.enum';
 
 @Module({
@@ -16,7 +16,7 @@ import { EnumVerbos } from '../utils/enums/verbos.enum';
     RolesModule,
   ],
   controllers: [UsuariosController],
-  providers: [UsuariosService, PaginacionService],
+  providers: [UsuariosService, ConsultasService],
   exports: [UsuariosService],
 })
 export class UsuariosModule {

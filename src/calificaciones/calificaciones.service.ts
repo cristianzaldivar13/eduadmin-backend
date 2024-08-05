@@ -8,7 +8,7 @@ import { ActualizarCalificacioneDto } from './dto/actualizar-calificacion.dto';
 import { Calificacion } from './models/calificacion.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { PaginacionService } from '../utils/servicios/paginacion.service';
+import { ConsultasService } from '../utils/servicios/consultas.service';
 import { EnumSecciones } from '../utils/enums/secciones.enum';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class CalificacionesService {
   constructor(
     @InjectModel(Calificacion.name)
     private readonly calificacionModel: Model<Calificacion>,
-    private readonly paginacionService: PaginacionService,
+    private readonly paginacionService: ConsultasService,
   ) {}
 
   async crear(crearCalificacionDto: CrearCalificacionDto) {
