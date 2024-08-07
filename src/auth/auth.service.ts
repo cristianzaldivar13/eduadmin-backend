@@ -13,7 +13,7 @@ export class AuthService {
 
   async validateUser(correo: string, contrasena: string): Promise<any> {
     const user = await this.usuariosService.buscarPorCorreo(correo);
-    if (user && await bcrypt.compare(contrasena, user.contrasena)) {
+    if (user && (await bcrypt.compare(contrasena, user.contrasena))) {
       const { contrasena, ...result } = user;
       return result;
     }
@@ -21,7 +21,13 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload: JWTPayload = { correo: user._doc.correo, rol: user._doc.rol, estatus: user._doc.estatus, sub: user._doc._id };
+    const payload: JWTPayload = {
+      escuelaId: user._doc.escuelaId.toString(),
+      correo: user._doc.correo,
+      rol: user._doc.rol,
+      estatus: user._doc.estatus,
+      id: user._doc._id,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };
