@@ -168,6 +168,7 @@ export class ConsultasService {
     const pipeline: any[] = [
       { $match: filtrosConvertidos },
       ...lookups, // Añade las etapas de lookup para IDs
+      { $match: { rol: { $ne: 'Root' } } }, // Excluye usuarios con rol "Root"
       ...(Object.keys(sort).length > 0 ? [{ $sort: sort }] : []),
       ...(Object.keys(project).length > 0 ? [{ $project: project }] : []), // Se añade el campo project
       {
@@ -189,7 +190,7 @@ export class ConsultasService {
     try {
       const collection = this.connection.collection(collectionName);
       const result = await collection.aggregate(pipeline).toArray();
-      console.log(JSON.stringify(pipeline));
+
       return (
         result[0] || {
           total: 0,
@@ -271,69 +272,44 @@ export class ConsultasService {
 
     for (const key in filtros) {
       if (filtros.hasOwnProperty(key)) {
-        if (key.endsWith('Id')) {
-          if (Array.isArray(filtros[key])) {
-            // Convertir cada ID en el arreglo a ObjectId
-            filtrosConvertidos[key] = {
-              $in: filtros[key].map((id: string) =>
-                Types.ObjectId.isValid(id) ? new Types.ObjectId(id) : id,
-              ),
-            };
+        if (key.endsWith('Id') && Types.ObjectId.isValid(filtros[key])) {
+          const coleccion = this.obtenerNombreColeccion(key);
+          filtrosConvertidos[key] = new Types.ObjectId(filtros[key]);
 
-            const coleccion = this.obtenerNombreColeccion(key);
-            lookups.push({
-              $lookup: {
-                from: coleccion,
-                localField: key,
-                foreignField: '_id',
-                as: key.replace('Id', ''),
-              },
-            });
+          lookups.push({
+            $lookup: {
+              from: coleccion,
+              localField: key,
+              foreignField: '_id',
+              as: key.replace('Id', ''),
+            },
+          });
 
-            lookups.push({
-              $unwind: {
-                path: `$${key.replace('Id', '')}`,
-                preserveNullAndEmptyArrays: true,
-              },
-            });
-          } else if (Types.ObjectId.isValid(filtros[key])) {
-            const coleccion = this.obtenerNombreColeccion(key);
-            filtrosConvertidos[key] = new Types.ObjectId(filtros[key]);
-
-            lookups.push({
-              $lookup: {
-                from: coleccion,
-                localField: key,
-                foreignField: '_id',
-                as: key.replace('Id', ''),
-              },
-            });
-
-            lookups.push({
-              $unwind: {
-                path: `$${key.replace('Id', '')}`,
-                preserveNullAndEmptyArrays: true,
-              },
-            });
-          } else {
-            filtrosConvertidos[key] = filtros[key];
-          }
+          lookups.push({
+            $unwind: {
+              path: `$${key.replace('Id', '')}`,
+              preserveNullAndEmptyArrays: true,
+            },
+          });
         } else if (key === 'entreFechas') {
           const { fechaInicial, fechaFinal, campoFecha } = filtros[key];
 
           if (fechaInicial && fechaFinal && campoFecha) {
+            // Convertir las fechas de string a objeto Date
             const inicio = new Date(fechaInicial);
             const fin = new Date(fechaFinal);
 
+            // Ajustar las horas para el rango completo del día final
             inicio.setUTCHours(0, 0, 0, 0);
             fin.setUTCHours(23, 59, 59, 999);
 
+            // Asignar el rango de fechas al filtro
             filtrosConvertidos[campoFecha] = {
               $gte: inicio,
               $lte: fin,
             };
           }
-        } else {
+        }  else {
           filtrosConvertidos[key] = filtros[key];
         }
       }

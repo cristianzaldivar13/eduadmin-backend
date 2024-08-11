@@ -59,6 +59,31 @@ export class UsuariosController {
     return this.usuariosService.consultarPorId(id);
   }
 
+  @Post(EnumVerbos.CONSULTAR)
+  @Role(
+    EnumRolesUsuario.ROOT,
+    EnumRolesUsuario.PROFESOR,
+    EnumRolesUsuario.DIRECTOR,
+    EnumRolesUsuario.SECRETARIO,
+  )
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  async consultar(@Body() body: ConsultaDto) {
+    const { limit, skip, filtros } = body;
+
+    if (limit && limit <= 0) {
+      throw new BadRequestException('El límite debe ser mayor que 0');
+    }
+    if (skip && skip < 0) {
+      throw new BadRequestException('El salto debe ser mayor o igual a 0');
+    }
+
+    return this.usuariosService.consultar(
+      filtros || {}, // Pasa los filtros genéricos
+      limit,
+      skip,
+    );
+  }
+
   @Post(EnumVerbos.PAGINAR)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)

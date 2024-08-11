@@ -13,7 +13,7 @@ import { ConsultasService } from '../utils/servicios/consultas.service';
 export class UsuariosService {
   constructor(
     @InjectModel(Usuario.name) private readonly usuarioModel: Model<Usuario>,
-    private readonly paginacionService: ConsultasService,
+    private readonly consultasService: ConsultasService,
   ) {}
 
   async crear(crearUsuarioDto: CrearUsuarioDto): Promise<Usuario> {
@@ -224,6 +224,31 @@ export class UsuariosService {
     }
   }
 
+  async consultar(
+    filtros: any,
+    limit: number,
+    skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
+  ) {
+    let project = {
+      _id: 1,
+      nombre: 1,
+      apellidoPaterno: 1,
+      apellidoMaterno: 1,
+      sexo: 1,
+      correo: 1,
+      'escuela.nombre': 1,
+    }
+    return this.consultasService.Consultar(
+      EnumSecciones.USUARIOS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project,
+    );
+  }
+
   async buscarPorCorreo(correo: string): Promise<Usuario | null> {
     return await this.usuarioModel.findOne({ correo }).exec();
   }
@@ -255,16 +280,12 @@ export class UsuariosService {
       fechaNacimiento: 1,
       sexo: 1,
       telefono: 1,
-      niveles: 1,
       correo: 1,
       rol: 1,
       estatus: 1,
-      fechaCreacion: 1,
-      grupos: 1,
-      menus: 1,
     }; // Proyecta solo ciertos campos
 
-    return this.paginacionService.paginar(
+    return this.consultasService.paginar(
       EnumSecciones.USUARIOS.toLowerCase(), // Nombre de la colección
       filtros, // Filtros
       limit, // Límite

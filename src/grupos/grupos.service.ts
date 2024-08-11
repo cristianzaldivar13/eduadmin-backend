@@ -177,7 +177,7 @@ export class GruposService {
     skip: number,
     sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
   ) {
-    let project: {
+    let project = {
       _id: 1,
       nombre: 1,
     }

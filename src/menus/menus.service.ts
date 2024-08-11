@@ -16,7 +16,7 @@ export class MenusService {
   constructor(
     @InjectModel(Menu.name)
     private readonly menuModel: Model<Menu>,
-    private readonly paginacionService: ConsultasService,
+    private readonly consultasService: ConsultasService,
   ) {}
 
   async crear(crearMenuDto: CrearMenuDto) {
@@ -137,17 +137,39 @@ export class MenusService {
       escuelaId: 1,
       nombre: 1,
       subMenu: 1,
+      menuId: 1,
       fechaCreacion: 1,
       estatus: 1,
     }; // Proyecta solo ciertos campos
 
-    return this.paginacionService.paginar(
+    return this.consultasService.paginar(
       EnumSecciones.MENUS.toLowerCase(), // Nombre de la colección
       filtros, // Filtros
       limit, // Límite
       skip, // Salto
       sort, // Ordenación
       project, // Resultado
+    );
+  }
+
+  async consultar(
+    filtros: any,
+    limit: number,
+    skip: number,
+    sort: Record<string, 1 | -1> = {}, // Ordenación por defecto vacío
+  ) {
+    let project: {
+      _id: 1,
+      nombre: 1,
+      menuId: 1,
+    }
+    return this.consultasService.Consultar(
+      EnumSecciones.MENUS.toLowerCase(), // Nombre de la colección
+      filtros, // Filtros
+      limit, // Límite
+      skip, // Salto
+      sort, // Ordenación
+      project,
     );
   }
 }

@@ -19,7 +19,7 @@ export class RolesService {
     return this.rolModel.findOne({ nombre }).exec();
   }
 
-  async buscarTodo(): Promise<Roles[]> {
+  async consultar(): Promise<Roles[]> {
     return this.rolModel.find().exec();
   }
 }

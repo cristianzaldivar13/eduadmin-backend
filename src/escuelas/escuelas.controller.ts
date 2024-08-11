@@ -40,10 +40,17 @@ export class EscuelasController {
     return this.escuelasService.actualizar(id, actualizarEscuelaDto);
   }
 
+  @Get(EnumVerbos.CONSULTAR)
+  @Role(EnumRolesUsuario.ROOT)
+  @UseGuards(JwtAuthGuard, JwtGuard)
+  consultar() {
+    return this.escuelasService.consultar();
+  }
+
   @Get(EnumVerbos.CONSULTAR_POR_ID)
   @Role(EnumRolesUsuario.ROOT)
   @UseGuards(JwtAuthGuard, JwtGuard)
-  ConsultarPorId(@Param('id') id: string) {
-    return this.escuelasService.ConsultarPorId(id);
+  consultarPorId(@Param('id') id: string) {
+    return this.escuelasService.consultarPorId(id);
   }
 }

@@ -23,7 +23,11 @@ export class EscuelasService {
     );
   }
 
-  async ConsultarPorId(id: string) {
+  async consultar() {
+    return await this.escuelaModel.find({}, {_id: 1, nombre: 1});
+  }
+
+  async consultarPorId(id: string) {
     return await this.escuelaModel.findById(new Types.ObjectId(id));
   }
 }

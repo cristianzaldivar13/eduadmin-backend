@@ -15,7 +15,7 @@ export class ValidaRolGuard implements CanActivate {
       throw new BadRequestException('Debe enviar el rol.');
     }
 
-    const validRoles = await this.rolesService.buscarTodo();
+    const validRoles = await this.rolesService.consultar();
     const validRoleNames = validRoles.map(role => role.nombre);
 
       if (!validRoleNames.includes(rol)) {
